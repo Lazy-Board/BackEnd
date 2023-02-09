@@ -15,6 +15,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class Weather {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
