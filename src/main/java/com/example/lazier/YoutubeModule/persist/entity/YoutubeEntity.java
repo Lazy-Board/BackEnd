@@ -21,7 +21,7 @@ public class YoutubeEntity {
 
     private String channelName;
     private String contentName;
-    private String numViewers;
+    private String hit;
     private String createdAt;
     private String length;
 

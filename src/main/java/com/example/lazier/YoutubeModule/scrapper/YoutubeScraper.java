@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class YoutubeScrapper {
+public class YoutubeScraper {
     ScrapedResult scrapResult = new ScrapedResult();
     String html = null;
     HttpURLConnection con;

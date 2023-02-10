@@ -3,7 +3,7 @@ package com.example.lazier.YoutubeModule.scheduler;
 import com.example.lazier.YoutubeModule.model.ScrapedResult;
 import com.example.lazier.YoutubeModule.persist.entity.YoutubeEntity;
 import com.example.lazier.YoutubeModule.persist.repository.YoutubeRepository;
-import com.example.lazier.YoutubeModule.scrapper.YoutubeScrapper;
+import com.example.lazier.YoutubeModule.scrapper.YoutubeScraper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.EnableCaching;
@@ -17,16 +17,15 @@ import org.springframework.stereotype.Component;
 public class ScraperScheduler {
 
     private final YoutubeRepository youtubeRepository;
-    private final YoutubeScrapper youtubeScrapper;
+    private final YoutubeScraper youtubeScraper;
 
     //    @CacheEvict(value = CacheKey.KEY_FINANCE, allEntries = true)
     @Scheduled(cron = "${scheduler.scrap.youtube}")
-    public void yahooFinanceScheduling() {
+    public void youtubeScheduling() {
         log.info("youtube scraping scheduler has started");
 
         // 업데이트 할 크롤링 내용
-        ScrapedResult scrapedResult = this.youtubeScrapper.crawl();
-
+        ScrapedResult scrapedResult = this.youtubeScraper.crawl();
 
         // 스크래핑한 정보 중 없는 값을 저장
         scrapedResult.getYoutubeList().stream()
@@ -37,7 +36,7 @@ public class ScraperScheduler {
                         .updatedAt(e.getUpdatedAt())
                         .length(e.getLength())
                         .imagePath(e.getImagePath())
-                        .numViewers(e.getNumViewers())
+                        .hit(e.getNumViewers())
                         .build()
                 )
 
