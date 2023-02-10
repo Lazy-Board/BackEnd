@@ -13,7 +13,7 @@ public class UserWeatherDto {
     String cityName;
     String locationName;
 
-    public static UserWeatherDto of (UserWeather userWeather) {
+    public static UserWeatherDto of(UserWeather userWeather) {
         return UserWeatherDto.builder()
             .userId(userWeather.getUserId())
             .cityName(userWeather.getCityName())
