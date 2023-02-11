@@ -10,4 +10,6 @@ public interface UserWeatherService {
     UserWeatherDto detail(String userId);
 
     void update(UserWeatherInput parameter);
+
+    void delete(String userId);
 }

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,12 +40,22 @@ public class UserWeatherController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateUserInfo(HttpServletRequest request, @RequestBody @Valid UserWeatherInput parameter) {
+    public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
+        @RequestBody @Valid UserWeatherInput parameter) {
         String userId = (String) request.getAttribute("userId");
         parameter.setUserId(userId);
 
         userWeatherService.update(parameter);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/user-info")
+    public ResponseEntity<?> deleteUserInfo(HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+
+        userWeatherService.delete(userId);
+
+        return ResponseEntity.ok().build();
     }
 }

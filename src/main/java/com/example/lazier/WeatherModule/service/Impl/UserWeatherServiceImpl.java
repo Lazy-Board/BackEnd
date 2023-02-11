@@ -46,9 +46,19 @@ public class UserWeatherServiceImpl implements UserWeatherService {
     @Transactional
     public void update(UserWeatherInput parameter) {
         // custom exception handler로 예외 처리 할 예정입니다 :)
-        UserWeather userWeather = userWeatherRepository.findById(parameter.getUserId()).orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+        UserWeather userWeather = userWeatherRepository.findById(parameter.getUserId())
+            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
 
         userWeather.updateUser(parameter.getCityName(), parameter.getLocationName());
         // 새로 저장된 지역 날씨 저장하기 구현 예정 입니다 :)
+    }
+
+    @Override
+    public void delete(String userId) {
+        // custom exception handler로 예외 처리 할 예정입니다 :D
+        UserWeather userWeather = userWeatherRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("시용지 정보가 존재하지 않습니다."));
+
+        userWeatherRepository.delete(userWeather);
     }
 }
