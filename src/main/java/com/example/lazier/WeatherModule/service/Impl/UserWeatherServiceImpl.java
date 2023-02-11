@@ -1,5 +1,6 @@
 package com.example.lazier.WeatherModule.service.Impl;
 
+import com.example.lazier.WeatherModule.dto.UserWeatherDto;
 import com.example.lazier.WeatherModule.model.UserWeatherInput;
 import com.example.lazier.WeatherModule.persist.entity.UserWeather;
 import com.example.lazier.WeatherModule.persist.repository.UserWeatherRepository;
@@ -30,5 +31,14 @@ public class UserWeatherServiceImpl implements UserWeatherService {
             .build();
 
         userWeatherRepository.save(userWeather);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserWeatherDto detail(String userId) {
+        // custom exception handler로 예외 처리 할 예정입니다 :D
+        UserWeather userWeather = userWeatherRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+        return UserWeatherDto.of(userWeather);
     }
 }
