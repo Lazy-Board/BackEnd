@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3310/team
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: team_user
+    password: 1234
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+
+    scheduler:
+      scrap:
+        youtube: "0 0/10 * * * *"
