@@ -54,6 +54,7 @@ public class UserWeatherServiceImpl implements UserWeatherService {
     }
 
     @Override
+    @Transactional
     public void delete(String userId) {
         // custom exception handler로 예외 처리 할 예정입니다 :D
         UserWeather userWeather = userWeatherRepository.findById(userId)
