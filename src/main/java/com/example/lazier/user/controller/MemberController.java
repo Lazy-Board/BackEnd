@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Slf4j
@@ -44,5 +45,10 @@ public class MemberController {
         jwtService.saveRefreshToken(tokenDTO); //db에 refresh token 저장
 
         return ResponseEntity.ok(tokenDTO);
+    }
+
+    @GetMapping("/test")
+    public String test(HttpServletRequest request) {
+        return (String) request.getAttribute("userId");
     }
 }
