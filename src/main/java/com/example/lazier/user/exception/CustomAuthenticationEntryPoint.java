@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 @Getter
 @Component
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
         @Override
         public void commence (HttpServletRequest request, HttpServletResponse response,
                 AuthenticationException e) throws IOException {

@@ -1,6 +1,7 @@
 package com.example.lazier.user.security;
 
 import com.example.lazier.user.dto.TokenDTO;
+import com.example.lazier.user.entity.RefreshToken;
 import com.example.lazier.user.service.login.LoginService;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -26,17 +27,14 @@ public class JwtTokenProvider {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    //private long accessTokenVaildTime = 30 * 60 * 1000L; //30분
-    //private long refreshTokenValidTime = 24 * 60 * 60 * 1000L; //1일
-
-    private long accessTokenVaildTime =  1 * 60 * 1000L; //2분
-    private long refreshTokenValidTime = 1 * 60 * 1000L; //2분
+    private long accessTokenVaildTime = 30 * 60 * 1000L; //30분
+    private long refreshTokenValidTime = 24 * 60 * 60 * 1000L; //1일
 
     private final LoginService loginService;
 
-    @PostConstruct //종속성 주입이 완료된 후 실행되는 메서드 <- 호출되지 않아도 수행된다.
+    @PostConstruct //종속성 주입이 완료된 후 실행되는 메서드 <- 호출되지 않아도 수행
     protected void init() {
-        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes()); //객체 조기화, secretKey를 Base64로 인코딩한다.
+        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes()); //객체 조기화, secretKey를 Base64로 인코딩
     }
 
     public TokenDTO createAccessToken(Authentication authentication) {
@@ -45,7 +43,7 @@ public class JwtTokenProvider {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        Claims claims = Jwts.claims().setSubject(authentication.getName()); //사용자 <- user_id
+        Claims claims = Jwts.claims().setSubject(authentication.getName()); //user_id
         claims.put("roles", authorities);
         Date now = new Date();
 
@@ -75,7 +73,7 @@ public class JwtTokenProvider {
 
 
     public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("Authorization"); //"Authorization" : "Token", 프론트에서 보낸 header
+        return request.getHeader("Authorization"); //"Authorization" : "Token"
     }
 
     public String getUserPk(String token) {
@@ -84,7 +82,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = loginService.loadUserByUsername(this.getUserPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()); //authentication 리턴
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()); //authentication
     }
 
     public boolean validateToken(String token) {
@@ -101,5 +99,34 @@ public class JwtTokenProvider {
         throw new JwtException("토큰이 만료되었습니다");
     }
 
+    public String validateRefreshToken(RefreshToken token) {
+        String refreshToken = token.getRefreshToken();
+
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(refreshToken);
+            if (!claims.getBody().getExpiration().before(new Date())) {
+                return recreationAccessToken(claims.getBody().getSubject(), claims.getBody().get("roles"));
+            }
+        } catch (ExpiredJwtException e) {
+            log.warn("Refresh 토큰이 만료");
+            throw new JwtException("Refresh 토큰이 만료되었습니다. 로그인이 필요합니다.");
+        }
+        return null;
+    }
+
+    public String recreationAccessToken(String userId, Object roles) {
+
+        Claims claims = Jwts.claims().setSubject(userId);
+        claims.put("roles", roles);
+        Date now = new Date();
+
+        //new access Token
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(now.getTime() + accessTokenVaildTime))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
 
 }

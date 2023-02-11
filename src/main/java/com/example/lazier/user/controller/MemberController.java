@@ -1,5 +1,6 @@
 package com.example.lazier.user.controller;
 
+import com.example.lazier.user.dto.AccessTokenDTO;
 import com.example.lazier.user.dto.TokenDTO;
 import com.example.lazier.user.model.UserLogin;
 import com.example.lazier.user.model.UserSignUp;
@@ -50,5 +51,14 @@ public class MemberController {
     @GetMapping("/test")
     public String test(HttpServletRequest request) {
         return (String) request.getAttribute("userId");
+    }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<?> validateRefreshToken(@RequestBody TokenDTO tokenDTO) {
+        log.info("refresh controller 실행");
+        AccessTokenDTO accessTokenDTO = jwtService.validateRefreshToken(tokenDTO.getRefreshToken());
+
+        log.info("refresh controller - Refresh Token이 유효");
+        return new ResponseEntity<>(accessTokenDTO, HttpStatus.OK);
     }
 }

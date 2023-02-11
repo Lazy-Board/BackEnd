@@ -34,4 +34,16 @@ public class CustomerExceptionHandler {
 
         return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
+
+    @ExceptionHandler(UnauthorizedRefreshTokenException.class)
+    public ResponseEntity<ErrorMessage> unauthorizedRefreshTokenException(UnauthorizedRefreshTokenException exception) {
+
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.UNAUTHORIZED));
+    }
+
+    @ExceptionHandler(UnauthorizedMemberException.class)
+    public ResponseEntity<ErrorMessage> unauthorizedMemberException(UnauthorizedMemberException exception) {
+
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.UNAUTHORIZED));
+    }
 }
