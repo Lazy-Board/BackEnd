@@ -48,6 +48,15 @@ public class MemberController {
         return ResponseEntity.ok(tokenDTO);
     }
 
+    @PostMapping("/reissue")
+    public ResponseEntity<?> validateRefreshToken(@RequestBody TokenDTO tokenDTO) {
+        log.info("refresh controller 실행");
+        AccessTokenDTO accessTokenDTO = jwtService.validateRefreshToken(tokenDTO.getRefreshToken());
+
+        log.info("refresh controller - Refresh Token이 유효");
+        return new ResponseEntity<>(accessTokenDTO, HttpStatus.OK);
+    }
+
     @GetMapping("/test")
     public String test(HttpServletRequest request) {
         return (String) request.getAttribute("userId");

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 @Slf4j
-public class CreateTokenServicelmpl implements CreateTokenService {
+public class CreateTokenServiceImpl implements CreateTokenService {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final UserRepository userRepository;
@@ -45,4 +45,5 @@ public class CreateTokenServicelmpl implements CreateTokenService {
 
         return tokenDTO;
     }
+
 }
