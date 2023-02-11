@@ -73,8 +73,31 @@ public class JwtTokenProvider {
                 .build();
     }
 
+    public String resolveToken(HttpServletRequest request) {
+        return request.getHeader("Authorization"); //"Authorization" : "Token", 프론트에서 보낸 header
+    }
+
     public String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject(); //username
+    }
+
+    public Authentication getAuthentication(String token) {
+        UserDetails userDetails = loginService.loadUserByUsername(this.getUserPk(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities()); //authentication 리턴
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (ExpiredJwtException e) {
+            log.warn("만료된 JWT 토큰입니다.");
+        } catch (UnsupportedJwtException e) {
+            log.warn("지원되지 않는 JWT 토큰입니다.");
+        } catch (IllegalArgumentException e) {
+            log.warn("JWT 토큰이 잘못되었습니다.");
+        }
+        throw new JwtException("토큰이 만료되었습니다");
     }
 
 }
