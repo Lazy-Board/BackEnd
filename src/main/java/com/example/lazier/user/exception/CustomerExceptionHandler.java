@@ -16,4 +16,22 @@ public class CustomerExceptionHandler {
 
         return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
+
+    @ExceptionHandler(FailedLoginException.class)
+    public ResponseEntity<ErrorMessage> failedLoginException(FailedLoginException exception) {
+
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(NotFoundMemberException.class)
+    public ResponseEntity<ErrorMessage> notFoundMemberException(NotFoundMemberException exception) {
+
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(NotMatchMemberException.class)
+    public ResponseEntity<ErrorMessage> notMatchMemberException(NotMatchMemberException exception) {
+
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+    }
 }
