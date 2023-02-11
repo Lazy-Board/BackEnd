@@ -22,4 +22,8 @@ public class UserWeather {
     String cityName;
     String locationName;
 
+    public void updateUser(String cityName, String locationName) {
+        this.cityName = cityName;
+        this.locationName = locationName;
+    }
 }

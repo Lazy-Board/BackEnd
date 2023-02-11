@@ -8,4 +8,6 @@ public interface UserWeatherService {
     void add(UserWeatherInput parameter);
 
     UserWeatherDto detail(String userId);
+
+    void update(UserWeatherInput parameter);
 }

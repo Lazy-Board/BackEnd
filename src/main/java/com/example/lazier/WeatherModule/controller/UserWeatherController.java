@@ -37,4 +37,14 @@ public class UserWeatherController {
 
         return new ResponseEntity<>(userWeatherService.detail(userId), HttpStatus.OK);
     }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> updateUserInfo(HttpServletRequest request, @RequestBody @Valid UserWeatherInput parameter) {
+        String userId = (String) request.getAttribute("userId");
+        parameter.setUserId(userId);
+
+        userWeatherService.update(parameter);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
