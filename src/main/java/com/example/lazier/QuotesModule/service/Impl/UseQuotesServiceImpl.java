@@ -48,4 +48,15 @@ public class UseQuotesServiceImpl implements UserQuoteService {
 
         userQuotes.update(parameter.getContent());
     }
+
+    @Override
+    @Transactional
+    public void delete(String userId) {
+        // 예외 처리 할 예정 입니다.
+        UserQuotes userQuotes = userQuotesRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+
+        userQuotesRepository.delete(userQuotes);
+    }
+
 }

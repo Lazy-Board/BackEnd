@@ -10,4 +10,6 @@ public interface UserQuoteService {
     UserQuotesDto get(String userId);
 
     void update(UserQuotesInput parameter);
+
+    void delete(String userId);
 }
