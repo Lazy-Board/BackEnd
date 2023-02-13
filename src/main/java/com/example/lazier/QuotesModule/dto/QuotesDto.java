@@ -1,5 +1,6 @@
 package com.example.lazier.QuotesModule.dto;
 
+import com.example.lazier.QuotesModule.persist.entity.Quotes;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,4 +12,11 @@ public class QuotesDto {
     private String content;
     private String writer;
 
+    public static QuotesDto of(Quotes quotes) {
+        return QuotesDto.builder()
+            .quotesId(quotes.getQuotesId())
+            .content(quotes.getContent())
+            .writer(quotes.getWriter())
+            .build();
+    }
 }
