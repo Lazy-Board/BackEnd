@@ -38,4 +38,14 @@ public class UseQuotesServiceImpl implements UserQuoteService {
             .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
         return UserQuotesDto.of(userQuotes);
     }
+
+    @Override
+    @Transactional
+    public void update(UserQuotesInput parameter) {
+        // 예외 처리 할 예정입니다.
+        UserQuotes userQuotes = userQuotesRepository.findById(parameter.getUserId())
+            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+
+        userQuotes.update(parameter.getContent());
+    }
 }

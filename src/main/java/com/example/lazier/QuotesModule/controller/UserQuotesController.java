@@ -36,4 +36,15 @@ public class UserQuotesController {
 
         return new ResponseEntity<>(userQuoteService.get(userId), HttpStatus.OK);
     }
+
+    @PostMapping("/update")
+    public ResponseEntity<?> update(HttpServletRequest request,
+        @RequestBody @Valid UserQuotesInput parameter) {
+        String userId = (String) request.getAttribute("userId");
+        parameter.setUserId(userId);
+
+        userQuoteService.update(parameter);
+
+        return ResponseEntity.ok().body("업데이트 되었습니다.");
+    }
 }

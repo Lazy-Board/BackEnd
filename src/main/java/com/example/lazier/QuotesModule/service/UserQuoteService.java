@@ -8,4 +8,6 @@ public interface UserQuoteService {
     void add(UserQuotesInput parameter);
 
     UserQuotesDto get(String userId);
+
+    void update(UserQuotesInput parameter);
 }

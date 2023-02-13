@@ -19,4 +19,8 @@ public class UserQuotes {
     private String userId;
 
     private String content;
+
+    public void update(String content) {
+        this.content = content;
+    }
 }
