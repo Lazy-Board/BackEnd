@@ -20,7 +20,7 @@ public class Exchange {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String userId;
+    private String userId;                  // 유저ID
     private String currencyName;            // 통화명
     private String tradingStandardRate;     // 매매기준율
     private String comparedPreviousDay;     // 전일대비
