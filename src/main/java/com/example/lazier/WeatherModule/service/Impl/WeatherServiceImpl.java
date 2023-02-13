@@ -23,4 +23,13 @@ public class WeatherServiceImpl implements WeatherService {
         WeatherDto weatherDto = naverWeatherScraper.scrap(userWeather);
         weatherRepository.save(new Weather(weatherDto));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public WeatherDto getWeather(String userId) {
+        // custom exception handler로 예외 처리 할 예정입니다 :)
+        Weather weather = weatherRepository.findFirstByUserIdOrderByUpdatedAt(userId)
+            .orElseThrow(() -> new RuntimeException("사용자 정보를 조회 할 수 없습니다."));
+        return WeatherDto.of(weather);
+    }
 }

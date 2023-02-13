@@ -1,5 +1,6 @@
 package com.example.lazier.WeatherModule.dto;
 
+import com.example.lazier.WeatherModule.persist.entity.Weather;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,4 +29,24 @@ public class WeatherDto {
     String windDirection;
     String updatedAt;
 
+    public static WeatherDto of(Weather weather) {
+        return WeatherDto.builder()
+            .userId(weather.getUserId())
+            .cityName(weather.getCityName())
+            .locationName(weather.getLocationName())
+            .temperature(weather.getTemperature())
+            .effectiveTemperature(weather.getEffectiveTemperature())
+            .highestTemperature(weather.getHighestTemperature())
+            .lowestTemperature(weather.getLowestTemperature())
+            .weatherInformation(weather.getWeatherInformation())
+            .weatherComparison(weather.getWeatherComparison())
+            .humidity(weather.getHumidity())
+            .ultraviolet(weather.getUltraviolet())
+            .fineParticle(weather.getFineParticle())
+            .ultrafineParticle(weather.getUltrafineParticle())
+            .windSpeed(weather.getWindSpeed())
+            .windDirection(weather.getWindDirection())
+            .updatedAt(weather.getUpdatedAt())
+            .build();
+    }
 }
