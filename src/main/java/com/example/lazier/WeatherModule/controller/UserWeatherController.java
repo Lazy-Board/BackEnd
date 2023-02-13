@@ -29,7 +29,7 @@ public class UserWeatherController {
 
         userWeatherService.add(parameter);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body("저장되었습니다.");
     }
 
     @GetMapping("/user-info")
@@ -47,7 +47,7 @@ public class UserWeatherController {
 
         userWeatherService.update(parameter);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("업데이트 되었습니다.");
     }
 
     @DeleteMapping("/user-info")
@@ -56,6 +56,6 @@ public class UserWeatherController {
 
         userWeatherService.delete(userId);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("삭제되었습니다.");
     }
 }

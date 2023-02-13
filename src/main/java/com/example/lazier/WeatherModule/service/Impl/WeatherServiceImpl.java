@@ -1,6 +1,7 @@
 package com.example.lazier.WeatherModule.service.Impl;
 
 import com.example.lazier.WeatherModule.dto.WeatherDto;
+import com.example.lazier.WeatherModule.exception.UserNotFoundException;
 import com.example.lazier.WeatherModule.persist.entity.UserWeather;
 import com.example.lazier.WeatherModule.persist.entity.Weather;
 import com.example.lazier.WeatherModule.persist.repository.WeatherRepository;
@@ -27,9 +28,8 @@ public class WeatherServiceImpl implements WeatherService {
     @Override
     @Transactional(readOnly = true)
     public WeatherDto getWeather(String userId) {
-        // custom exception handler로 예외 처리 할 예정입니다 :)
         Weather weather = weatherRepository.findFirstByUserIdOrderByUpdatedAt(userId)
-            .orElseThrow(() -> new RuntimeException("사용자 정보를 조회 할 수 없습니다."));
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
         return WeatherDto.of(weather);
     }
 }

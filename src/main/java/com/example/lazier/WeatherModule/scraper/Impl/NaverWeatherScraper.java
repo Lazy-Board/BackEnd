@@ -1,6 +1,7 @@
 package com.example.lazier.WeatherModule.scraper.Impl;
 
 import com.example.lazier.WeatherModule.dto.WeatherDto;
+import com.example.lazier.WeatherModule.exception.AddressNotFoundException;
 import com.example.lazier.WeatherModule.persist.entity.UserWeather;
 import com.example.lazier.WeatherModule.persist.repository.UserWeatherRepository;
 import com.example.lazier.WeatherModule.scraper.Scraper;
@@ -82,8 +83,7 @@ public class NaverWeatherScraper implements Scraper {
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (IndexOutOfBoundsException e) {
-            // exception 정리 필요!!
-            throw new RuntimeException("잘못된 주소 형태 입니다.");
+            throw new AddressNotFoundException("잘못된 주소 형태 입니다.");
         }
     }
 
