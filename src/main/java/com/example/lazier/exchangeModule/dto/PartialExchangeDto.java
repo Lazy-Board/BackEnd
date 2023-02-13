@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PartialExchangeDto {
-    private String userId;
+    private String userId;                  // UserId
     private String currencyName;            // 통화명
     private String tradingStandardRate;     // 매매기준율
     private String comparedPreviousDay;     // 전일대비

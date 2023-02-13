@@ -3,6 +3,7 @@ package com.example.lazier.exchangeModule.service;
 import com.example.lazier.exchangeModule.dto.PartialExchangeDto;
 import java.util.List;
 
+// 서비스
 public interface PartialExchangeService {
 
     /**

@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
+// 스크래핑
 @Component
 public class ExchangeScraper implements Scraper {
 

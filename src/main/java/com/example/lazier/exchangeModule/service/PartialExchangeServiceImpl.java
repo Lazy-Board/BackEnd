@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+// 수정
 @RequiredArgsConstructor
 @Service
 public class PartialExchangeServiceImpl implements PartialExchangeService {
