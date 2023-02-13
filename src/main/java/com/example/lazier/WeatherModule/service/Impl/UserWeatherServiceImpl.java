@@ -5,6 +5,7 @@ import com.example.lazier.WeatherModule.model.UserWeatherInput;
 import com.example.lazier.WeatherModule.persist.entity.UserWeather;
 import com.example.lazier.WeatherModule.persist.repository.UserWeatherRepository;
 import com.example.lazier.WeatherModule.service.UserWeatherService;
+import com.example.lazier.WeatherModule.service.WeatherService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserWeatherServiceImpl implements UserWeatherService {
 
     private final UserWeatherRepository userWeatherRepository;
+    private final WeatherService weatherService;
 
     @Override
     @Transactional
@@ -31,6 +33,8 @@ public class UserWeatherServiceImpl implements UserWeatherService {
             .build();
 
         userWeatherRepository.save(userWeather);
+        // 새로 저장된 위치 날씨 정보 저장
+        weatherService.add(userWeather);
     }
 
     @Override
@@ -50,7 +54,8 @@ public class UserWeatherServiceImpl implements UserWeatherService {
             .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
 
         userWeather.updateUser(parameter.getCityName(), parameter.getLocationName());
-        // 새로 저장된 지역 날씨 저장하기 구현 예정 입니다 :)
+        // 업데이트 된 날씨 정보 저장
+        weatherService.add(userWeather);
     }
 
     @Override
