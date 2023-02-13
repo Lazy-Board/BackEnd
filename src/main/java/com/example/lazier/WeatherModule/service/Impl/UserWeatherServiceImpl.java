@@ -8,6 +8,7 @@ import com.example.lazier.WeatherModule.persist.entity.UserWeather;
 import com.example.lazier.WeatherModule.persist.repository.UserWeatherRepository;
 import com.example.lazier.WeatherModule.service.UserWeatherService;
 import com.example.lazier.WeatherModule.service.WeatherService;
+import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,10 @@ public class UserWeatherServiceImpl implements UserWeatherService {
 
     @Override
     @Transactional
-    public void add(UserWeatherInput parameter) {
+    public void add(HttpServletRequest request, UserWeatherInput parameter) {
+        String userId = (String) request.getAttribute("userId");
+        parameter.setUserId(userId);
+
         // 중복 아이디 예외
         if (userWeatherRepository.existsById(parameter.getUserId())) {
             throw new UserAlreadyExistException("사용자 정보가 이미 존재합니다.");
@@ -40,7 +44,9 @@ public class UserWeatherServiceImpl implements UserWeatherService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserWeatherDto detail(String userId) {
+    public UserWeatherDto detail(HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+
         UserWeather userWeather = userWeatherRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
         return UserWeatherDto.of(userWeather);
@@ -48,7 +54,10 @@ public class UserWeatherServiceImpl implements UserWeatherService {
 
     @Override
     @Transactional
-    public void update(UserWeatherInput parameter) {
+    public void update(HttpServletRequest request, UserWeatherInput parameter) {
+        String userId = (String) request.getAttribute("userId");
+        parameter.setUserId(userId);
+
         UserWeather userWeather = userWeatherRepository.findById(parameter.getUserId())
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
@@ -59,7 +68,9 @@ public class UserWeatherServiceImpl implements UserWeatherService {
 
     @Override
     @Transactional
-    public void delete(String userId) {
+    public void delete(HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+
         UserWeather userWeather = userWeatherRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
