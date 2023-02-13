@@ -1,5 +1,6 @@
 package com.example.lazier.QuotesModule.service.Impl;
 
+import com.example.lazier.QuotesModule.dto.UserQuotesDto;
 import com.example.lazier.QuotesModule.model.UserQuotesInput;
 import com.example.lazier.QuotesModule.persist.entity.UserQuotes;
 import com.example.lazier.QuotesModule.persist.repository.UserQuotesRepository;
@@ -23,11 +24,18 @@ public class UseQuotesServiceImpl implements UserQuoteService {
             throw new RuntimeException("사용자 정보가 존재합니다.");
         }
 
-        UserQuotes userQuotes = UserQuotes.builder()
-            .userId(parameter.getUserId())
-            .content(parameter.getContent())
-            .build();
+        UserQuotes userQuotes = UserQuotes.builder().userId(parameter.getUserId())
+            .content(parameter.getContent()).build();
 
         userQuotesRepository.save(userQuotes);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserQuotesDto get(String userId) {
+        // 예외 처리 할 예정입니다.
+        UserQuotes userQuotes = userQuotesRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+        return UserQuotesDto.of(userQuotes);
     }
 }

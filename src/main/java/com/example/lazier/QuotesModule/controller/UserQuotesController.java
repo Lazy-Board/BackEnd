@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,5 +28,12 @@ public class UserQuotesController {
 
         userQuoteService.add(parameter);
         return ResponseEntity.status(HttpStatus.CREATED).body("저장되었습니다.");
+    }
+
+    @GetMapping
+    public ResponseEntity<?> get(HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+
+        return new ResponseEntity<>(userQuoteService.get(userId), HttpStatus.OK);
     }
 }
