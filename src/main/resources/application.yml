@@ -10,3 +10,10 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+
+# 스케줄러 주기 변경을 위한 설정
+scheduler:
+  scrap:
+    weather: "0 0 0 * * *"
+

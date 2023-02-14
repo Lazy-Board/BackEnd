@@ -24,38 +24,28 @@ public class UserWeatherController {
     @PostMapping("/user-info")
     public ResponseEntity<?> addUserInfo(HttpServletRequest request, @RequestBody @Valid
     UserWeatherInput parameter) {
-        String userId = (String) request.getAttribute("userId");
-        parameter.setUserId(userId);
+        userWeatherService.add(request, parameter);
 
-        userWeatherService.add(parameter);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body("저장되었습니다.");
     }
 
     @GetMapping("/user-info")
     public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
-        String userId = (String) request.getAttribute("userId");
-
-        return new ResponseEntity<>(userWeatherService.detail(userId), HttpStatus.OK);
+        return new ResponseEntity<>(userWeatherService.detail(request), HttpStatus.OK);
     }
 
     @PostMapping("/update")
     public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
         @RequestBody @Valid UserWeatherInput parameter) {
-        String userId = (String) request.getAttribute("userId");
-        parameter.setUserId(userId);
+        userWeatherService.update(request, parameter);
 
-        userWeatherService.update(parameter);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("업데이트 되었습니다.");
     }
 
     @DeleteMapping("/user-info")
     public ResponseEntity<?> deleteUserInfo(HttpServletRequest request) {
-        String userId = (String) request.getAttribute("userId");
+        userWeatherService.delete(request);
 
-        userWeatherService.delete(userId);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("삭제되었습니다.");
     }
 }

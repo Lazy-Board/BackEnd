@@ -18,7 +18,6 @@ public class WeatherController {
 
     @GetMapping
     public ResponseEntity<?> getWeather(HttpServletRequest request) {
-        String userId = (String) request.getAttribute("userId");
-        return new ResponseEntity<>(weatherService.getWeather(userId), HttpStatus.OK);
+        return new ResponseEntity<>(weatherService.getWeather(request), HttpStatus.OK);
     }
 }

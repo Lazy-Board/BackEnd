@@ -1,11 +1,14 @@
 package com.example.lazier.WeatherModule.service.Impl;
 
 import com.example.lazier.WeatherModule.dto.UserWeatherDto;
+import com.example.lazier.WeatherModule.exception.UserAlreadyExistException;
+import com.example.lazier.WeatherModule.exception.UserNotFoundException;
 import com.example.lazier.WeatherModule.model.UserWeatherInput;
 import com.example.lazier.WeatherModule.persist.entity.UserWeather;
 import com.example.lazier.WeatherModule.persist.repository.UserWeatherRepository;
 import com.example.lazier.WeatherModule.service.UserWeatherService;
 import com.example.lazier.WeatherModule.service.WeatherService;
+import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +22,13 @@ public class UserWeatherServiceImpl implements UserWeatherService {
 
     @Override
     @Transactional
-    public void add(UserWeatherInput parameter) {
+    public void add(HttpServletRequest request, UserWeatherInput parameter) {
+        String userId = (String) request.getAttribute("userId");
+        parameter.setUserId(userId);
+
         // 중복 아이디 예외
         if (userWeatherRepository.existsById(parameter.getUserId())) {
-            // custom exception handler로 예외 처리 할 예정입니다 :)
-            throw new RuntimeException("사용자 정보가 이미 존재합니다.");
+            throw new UserAlreadyExistException("사용자 정보가 이미 존재합니다.");
         }
 
         UserWeather userWeather = UserWeather.builder()
@@ -39,19 +44,22 @@ public class UserWeatherServiceImpl implements UserWeatherService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserWeatherDto detail(String userId) {
-        // custom exception handler로 예외 처리 할 예정입니다 :D
+    public UserWeatherDto detail(HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+
         UserWeather userWeather = userWeatherRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
         return UserWeatherDto.of(userWeather);
     }
 
     @Override
     @Transactional
-    public void update(UserWeatherInput parameter) {
-        // custom exception handler로 예외 처리 할 예정입니다 :)
+    public void update(HttpServletRequest request, UserWeatherInput parameter) {
+        String userId = (String) request.getAttribute("userId");
+        parameter.setUserId(userId);
+
         UserWeather userWeather = userWeatherRepository.findById(parameter.getUserId())
-            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         userWeather.updateUser(parameter.getCityName(), parameter.getLocationName());
         // 업데이트 된 날씨 정보 저장
@@ -60,10 +68,11 @@ public class UserWeatherServiceImpl implements UserWeatherService {
 
     @Override
     @Transactional
-    public void delete(String userId) {
-        // custom exception handler로 예외 처리 할 예정입니다 :D
+    public void delete(HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+
         UserWeather userWeather = userWeatherRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("시용지 정보가 존재하지 않습니다."));
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         userWeatherRepository.delete(userWeather);
     }

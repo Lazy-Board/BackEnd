@@ -2,14 +2,15 @@ package com.example.lazier.WeatherModule.service;
 
 import com.example.lazier.WeatherModule.dto.UserWeatherDto;
 import com.example.lazier.WeatherModule.model.UserWeatherInput;
+import javax.servlet.http.HttpServletRequest;
 
 public interface UserWeatherService {
 
-    void add(UserWeatherInput parameter);
+    void add(HttpServletRequest request, UserWeatherInput parameter);
 
-    UserWeatherDto detail(String userId);
+    UserWeatherDto detail(HttpServletRequest request);
 
-    void update(UserWeatherInput parameter);
+    void update(HttpServletRequest request, UserWeatherInput parameter);
 
-    void delete(String userId);
+    void delete(HttpServletRequest request);
 }
