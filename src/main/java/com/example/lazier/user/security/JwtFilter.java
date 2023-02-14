@@ -19,26 +19,25 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter { //login
 
-    private final JwtTokenProvider jwtTokenProvider;
+	private final JwtTokenProvider jwtTokenProvider;
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+	@Override
+	protected void doFilterInternal(HttpServletRequest request,
+		HttpServletResponse response,
+		FilterChain filterChain) throws ServletException, IOException {
 
-        String token = jwtTokenProvider.resolveToken(request);
+		String token = jwtTokenProvider.resolveToken(request);
 
-        try {
-            if (token != null && jwtTokenProvider.validateToken(token)) {
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                request.setAttribute("userId", authentication.getName());
-            }
-        } catch (IllegalArgumentException | JwtException e) {
-            logger.info("filter-error");
-            logger.info("error message: " + e.getMessage());
-            request.setAttribute("exception", e.getMessage());
-        }
-        filterChain.doFilter(request, response);
-    }
+		try {
+			if (token != null && jwtTokenProvider.validateToken(token)) {
+				Authentication authentication = jwtTokenProvider.getAuthentication(token);
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+				request.setAttribute("userId", authentication.getName());
+			}
+		} catch (IllegalArgumentException | JwtException e) {
+			logger.info("filter error message: " + e.getMessage());
+			request.setAttribute("exception", e.getMessage());
+		}
+		filterChain.doFilter(request, response);
+	}
 }
