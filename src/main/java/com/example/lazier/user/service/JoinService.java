@@ -1,12 +1,12 @@
-package com.example.lazier.user.service.join;
+package com.example.lazier.user.service;
 
 import com.example.lazier.user.component.MailComponents;
-import com.example.lazier.user.dto.JoinDTO;
+import com.example.lazier.user.dto.JoinDto;
 import com.example.lazier.user.entity.LazierUser;
 import com.example.lazier.user.enums.UserRole;
 import com.example.lazier.user.enums.UserStatus;
 import com.example.lazier.user.exception.FailedSignUpException;
-import com.example.lazier.user.model.UserSignUp;
+import com.example.lazier.user.model.UserSignupInput;
 import com.example.lazier.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,14 +18,13 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class JoinServicelmpl implements JoinService {
+public class JoinService {
 
     private final UserRepository userRepository;
     private final MailComponents mailComponents;
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public JoinDTO signUp(UserSignUp request) {
+    public JoinDto signUp(UserSignupInput request) {
 
         boolean existsEmail = userRepository.existsByUserEmail(request.getUserEmail());
         if (existsEmail) { throw new FailedSignUpException("이미 가입된 이메일입니다."); }
@@ -58,12 +57,11 @@ public class JoinServicelmpl implements JoinService {
         boolean sendEmail = mailComponents.sendEmail(email, title, contents);
         if (!sendEmail) { throw new FailedSignUpException("메일 전송에 실패하였습니다."); }
 
-        return JoinDTO.builder()
+        return JoinDto.builder()
                 .uuid(uuid)
                 .build();
     }
 
-    @Override
     public void emailAuth(String uuid) {
         LazierUser lazierUser = userRepository.findByEmailAuthKey(uuid)
                 .orElseThrow(() -> new FailedSignUpException("회원가입을 진행하세요."));

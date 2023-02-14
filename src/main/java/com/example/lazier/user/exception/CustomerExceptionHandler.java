@@ -46,4 +46,11 @@ public class CustomerExceptionHandler {
 
         return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.UNAUTHORIZED));
     }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ErrorMessage> invalidTokenException(InvalidTokenException exception) {
+
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.UNAUTHORIZED));
+    }
+
 }

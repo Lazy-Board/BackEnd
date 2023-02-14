@@ -40,10 +40,12 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/signUp", //허용
+                .antMatchers("/user/signup", //허용
                         "/user/login",
                         "/user/email-auth",
-                        "/user/find-password").permitAll()
+                        "/user/find-password",
+                        "/user/reissue",
+                        "/h2-condole/***").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

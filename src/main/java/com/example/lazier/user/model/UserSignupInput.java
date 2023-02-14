@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class UserSignUp {
+public class UserSignupInput {
 
     @Email
     @NotBlank
