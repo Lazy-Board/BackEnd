@@ -1,12 +1,12 @@
 package com.example.lazier.user.service;
 
+import com.example.lazier.user.config.JwtTokenProvider;
 import com.example.lazier.user.dto.TokenDto;
 import com.example.lazier.user.entity.LazierUser;
 import com.example.lazier.user.exception.NotFoundMemberException;
 import com.example.lazier.user.exception.NotMatchMemberException;
 import com.example.lazier.user.model.UserLoginInput;
 import com.example.lazier.user.repository.UserRepository;
-import com.example.lazier.user.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

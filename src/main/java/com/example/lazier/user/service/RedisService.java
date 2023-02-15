@@ -1,6 +1,6 @@
 package com.example.lazier.user.service;
 
-import com.example.lazier.user.security.JwtTokenProvider;
+import com.example.lazier.user.config.JwtTokenProvider;
 import java.time.Duration;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

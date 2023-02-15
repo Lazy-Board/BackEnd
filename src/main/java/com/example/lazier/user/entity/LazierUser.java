@@ -23,7 +23,7 @@ public class LazierUser implements UserDetails {
     private Long userId;
 
     @Column(nullable = false, length = 100, unique = true)
-    private String userEmail;
+    private String userEmail; //oauthId
 
     private String password;
 
@@ -56,26 +56,26 @@ public class LazierUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return String.valueOf(userId);
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

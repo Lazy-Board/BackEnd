@@ -1,4 +1,4 @@
-package com.example.lazier.user.security;
+package com.example.lazier.user.config;
 
 import com.example.lazier.user.dto.AccessTokenDto;
 import com.example.lazier.user.entity.RefreshToken;

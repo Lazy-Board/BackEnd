@@ -1,10 +1,10 @@
 package com.example.lazier.user.controller;
 
+import com.example.lazier.user.config.JwtService;
 import com.example.lazier.user.dto.AccessTokenDto;
 import com.example.lazier.user.dto.TokenDto;
 import com.example.lazier.user.model.UserLoginInput;
 import com.example.lazier.user.model.UserSignupInput;
-import com.example.lazier.user.security.JwtService;
 import com.example.lazier.user.service.JoinService;
 import com.example.lazier.user.service.CreateTokenService;
 import com.example.lazier.user.service.RedisService;
