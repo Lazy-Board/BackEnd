@@ -5,10 +5,12 @@ import com.example.lazier.user.exception.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +24,17 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring()
+            .antMatchers(HttpMethod.GET, "/user/email-auth")
+            .antMatchers(HttpMethod.POST, "/user/signup")
+            .antMatchers(HttpMethod.POST, "/user/login")
+            .antMatchers(HttpMethod.POST, "/user/find-password")
+            .antMatchers(HttpMethod.POST, "/user/reissue")
+            .antMatchers("/h2-console/**");
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
@@ -45,7 +58,7 @@ public class SecurityConfig {
                         "/user/email-auth",
                         "/user/find-password",
                         "/user/reissue",
-                        "/h2-condole/***").permitAll()
+                        "/h2-console").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

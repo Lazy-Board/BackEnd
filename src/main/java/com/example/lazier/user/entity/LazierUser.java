@@ -5,15 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,23 +25,19 @@ public class LazierUser implements UserDetails {
     @Column(nullable = false, length = 100, unique = true)
     private String userEmail;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     private String userName;
 
-    @Column(nullable = false)
     private String nickName;
 
-    @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
     private String userStatus;
+
+    private boolean socialStatus;
 
     //이메일 인증
     private String emailAuthKey;
@@ -57,40 +49,33 @@ public class LazierUser implements UserDetails {
     private boolean resetPasswordKeyAuthYn;
     private LocalDateTime resetPasswordLimitDt; //인증키 유효기간
 
-    @Column
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "LazierRoles", joinColumns = @JoinColumn(name = "userId"))
-    private List<String> roles = new ArrayList<>();
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        return null;
     }
 
     @Override
     public String getUsername() {
-        return String.valueOf(userId);
+        return null;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return false;
     }
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return false;
     }
 }

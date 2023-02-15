@@ -65,12 +65,7 @@ public class JwtTokenProvider {
     //token
     public TokenDto createAccessToken(Authentication authentication) {
 
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-
         Claims claims = Jwts.claims().setSubject(authentication.getName()); //user_id
-        claims.put("roles", authorities);
         Date now = new Date();
 
         //Access Token
@@ -120,10 +115,9 @@ public class JwtTokenProvider {
 
 
     //refresh token
-    public String recreationAccessToken(String userId, Object roles) {
+    public String recreationAccessToken(String userId) {
 
         Claims claims = Jwts.claims().setSubject(userId);
-        claims.put("roles", roles);
         Date now = new Date();
 
         return Jwts.builder() //new access Token
@@ -148,7 +142,7 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(refreshToken);
             if (!claims.getBody().getExpiration().before(new Date())) {
-                return recreationAccessToken(claims.getBody().getSubject(), claims.getBody().get("roles"));
+                return recreationAccessToken(claims.getBody().getSubject());
             }
         } catch (ExpiredJwtException e) { //유효한 것도 처리해야됨
             log.warn("만료된 refreshToken 입니다.");

@@ -37,7 +37,6 @@ public class JoinService {
                 .userName(request.getUserName())
                 .nickName(request.getNickName())
                 .phoneNumber(request.getPhoneNumber())
-                .roles(Collections.singletonList(UserRole.USER.getUserRole()))
 
                 .createdAt(LocalDateTime.now())
                 .userStatus(UserStatus.STATUS_READY.toString())
