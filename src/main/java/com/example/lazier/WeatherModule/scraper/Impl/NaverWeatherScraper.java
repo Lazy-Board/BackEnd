@@ -3,7 +3,6 @@ package com.example.lazier.WeatherModule.scraper.Impl;
 import com.example.lazier.WeatherModule.dto.WeatherDto;
 import com.example.lazier.WeatherModule.exception.AddressNotFoundException;
 import com.example.lazier.WeatherModule.persist.entity.UserWeather;
-import com.example.lazier.WeatherModule.persist.repository.UserWeatherRepository;
 import com.example.lazier.WeatherModule.scraper.Scraper;
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component;
 public class NaverWeatherScraper implements Scraper {
 
     private static final String STATISTICS_URL = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=%s%s%s";
-    private final UserWeatherRepository userWeatherRepository;
 
     @Override
     public WeatherDto scrap(UserWeather userWeather) {
