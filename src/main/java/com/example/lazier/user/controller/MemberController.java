@@ -1,12 +1,13 @@
 package com.example.lazier.user.controller;
 
-import com.example.lazier.user.config.JwtService;
-import com.example.lazier.user.dto.AccessTokenDto;
+import com.example.lazier.user.entity.LazierUser;
+import com.example.lazier.user.service.JwtService;
 import com.example.lazier.user.dto.TokenDto;
 import com.example.lazier.user.model.UserLoginInput;
 import com.example.lazier.user.model.UserSignupInput;
 import com.example.lazier.user.service.JoinService;
 import com.example.lazier.user.service.CreateTokenService;
+import com.example.lazier.user.service.OAuthService;
 import com.example.lazier.user.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,10 +24,11 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final JoinService joinService;
     private final CreateTokenService createTokenService;
+    private final JoinService joinService;
     private final JwtService jwtService;
     private final RedisService redisService;
+    private final OAuthService oAuthService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> join(@RequestBody @Valid UserSignupInput request) {
@@ -44,11 +46,18 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@RequestBody @Valid UserLoginInput userLogin) {
 
-        TokenDto tokenDTO = createTokenService.createAccessToken(userLogin);
-        redisService.setValues(tokenDTO.getRefreshToken());
+        TokenDto tokenDto = createTokenService.createAccessToken(userLogin);
+        redisService.setValues(tokenDto.getRefreshToken());
 
-        return ResponseEntity.ok(tokenDTO);
+        return ResponseEntity.ok(tokenDto);
     }
+
+    @PostMapping("/login-{provider}")
+    public ResponseEntity<?> loginGoogle(@PathVariable String provider, @RequestParam String code) {
+        LazierUser lazierUser = oAuthService.getUser(provider, code);
+        return ResponseEntity.ok(oAuthService.loginResult(lazierUser));
+    }
+
 
     @PostMapping("/logout")
     public ResponseEntity logout(HttpServletRequest request) {
@@ -65,8 +74,7 @@ public class MemberController {
 
     @PostMapping("/reissue")
     public ResponseEntity<?> validateRefreshToken(HttpServletRequest request) { //RefreshToken 헤더로 "Bearer " + 토큰
-        AccessTokenDto accessTokenDTO = jwtService.validateRefreshToken(request);
 
-        return new ResponseEntity<>(accessTokenDTO, HttpStatus.OK);
+        return new ResponseEntity<>(jwtService.validateRefreshToken(request), HttpStatus.OK);
     }
 }

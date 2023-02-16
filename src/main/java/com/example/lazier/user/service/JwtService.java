@@ -1,5 +1,6 @@
-package com.example.lazier.user.config;
+package com.example.lazier.user.service;
 
+import com.example.lazier.user.config.JwtTokenProvider;
 import com.example.lazier.user.dto.AccessTokenDto;
 import com.example.lazier.user.entity.RefreshToken;
 import com.example.lazier.user.exception.InvalidTokenException;

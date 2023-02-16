@@ -23,13 +23,15 @@ public class LazierUser implements UserDetails {
     private Long userId;
 
     @Column(nullable = false, length = 100, unique = true)
-    private String userEmail; //oauthId
+    private String userEmail; //oauth
+
+    private String nickname;
+
+    private String userName; //oauth
+
+    private String oauthId; //oauth
 
     private String password;
-
-    private String userName;
-
-    private String nickName;
 
     private String phoneNumber;
 
@@ -37,7 +39,9 @@ public class LazierUser implements UserDetails {
 
     private String userStatus;
 
-    private boolean socialStatus;
+    private String socialType;
+
+    private String dataStatus; //수정
 
     //이메일 인증
     private String emailAuthKey;

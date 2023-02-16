@@ -41,7 +41,7 @@ public class CreateTokenService {
 		Authentication authentication =
 			authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-		TokenDto tokenDTO = jwtTokenProvider.createAccessToken(authentication);
+		TokenDto tokenDTO = jwtTokenProvider.createAccessToken(authentication.getName());
 
 		return tokenDTO;
 	}

@@ -33,7 +33,6 @@ public class JoinService {
                 .userEmail(request.getUserEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .userName(request.getUserName())
-                .nickName(request.getNickName())
                 .phoneNumber(request.getPhoneNumber())
 
                 .createdAt(LocalDateTime.now())

@@ -66,9 +66,9 @@ public class JwtTokenProvider {
     }
 
     //token
-    public TokenDto createAccessToken(Authentication authentication) {
+    public TokenDto createAccessToken(String userId) {
 
-        Claims claims = Jwts.claims().setSubject(authentication.getName()); //user_id
+        Claims claims = Jwts.claims().setSubject(userId); //user_id
         Date now = new Date();
 
         //Access Token

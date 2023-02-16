@@ -2,6 +2,7 @@ package com.example.lazier.user.config;
 
 
 import com.example.lazier.user.exception.CustomAuthenticationEntryPoint;
+import com.example.lazier.user.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +25,7 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final OAuthService oAuth2Service;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -66,7 +68,12 @@ public class SecurityConfig {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login()
+                .loginPage("/user/login")
+                .failureUrl("/user/login")
+                .userInfoEndpoint()
+                .userService(oAuth2Service);
         return http.build();
     }
 }

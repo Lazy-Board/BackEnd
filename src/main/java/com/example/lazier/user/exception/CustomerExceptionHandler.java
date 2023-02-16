@@ -53,4 +53,9 @@ public class CustomerExceptionHandler {
         return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.UNAUTHORIZED));
     }
 
+    @ExceptionHandler(InvalidAccessException.class)
+    public ResponseEntity<ErrorMessage> invalidAccessException(InvalidAccessException exception) {
+
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.UNAUTHORIZED));
+    }
 }
