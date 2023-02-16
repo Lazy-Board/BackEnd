@@ -15,6 +15,7 @@ public class QuotesExceptionHandler {
 
     @ExceptionHandler(WrongIdNumberException.class)
     public ResponseEntity<ErrorMessage> wrongIdNumberException(WrongIdNumberException exception) {
-        return ResponseEntity.internalServerError().body(ErrorMessage.of(exception, HttpStatus.INTERNAL_SERVER_ERROR));
+        return ResponseEntity.internalServerError()
+            .body(ErrorMessage.of(exception, HttpStatus.INTERNAL_SERVER_ERROR));
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public class ErrorMessage {
+
     private int code;
     private String errorName;
     private String message;
@@ -21,7 +22,7 @@ public class ErrorMessage {
         this.occurrenceTime = LocalDateTime.now();
     }
 
-    public static ErrorMessage of (Exception exception, HttpStatus status) {
+    public static ErrorMessage of(Exception exception, HttpStatus status) {
         return new ErrorMessage(exception, status);
     }
 }
