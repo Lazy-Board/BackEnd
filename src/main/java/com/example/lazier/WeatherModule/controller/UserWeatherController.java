@@ -11,19 +11,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/weather")
+@RequestMapping("/weather/user-info")
 public class UserWeatherController {
 
     private final UserWeatherService userWeatherService;
 
     @ApiOperation(value = "사용자 정보 (위치 정보) 를 저장 할 수 있는 api 입니다.")
-    @PostMapping("/user-info")
+    @PostMapping
     public ResponseEntity<?> addUserInfo(HttpServletRequest request, @RequestBody @Valid
     UserWeatherInput parameter) {
         userWeatherService.add(request, parameter);
@@ -32,13 +33,13 @@ public class UserWeatherController {
     }
 
     @ApiOperation(value = "사용자 정보 (위치 정보) 를 조회 할 수 있는 api 입니다.")
-    @GetMapping("/user-info")
+    @GetMapping
     public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
         return new ResponseEntity<>(userWeatherService.detail(request), HttpStatus.OK);
     }
 
     @ApiOperation(value = "사용자 정보 (위치 정보) 를 업데이트 할 수 있는 api 입니다.")
-    @PostMapping("/update")
+    @PutMapping
     public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
         @RequestBody @Valid UserWeatherInput parameter) {
         userWeatherService.update(request, parameter);
@@ -47,7 +48,7 @@ public class UserWeatherController {
     }
 
     @ApiOperation(value = "사용자 정보 (위치 정보) 를 삭제 할 수 있는 api 입니다.")
-    @DeleteMapping("/user-info")
+    @DeleteMapping
     public ResponseEntity<?> deleteUserInfo(HttpServletRequest request) {
         userWeatherService.delete(request);
 
