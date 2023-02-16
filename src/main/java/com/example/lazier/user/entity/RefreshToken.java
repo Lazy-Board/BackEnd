@@ -15,9 +15,7 @@ import javax.persistence.*;
 public class RefreshToken {
 
     @Id
-    @Column(nullable = false)
     private String refreshToken;
 
-    @Column(nullable = false)
     private String keyId;
 }

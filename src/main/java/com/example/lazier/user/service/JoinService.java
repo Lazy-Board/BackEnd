@@ -3,7 +3,6 @@ package com.example.lazier.user.service;
 import com.example.lazier.user.component.MailComponents;
 import com.example.lazier.user.dto.JoinDto;
 import com.example.lazier.user.entity.LazierUser;
-import com.example.lazier.user.enums.UserRole;
 import com.example.lazier.user.enums.UserStatus;
 import com.example.lazier.user.exception.FailedSignUpException;
 import com.example.lazier.user.model.UserSignupInput;
@@ -13,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.UUID;
 
 @Service
@@ -35,9 +33,7 @@ public class JoinService {
                 .userEmail(request.getUserEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .userName(request.getUserName())
-                .nickName(request.getNickName())
                 .phoneNumber(request.getPhoneNumber())
-                .roles(Collections.singletonList(UserRole.USER.getUserRole()))
 
                 .createdAt(LocalDateTime.now())
                 .userStatus(UserStatus.STATUS_READY.toString())

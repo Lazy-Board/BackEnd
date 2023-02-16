@@ -11,5 +11,6 @@ public interface UserRepository extends JpaRepository<LazierUser, Long> {
     Optional<LazierUser> findByEmailAuthKey(String uuid);
     Optional<LazierUser> findByUserEmail(String useEmail);
     Optional<LazierUser> findByUserId(Long username);
+    Optional<LazierUser> findByOauthId(String oauthId);
 }
 

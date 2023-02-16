@@ -5,15 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,25 +23,25 @@ public class LazierUser implements UserDetails {
     private Long userId;
 
     @Column(nullable = false, length = 100, unique = true)
-    private String userEmail;
+    private String userEmail; //oauth
 
-    @Column(nullable = false)
+    private String nickname;
+
+    private String userName; //oauth
+
+    private String oauthId; //oauth
+
     private String password;
 
-    @Column(nullable = false)
-    private String userName;
-
-    @Column(nullable = false)
-    private String nickName;
-
-    @Column(nullable = false)
     private String phoneNumber;
 
-    @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
     private String userStatus;
+
+    private String socialType;
+
+    private String dataStatus; //수정
 
     //이메일 인증
     private String emailAuthKey;
@@ -57,16 +53,9 @@ public class LazierUser implements UserDetails {
     private boolean resetPasswordKeyAuthYn;
     private LocalDateTime resetPasswordLimitDt; //인증키 유효기간
 
-    @Column
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "LazierRoles", joinColumns = @JoinColumn(name = "userId"))
-    private List<String> roles = new ArrayList<>();
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        return null;
     }
 
     @Override

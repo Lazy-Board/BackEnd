@@ -1,23 +1,26 @@
-package com.example.lazier.user.security;
+package com.example.lazier.user.config;
 
 import com.example.lazier.user.dto.TokenDto;
 import com.example.lazier.user.entity.RefreshToken;
 import com.example.lazier.user.service.LoginService;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
+import java.util.Base64;
+import java.util.Date;
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
-import java.util.stream.Collectors;
 import org.springframework.util.ObjectUtils;
 
 @RequiredArgsConstructor
@@ -51,6 +54,11 @@ public class JwtTokenProvider {
     }
 
     public String getUserPk(String token) {
+
+        if (token.isEmpty()) {
+            throw new JwtException("유효하지 않는 토큰입니다.");
+        }
+
         String username =  Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject(); //username
         log.info("getUserPk: " + username);
 
@@ -63,14 +71,9 @@ public class JwtTokenProvider {
     }
 
     //token
-    public TokenDto createAccessToken(Authentication authentication) {
+    public TokenDto createAccessToken(String userId) {
 
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-
-        Claims claims = Jwts.claims().setSubject(authentication.getName()); //user_id
-        claims.put("roles", authorities);
+        Claims claims = Jwts.claims().setSubject(userId); //user_id
         Date now = new Date();
 
         //Access Token
@@ -115,15 +118,14 @@ public class JwtTokenProvider {
         } catch (IllegalArgumentException e) {
             log.warn("JWT 토큰이 잘못되었습니다.");
         }
-        throw new JwtException("유효하지 않는 토큰입니다.");
+        return false;
     }
 
 
     //refresh token
-    public String recreationAccessToken(String userId, Object roles) {
+    public String recreationAccessToken(String userId) {
 
         Claims claims = Jwts.claims().setSubject(userId);
-        claims.put("roles", roles);
         Date now = new Date();
 
         return Jwts.builder() //new access Token
@@ -148,7 +150,7 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(refreshToken);
             if (!claims.getBody().getExpiration().before(new Date())) {
-                return recreationAccessToken(claims.getBody().getSubject(), claims.getBody().get("roles"));
+                return recreationAccessToken(claims.getBody().getSubject());
             }
         } catch (ExpiredJwtException e) { //유효한 것도 처리해야됨
             log.warn("만료된 refreshToken 입니다.");
