@@ -1,6 +1,7 @@
 package com.example.lazier.QuotesModule.service.Impl;
 
 import com.example.lazier.QuotesModule.dto.QuotesDto;
+import com.example.lazier.QuotesModule.exception.WrongIdNumberException;
 import com.example.lazier.QuotesModule.persist.entity.Quotes;
 import com.example.lazier.QuotesModule.persist.repository.QuotesRepository;
 import com.example.lazier.QuotesModule.service.QuotesService;
@@ -19,9 +20,8 @@ public class QuotesServiceImpl implements QuotesService {
     public QuotesDto get() {
         // DB에 10개만 저장 예정이여서 10개로 설정하였습니다.
         long randomNumber = (long) (Math.random() * 10 + 1);
-        // custom exception handler로 예외 처리 할 예정입니다 :)
         Quotes quotes = quotesRepository.findById(randomNumber)
-            .orElseThrow(() -> new RuntimeException("잘못된 아이디 정보 입니다."));
+            .orElseThrow(() -> new WrongIdNumberException("잘못된 아이디 정보 입니다."));
         return QuotesDto.of(quotes);
     }
 }
