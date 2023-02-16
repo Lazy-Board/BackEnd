@@ -2,6 +2,7 @@ package com.example.lazier.WeatherModule.controller;
 
 import com.example.lazier.WeatherModule.model.UserWeatherInput;
 import com.example.lazier.WeatherModule.service.UserWeatherService;
+import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,7 @@ public class UserWeatherController {
 
     private final UserWeatherService userWeatherService;
 
+    @ApiOperation(value = "사용자 정보 (위치 정보) 를 저장 할 수 있는 api 입니다.")
     @PostMapping("/user-info")
     public ResponseEntity<?> addUserInfo(HttpServletRequest request, @RequestBody @Valid
     UserWeatherInput parameter) {
@@ -29,11 +31,13 @@ public class UserWeatherController {
         return ResponseEntity.status(HttpStatus.CREATED).body("저장되었습니다.");
     }
 
+    @ApiOperation(value = "사용자 정보 (위치 정보) 를 조회 할 수 있는 api 입니다.")
     @GetMapping("/user-info")
     public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
         return new ResponseEntity<>(userWeatherService.detail(request), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "사용자 정보 (위치 정보) 를 업데이트 할 수 있는 api 입니다.")
     @PostMapping("/update")
     public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
         @RequestBody @Valid UserWeatherInput parameter) {
@@ -42,6 +46,7 @@ public class UserWeatherController {
         return ResponseEntity.ok().body("업데이트 되었습니다.");
     }
 
+    @ApiOperation(value = "사용자 정보 (위치 정보) 를 삭제 할 수 있는 api 입니다.")
     @DeleteMapping("/user-info")
     public ResponseEntity<?> deleteUserInfo(HttpServletRequest request) {
         userWeatherService.delete(request);
