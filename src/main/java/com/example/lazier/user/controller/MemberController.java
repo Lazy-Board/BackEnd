@@ -52,7 +52,7 @@ public class MemberController {
         return ResponseEntity.ok(tokenDto);
     }
 
-    @PostMapping("/login-{provider}")
+    @PostMapping ("/login/oauth2/code/{provider}")
     public ResponseEntity<?> loginGoogle(@PathVariable String provider, @RequestParam String code) {
         LazierUser lazierUser = oAuthService.getUser(provider, code);
         return ResponseEntity.ok(oAuthService.loginResult(lazierUser));

@@ -54,6 +54,11 @@ public class JwtTokenProvider {
     }
 
     public String getUserPk(String token) {
+
+        if (token.isEmpty()) {
+            throw new JwtException("유효하지 않는 토큰입니다.");
+        }
+
         String username =  Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject(); //username
         log.info("getUserPk: " + username);
 
@@ -113,7 +118,7 @@ public class JwtTokenProvider {
         } catch (IllegalArgumentException e) {
             log.warn("JWT 토큰이 잘못되었습니다.");
         }
-        throw new JwtException("유효하지 않는 토큰입니다.");
+        return false;
     }
 
 

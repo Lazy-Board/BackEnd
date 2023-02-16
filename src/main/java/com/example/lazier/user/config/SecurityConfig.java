@@ -25,16 +25,18 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final OAuthService oAuth2Service;
+    private final OAuthService oAuthService;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
             .antMatchers(HttpMethod.GET, "/user/email-auth")
+            .antMatchers(HttpMethod.POST, "/user/find-password")
             .antMatchers(HttpMethod.POST, "/user/signup")
             .antMatchers(HttpMethod.POST, "/user/login")
-            .antMatchers(HttpMethod.POST, "/user/find-password")
+            .antMatchers(HttpMethod.GET, "/user/login/**")
             .antMatchers(HttpMethod.POST, "/user/reissue")
+            .antMatchers(HttpMethod.GET, "/login")
             .antMatchers("/h2-console/**");
     }
 
@@ -50,8 +52,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().and().
+            csrf().disable()
                 .formLogin().disable()
+            .httpBasic().disable()
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
@@ -60,7 +64,8 @@ public class SecurityConfig {
                         "/user/email-auth",
                         "/user/find-password",
                         "/user/reissue",
-                        "/h2-console").permitAll()
+                        "/h2-console",
+                    "/user/login/**").permitAll() //테스트
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
@@ -68,12 +73,7 @@ public class SecurityConfig {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login()
-                .loginPage("/user/login")
-                .failureUrl("/user/login")
-                .userInfoEndpoint()
-                .userService(oAuth2Service);
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
