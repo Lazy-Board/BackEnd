@@ -66,7 +66,7 @@ public class ScraperScheduler {
   @Scheduled(cron = "${scheduler.scrap.youtube}")
   @Transactional
   public void youtubeDbUpdater() {
-    log.info("youtube delete scheduler has started" );
+    log.info("youtube delete scheduler has started");
 
     List<YoutubeEntity> youtubeEntities =
         this.youtubeRepository.findAllByCreatedAtBefore(LocalDateTime.now().minusDays(7));
