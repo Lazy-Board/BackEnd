@@ -103,10 +103,20 @@ public class YoutubeScraper {
         String dateString = baseObject.getAsJsonObject("publishedTimeText").get("simpleText")
             .getAsString();               //*일 전   //*주 전
         String beforeText = dateString.substring(0, dateString.indexOf(" ")).trim();
+        System.out.println(beforeText);
         String beforeDayOrWeek = beforeText.substring(beforeText.length() - 1);
-        int beforeNum = Integer.parseInt(beforeText.substring(0, beforeText.length() - 1));
-        if (beforeDayOrWeek.equals("일"))youtube.setCreatedAt(LocalDateTime.now().minusDays(beforeNum));
-        else youtube.setCreatedAt(LocalDateTime.now().minusWeeks(beforeNum));
+        int beforeNum ;
+        if (beforeDayOrWeek.equals("간")) {
+          beforeNum = Integer.parseInt(beforeText.substring(0, beforeText.length() - 2));
+        } else beforeNum = Integer.parseInt(beforeText.substring(0, beforeText.length() - 1));
+
+        if (beforeDayOrWeek.equals("일")) {
+          youtube.setCreatedAt(LocalDateTime.now().minusDays(beforeNum));
+        } else if (beforeDayOrWeek.equals("간")) {
+          youtube.setCreatedAt(LocalDateTime.now().minusHours(beforeNum));
+        } else {
+          youtube.setCreatedAt(LocalDateTime.now().minusWeeks(beforeNum));
+        }
 
         youtube.setLength(
             baseObject.getAsJsonObject("lengthText").get("simpleText").getAsString());
