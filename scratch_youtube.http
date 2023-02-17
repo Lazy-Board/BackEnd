@@ -1,0 +1,12 @@
+### DB초기화
+GET http://localhost:8080/youtube/init
+Content-Type: application/json
+
+### 유튜브 정보 조회
+GET http://localhost:8080/youtube
+Content-Type: application/json
+
+### 오래된 DB 삭제
+DELETE http://localhost:8080/youtube/dbupdate
+Content-Type: application/json
+
