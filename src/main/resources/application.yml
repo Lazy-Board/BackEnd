@@ -16,7 +16,6 @@ spring:
       ddl-auto: update
     show-sql: true
 
-
 scheduler:
   scrap:
     youtube: "0 0/30 * * * *"
