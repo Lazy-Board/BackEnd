@@ -5,10 +5,10 @@ spring:
       path: /h2-console
 
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:company;DB_CLOSE_DELAY=-1
-    username: root
-    password:
+    url: jdbc:mariadb://localhost:3310/team
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: team_user
+    password: 1234
 
   jpa:
     generate-ddl: true
@@ -20,3 +20,4 @@ spring:
 scheduler:
   scrap:
     youtube: "0 0/30 * * * *"
+    weather: "0 0 0 * * *"
