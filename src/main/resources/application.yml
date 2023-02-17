@@ -20,3 +20,10 @@ scheduler:
   scrap:
     youtube: "0 0/30 * * * *"
     weather: "0 0 0 * * *"
+    properties:
+      hibernate:
+        format_sql: true
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
