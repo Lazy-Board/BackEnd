@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = "1.8"
+sourceCompatibility = '1.8'
 
 configurations {
 	compileOnly {
@@ -26,18 +26,30 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	compileOnly 'com.github.ulisesbocchio:jasypt-spring-boot:3.0.4'
+
+
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	implementation 'org.projectlombok:lombok:1.18.22'
 	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-
-
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
-	compileOnly 'com.github.ulisesbocchio:jasypt-spring-boot:3.0.4'
+	implementation 'org.apache.commons:commons-collections4:4.3'
+
+	implementation 'org.jsoup:jsoup:1.15.3'
+	implementation 'com.google.code.gson:gson:2.10'
+
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'org.apache.commons:commons-collections4:4.3'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
 
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
@@ -46,6 +58,10 @@ dependencies {
 
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
+
+
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client:2.7.4'
+
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
