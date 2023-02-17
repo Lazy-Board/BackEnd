@@ -1,64 +1,71 @@
 package com.example.lazier.exchangeModule.scraper;
 
+import com.example.lazier.exchangeModule.dto.ExchangeDto;
+import com.example.lazier.exchangeModule.persist.repository.ExchangeRepository;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ExchangeScraper implements Scraper {
+@AllArgsConstructor
+public class ExchangeScraper {
+    private static String EXCHANGE_URL = "https://www.kita.net/cmmrcInfo/ehgtGnrlzInfo/rltmEhgt.do";
 
-    @Override
-    public String scrap() {
+    public List<ExchangeDto> scrap() {
 
-        // 한국무역협회 실시간 환율정보에서 데이터 받아오기
-        StringBuffer response = new StringBuffer();
+        List<ExchangeDto> exchangeDtoList = new ArrayList<>();
 
         try {
-            String connUrl = "https://www.kita.net/cmmrcInfo/ehgtGnrlzInfo/rltmEhgt.do";
-            Document document = Jsoup.connect(connUrl).get();
+            Document document = Jsoup.connect(EXCHANGE_URL).get();
+
             for (int i = 0; i < 10; i++) {
-                Elements elem = document.select(
+                Elements tbody = document.select(
                     "#contents > div.boardArea > div.tableSt.st4.alc > table > tbody > "
                         + "tr:nth-child(" + (i + 1) + ")");
 
-                Elements elem2 = document.select(
+                Elements div = document.select(
                     "#contents > div.boardArea > div.titArea2 > div.exInfo");
 
-                String[] str = elem.text().split("\n");
+                String[] str = tbody.text().split("\n");
                 String[] exInfo = str[0].split(" ");
 
-                String[] str2 = elem2.text().split("\n");
+                String[] str2 = div.text().split("\n");
                 String[] exInfo2 = str2[0].split(" ");
 
-                String currencyName = exInfo[0] + " " + exInfo[1];                  // 통화명
-                String tradingStandardRate = exInfo[2];                             // 등락율
-                String comparedToThePreviousDay = exInfo[3] + " " + exInfo[4];      // 전일대비
-                String fluctuationRate = exInfo[5];                                 // 등락율
-                String buyCash = exInfo[6];                                         // 현재 살 때
-                String sellCash = exInfo[7];
-                String sendMoney = exInfo[8];
-                String receiveMoney = exInfo[9];
-
-                String updateAt = exInfo2[0];
-                String round = "KB국민은행 " + exInfo2[1];
-
-                Thread.sleep(200);
-
-                response.append(currencyName + " " + tradingStandardRate + " "
-                    + comparedToThePreviousDay + " " + fluctuationRate + " " + buyCash +
-                    " " + sellCash + " " + sendMoney + " " + receiveMoney +
-                    " " + updateAt +  " " + round + "\n");
+                ExchangeDto exchangeDto = ExchangeDto.builder()
+                                                .currencyName(exInfo[0])
+                                                .countryName(exInfo[1])
+                                                .tradingStandardRate(exInfo[2])
+                                                .comparedPreviousDay(exInfo[3] + " " + exInfo[4])
+                                                .fluctuationRate(exInfo[5])
+                                                .buyCash(exInfo[6])
+                                                .sellCash(exInfo[7])
+                                                .sendMoney(exInfo[8])
+                                                .receiveMoney(exInfo[9])
+                                                .updateAt(updatedDateText(LocalDateTime.now()))
+                                                .round(exInfo2[1])
+                                                .build();
+                exchangeDtoList.add(exchangeDto);
             }
 
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
 
-        return response.toString();
+        return exchangeDtoList;
+    }
+
+    public String updatedDateText(LocalDateTime now) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        return now != null ? now.format(formatter) : "";
     }
 
 }

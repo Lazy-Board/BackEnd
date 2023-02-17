@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExchangeDto {
+public class UserAllExchangeDto {
 
     private String currencyName;            // 통화명
     private String countryName;             // 국가명
