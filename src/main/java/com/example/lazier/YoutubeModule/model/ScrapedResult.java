@@ -10,10 +10,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class ScrapedResult {
-    private List<Youtube> youtubeList;
 
-    public ScrapedResult() {
-        this.youtubeList = new ArrayList<>();
-    }
+  private List<Youtube> youtubeList;
+
+  public ScrapedResult() {
+    this.youtubeList = new ArrayList<>();
+  }
 
 }
