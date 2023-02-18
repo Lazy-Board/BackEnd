@@ -15,15 +15,23 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+    properties:
+      hibernate:
+        format_sql: true
 
 scheduler:
   scrap:
     youtube: "0 0/30 * * * *"
     weather: "0 0 0 * * *"
-    properties:
-      hibernate:
-        format_sql: true
 
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+
+naver:
+  geocoding:
+    key: ${NAVER_API_KEY}
+    Id: ${NAVER_CLIENT_ID}
+    url: ${NAVER_API_URL}
+
