@@ -2,16 +2,14 @@ package com.example.lazier.dto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TokenDto {
+@Getter
+public class UniqueCodeDto {
 
-    private String grantType;
-    private String accessToken;
-    private String refreshToken;
+    private String uuid;
 }

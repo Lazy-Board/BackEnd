@@ -1,6 +1,6 @@
 package com.example.lazier.config.user;
 
-import com.example.lazier.dto.user.TokenDto;
+import com.example.lazier.dto.user.TokenResponseDto;
 import com.example.lazier.persist.entity.user.RefreshToken;
 import com.example.lazier.service.user.LoginService;
 import io.jsonwebtoken.Claims;
@@ -71,7 +71,7 @@ public class JwtTokenProvider {
     }
 
     //token
-    public TokenDto createAccessToken(String userId) {
+    public TokenResponseDto createAccessToken(String userId) {
 
         Claims claims = Jwts.claims().setSubject(userId); //user_id
         Date now = new Date();
@@ -92,7 +92,7 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
 
-        return TokenDto.builder()
+        return TokenResponseDto.builder()
                 .accessToken(accessToken)
                 .grantType(BEARER_TYPE)
                 .refreshToken(refreshToken)
@@ -120,7 +120,6 @@ public class JwtTokenProvider {
         }
         return false;
     }
-
 
     //refresh token
     public String recreationAccessToken(String userId) {
@@ -154,8 +153,9 @@ public class JwtTokenProvider {
             }
         } catch (ExpiredJwtException e) { //유효한 것도 처리해야됨
             log.warn("만료된 refreshToken 입니다.");
+            throw new JwtException("Refresh 토큰이 만료되었습니다. 로그인이 필요합니다.");
         }
-        throw new JwtException("Refresh 토큰이 만료되었습니다. 로그인이 필요합니다.");
+        return null;
     }
 
 

@@ -1,11 +1,11 @@
 package com.example.lazier.service.user;
 
 import com.example.lazier.component.MailComponents;
-import com.example.lazier.dto.user.JoinDto;
+import com.example.lazier.dto.user.UniqueCodeDto;
+import com.example.lazier.dto.user.UserInfo;
 import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.type.UserStatus;
 import com.example.lazier.exception.user.FailedSignUpException;
-import com.example.lazier.dto.user.UserSignupInput;
 import com.example.lazier.persist.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,18 +22,18 @@ public class JoinService {
     private final MailComponents mailComponents;
     private final PasswordEncoder passwordEncoder;
 
-    public JoinDto signUp(UserSignupInput request) {
+    public UniqueCodeDto signUp(UserInfo userInfo) {
 
-        boolean existsEmail = userRepository.existsByUserEmail(request.getUserEmail());
+        boolean existsEmail = userRepository.existsByUserEmail(userInfo.getUserEmail());
         if (existsEmail) { throw new FailedSignUpException("이미 가입된 이메일입니다."); }
 
         String uuid = UUID.randomUUID().toString();
 
         LazierUser lazierUser = LazierUser.builder()
-                .userEmail(request.getUserEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .userName(request.getUserName())
-                .phoneNumber(request.getPhoneNumber())
+                .userEmail(userInfo.getUserEmail())
+                .password(passwordEncoder.encode(userInfo.getPassword()))
+                .userName(userInfo.getUserName())
+                .phoneNumber(userInfo.getPhoneNumber())
 
                 .createdAt(LocalDateTime.now())
                 .userStatus(UserStatus.STATUS_READY.toString())
@@ -43,7 +43,7 @@ public class JoinService {
 
         userRepository.save(lazierUser);
 
-        String email = request.getUserEmail();
+        String email = userInfo.getUserEmail();
         String title = "Lazier 가입을 축하드립니다.";
         String contents = "아래 링크를 클릭하여 가입을 완료하세요." +
                 "<p>" +
@@ -53,7 +53,7 @@ public class JoinService {
         boolean sendEmail = mailComponents.sendEmail(email, title, contents);
         if (!sendEmail) { throw new FailedSignUpException("메일 전송에 실패하였습니다."); }
 
-        return JoinDto.builder()
+        return UniqueCodeDto.builder()
                 .uuid(uuid)
                 .build();
     }

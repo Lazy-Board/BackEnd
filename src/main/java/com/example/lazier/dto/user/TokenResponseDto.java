@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccessTokenDto {
+public class TokenResponseDto {
 
-    private String accessToken;
     private String grantType;
-
+    private String accessToken;
+    private String refreshToken;
 }

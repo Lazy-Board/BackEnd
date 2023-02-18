@@ -16,7 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JwtFilter extends OncePerRequestFilter { //login
+public class JwtFilter extends OncePerRequestFilter {
 
 	private final JwtTokenProvider jwtTokenProvider;
 

@@ -1,9 +1,6 @@
 package com.example.lazier.config.user;
 
-
-import com.example.lazier.config.user.JwtFilter;
 import com.example.lazier.exception.user.CustomAuthenticationEntryPoint;
-import com.example.lazier.service.user.OAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +23,6 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final OAuthService oAuthService;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {

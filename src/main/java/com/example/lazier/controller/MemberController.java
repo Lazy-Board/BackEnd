@@ -1,12 +1,15 @@
 package com.example.lazier.controller;
 
+import com.example.lazier.dto.user.FindPasswordRequestDto;
+import com.example.lazier.dto.user.UpdatePasswordRequestDto;
+import com.example.lazier.dto.user.UserInfo;
 import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.service.user.JwtService;
-import com.example.lazier.dto.user.TokenDto;
-import com.example.lazier.dto.user.UserLoginInput;
-import com.example.lazier.dto.user.UserSignupInput;
+import com.example.lazier.dto.user.TokenResponseDto;
+import com.example.lazier.dto.user.LoginRequestDto;
 import com.example.lazier.service.user.JoinService;
 import com.example.lazier.service.user.CreateTokenService;
+import com.example.lazier.service.user.MemberService;
 import com.example.lazier.service.user.OAuthService;
 import com.example.lazier.service.user.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -24,57 +27,88 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class MemberController {
 
-    private final CreateTokenService createTokenService;
-    private final JoinService joinService;
-    private final JwtService jwtService;
-    private final RedisService redisService;
-    private final OAuthService oAuthService;
+	private final CreateTokenService createTokenService;
+	private final JoinService joinService;
+	private final JwtService jwtService;
+	private final RedisService redisService;
+	private final OAuthService oAuthService;
+	private final MemberService memberService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> join(@RequestBody @Valid UserSignupInput request) {
+	@PostMapping("/signup")
+	public ResponseEntity<?> join(@RequestBody @Valid UserInfo userInfo) {
+		return new ResponseEntity<>(joinService.signUp(userInfo), HttpStatus.OK);
+	}
 
-        return new ResponseEntity<>(joinService.signUp(request), HttpStatus.OK);
-    }
+	@GetMapping("/email-auth")
+	public ResponseEntity<?> emailAuth(@RequestParam(value = "uuid") String uuid) {
+		joinService.emailAuth(uuid);
+		return ResponseEntity.ok().build();
+	}
 
-    @GetMapping("/email-auth")
-    public ResponseEntity<?> emailAuth(@RequestParam(value = "uuid") String uuid) {
-        joinService.emailAuth(uuid);
+	@PostMapping("/login")
+	public ResponseEntity<TokenResponseDto> login(@RequestBody @Valid LoginRequestDto userLogin) {
+		TokenResponseDto tokenDto = createTokenService.createAccessToken(userLogin);
+		redisService.setValues(tokenDto.getRefreshToken());
 
-        return ResponseEntity.ok().body("회원가입 완료");
-    }
+		return ResponseEntity.ok(tokenDto);
+	}
 
-    @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@RequestBody @Valid UserLoginInput userLogin) {
+	@PostMapping("/login/oauth2/code/{provider}")
+	public ResponseEntity<?> loginGoogle(@PathVariable String provider, @RequestParam String code) {
+		LazierUser lazierUser = oAuthService.getUser(provider, code); //테스트 후 수정
+		return ResponseEntity.ok(oAuthService.loginResult(lazierUser));
+	}
 
-        TokenDto tokenDto = createTokenService.createAccessToken(userLogin);
-        redisService.setValues(tokenDto.getRefreshToken());
+	@PostMapping("/logout")
+	public ResponseEntity logout(HttpServletRequest request) {
+		redisService.delValues(request);
+		return ResponseEntity.ok().build();
+	}
 
-        return ResponseEntity.ok(tokenDto);
-    }
+	@GetMapping("/test")
+	public String test(HttpServletRequest request) { //Authentication 헤더로 "Bearer " + 토큰
+		return request.getAttribute("userId").toString();
+	}
 
-    @PostMapping ("/login/oauth2/code/{provider}")
-    public ResponseEntity<?> loginGoogle(@PathVariable String provider, @RequestParam String code) {
-        LazierUser lazierUser = oAuthService.getUser(provider, code);
-        return ResponseEntity.ok(oAuthService.loginResult(lazierUser));
-    }
+	@PostMapping("/reissue")
+	public ResponseEntity<?> validateRefreshToken(
+		HttpServletRequest request) { //RefreshToken 헤더로 "Bearer " + 토큰
+		return new ResponseEntity<>(jwtService.validateRefreshToken(request), HttpStatus.OK);
+	}
 
+	@GetMapping("/search")
+	public ResponseEntity<?> search(HttpServletRequest request) {
+		return new ResponseEntity<>(memberService.showUserInfo(request), HttpStatus.OK);
+	}
 
-    @PostMapping("/logout")
-    public ResponseEntity logout(HttpServletRequest request) {
-        redisService.delValues(request);
+	@PutMapping("/update")
+	public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
+		@RequestBody @Valid UserInfo userInfo) {
 
-        return ResponseEntity.ok().body("로그아웃 완료");
-    }
+		memberService.updateUserInfo(request, userInfo);
+		return ResponseEntity.ok().build();
+	}
 
-    @GetMapping("/test")
-    public String test(HttpServletRequest request) { //Authentication 헤더로 "Bearer " + 토큰
+	@PutMapping("/updatePassword")
+	public ResponseEntity<?> updatePassword(HttpServletRequest request,
+		@RequestBody @Valid UpdatePasswordRequestDto passwordDto) {
 
-        return request.getAttribute("userId").toString();
-    }
+		memberService.updatePassword(request, passwordDto);
+		return ResponseEntity.ok().build();
+	}
 
-    @PostMapping("/reissue")
-    public ResponseEntity<?> validateRefreshToken(HttpServletRequest request) { //RefreshToken 헤더로 "Bearer " + 토큰
+	@PostMapping("/find/password")
+	public ResponseEntity<?> findPassword(HttpServletRequest request,
+		FindPasswordRequestDto passwordDto) {
 
-        return new ResponseEntity<>(jwtService.validateRefreshToken(request), HttpStatus.OK);
-    }
+		memberService.findPassword(request, passwordDto);
+		return ResponseEntity.ok().build(); //임시 비밀번호가 000.000 로 발급되었습니다.
+	}
+
+	@PostMapping("/withdrawal")
+	public ResponseEntity<?> withdrawal(HttpServletRequest request) {
+		memberService.withdrawal(request);
+		return ResponseEntity.ok().build();
+	}
+
 }

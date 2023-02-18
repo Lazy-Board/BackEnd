@@ -1,5 +1,6 @@
 package com.example.lazier.persist.entity.user;
 
+import com.example.lazier.dto.user.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,8 +26,6 @@ public class LazierUser implements UserDetails {
     @Column(nullable = false, length = 100, unique = true)
     private String userEmail; //oauth
 
-    private String nickname;
-
     private String userName; //oauth
 
     private String oauthId; //oauth
@@ -43,15 +42,17 @@ public class LazierUser implements UserDetails {
 
     private String dataStatus; //수정
 
-    //이메일 인증
     private String emailAuthKey;
     private boolean emailAuthYn;
     private LocalDateTime emailAuthDt;
 
-    //비밀번호 찾기
-    private String resetPasswordKey;
-    private boolean resetPasswordKeyAuthYn;
-    private LocalDateTime resetPasswordLimitDt; //인증키 유효기간
+    public void updateUserInfo(UserInfo userInfo) {
+        if (!userInfo.getSocialType().toLowerCase().trim().equals("google")) {
+            this.userEmail = userInfo.getUserEmail();
+        }
+        this.userName = userInfo.getUserName();
+        this.phoneNumber = userInfo.getPhoneNumber();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -82,4 +83,5 @@ public class LazierUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

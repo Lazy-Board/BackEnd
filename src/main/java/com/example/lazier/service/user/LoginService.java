@@ -1,10 +1,10 @@
 package com.example.lazier.service.user;
 
+import com.example.lazier.exception.user.NotFoundMemberException;
 import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.repository.UserRepository;
 import com.example.lazier.type.UserStatus;
 import com.example.lazier.exception.user.FailedLoginException;
-import com.example.lazier.exception.user.NotFoundMemberException;
-import com.example.lazier.persist.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

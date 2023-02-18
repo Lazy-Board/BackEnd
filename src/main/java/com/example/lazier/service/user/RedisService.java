@@ -21,7 +21,7 @@ public class RedisService {
 		ValueOperations<String, String> values = redisTemplate.opsForValue(); //key - value 설정
 		String userId = jwtTokenProvider.getUserPk(token);
 
-		values.set(userId, token, Duration.ofMinutes(6));  //refresh token 기한 6분, 6분 뒤 메모리에서 삭제 (test)
+		values.set(userId, token, Duration.ofMinutes(6));  //refresh token 기한 6분 뒤 메모리에서 삭제 (test)
 	}
 
 	public String getValues(String userId){
