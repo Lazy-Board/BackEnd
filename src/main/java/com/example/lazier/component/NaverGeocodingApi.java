@@ -37,6 +37,11 @@ public class NaverGeocodingApi {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(data);
             JSONArray jsonArray = (JSONArray) jsonObject.get("addresses");
 
+            if (jsonArray.isEmpty()) {
+                throw new WrongAddressFormException("주소가 잘못되었습니다.");
+
+            }
+
             for (Object o : jsonArray) {
                 JSONObject object = (JSONObject) o;
                 if (object.get("x") != null && object.get("y") != null) {
@@ -72,9 +77,7 @@ public class NaverGeocodingApi {
             while ((line = bf.readLine()) != null) {
                 sb.append(line);
             }
-            if (sb.length() == 0) {
-                throw new WrongAddressFormException("주소가 잘못되었습니다.");
-            }
+
             bf.close();
             input.close();
             connection.disconnect();

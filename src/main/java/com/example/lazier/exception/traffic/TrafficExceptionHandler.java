@@ -5,7 +5,6 @@ import com.example.lazier.exception.ErrorMessage;
 import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.exception.WrongAddressFormException;
-import com.example.lazier.exception.WrongGeoCodeException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +29,4 @@ public class TrafficExceptionHandler {
     public ResponseEntity<ErrorMessage> wrongAddressFormException(WrongAddressFormException exception) {
         return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
-
-    @ExceptionHandler(WrongGeoCodeException.class)
-    public ResponseEntity<ErrorMessage> wrongGeoCodeException(WrongGeoCodeException exception) {
-        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
-    }
-
 }
