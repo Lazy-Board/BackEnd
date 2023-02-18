@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -39,6 +40,13 @@ public class TrafficController {
         trafficService.update(request, parameter);
 
         return ResponseEntity.ok().body("업데이트 되었습니다.");
+    }
+
+    @DeleteMapping("/user")
+    public ResponseEntity<?> deleteUserInfo(HttpServletRequest request) {
+        trafficService.delete(request);
+
+        return ResponseEntity.ok().body("삭제되었습니다.");
     }
 
 }

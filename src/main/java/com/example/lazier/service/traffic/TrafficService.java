@@ -59,4 +59,13 @@ public class TrafficService {
         traffic.update(parameter.getStartingPoint(), parameter.getDestination(), startingGeoCode,
             destinationGeoCode);
     }
+
+    public void delete(HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+
+        Traffic traffic = trafficRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+
+        trafficRepository.delete(traffic);
+    }
 }
