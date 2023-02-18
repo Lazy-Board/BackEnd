@@ -1,6 +1,7 @@
 package com.example.lazier.service.traffic;
 
 import com.example.lazier.component.NaverGeocodingApi;
+import com.example.lazier.dto.traffic.TrafficDto;
 import com.example.lazier.dto.traffic.TrafficInput;
 import com.example.lazier.persist.entity.traffic.Traffic;
 import com.example.lazier.persist.repository.traffic.TrafficRepository;
@@ -35,6 +36,15 @@ public class TrafficService {
             .build();
 
         trafficRepository.save(traffic);
+    }
+
+    public TrafficDto getUserInfo(HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+
+        Traffic traffic = trafficRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+
+        return TrafficDto.of(traffic);
     }
 
 }
