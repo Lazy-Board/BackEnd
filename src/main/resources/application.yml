@@ -15,15 +15,27 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+    properties:
+      hibernate:
+        format_sql: true
 
 scheduler:
   scrap:
     youtube: "0 0/30 * * * *"
     weather: "0 0 0 * * *"
-    properties:
-      hibernate:
-        format_sql: true
 
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
+
+naver:
+  geocoding:
+    url: "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query="
+    id: ${NAVER_CLIENT_ID}
+    key: ${NAVER_API_KEY}
+
+kakao:
+  navigation:
+    url: "https://apis-navi.kakaomobility.com/v1/directions?origin=%s&destination=%s&waypoints=&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false"
+    key: ${KAKAO_API_KEY}
