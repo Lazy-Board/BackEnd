@@ -49,4 +49,8 @@ public class TrafficController {
         return ResponseEntity.ok().body("삭제되었습니다.");
     }
 
+    @GetMapping
+    public ResponseEntity<?> getTrafficDuration(HttpServletRequest request) {
+        return new ResponseEntity<>(trafficService.getTrafficDuration(request), HttpStatus.OK);
+    }
 }

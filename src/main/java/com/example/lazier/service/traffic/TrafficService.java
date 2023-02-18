@@ -1,6 +1,8 @@
 package com.example.lazier.service.traffic;
 
+import com.example.lazier.component.KakaoNavigationApi;
 import com.example.lazier.component.NaverGeocodingApi;
+import com.example.lazier.dto.traffic.DurationDto;
 import com.example.lazier.dto.traffic.TrafficDto;
 import com.example.lazier.dto.traffic.TrafficInput;
 import com.example.lazier.persist.entity.traffic.Traffic;
@@ -15,6 +17,7 @@ public class TrafficService {
 
     private final TrafficRepository trafficRepository;
     private final NaverGeocodingApi naverGeocodingApi;
+    private final KakaoNavigationApi kakaoNavigationApi;
 
 
     public void add(HttpServletRequest request, TrafficInput parameter) {
@@ -67,5 +70,21 @@ public class TrafficService {
             .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
 
         trafficRepository.delete(traffic);
+    }
+
+    public DurationDto getTrafficDuration(HttpServletRequest request) {
+        String userId = (String) request.getAttribute("userId");
+
+        Traffic traffic = trafficRepository.findById(userId)
+            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+
+        String duration = kakaoNavigationApi.getDuration(traffic.getStartingGeoCode(),
+            traffic.getDestinationGeoCode());
+
+        return DurationDto.builder()
+            .duration(duration)
+            .startingPoint(traffic.getStartingPoint())
+            .destination(traffic.getDestination())
+            .build();
     }
 }
