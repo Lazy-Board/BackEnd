@@ -22,19 +22,19 @@ public class TrafficController {
 
     private final TrafficService trafficService;
 
-    @PostMapping("/user")
+    @PostMapping
     public ResponseEntity<?> addUserInfo(HttpServletRequest request,
         @RequestBody @Valid TrafficInput parameter) {
         trafficService.add(request, parameter);
         return ResponseEntity.ok().body("저장되었습니다.");
     }
 
-    @GetMapping("/user")
+    @GetMapping
     public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
         return new ResponseEntity<>(trafficService.getUserInfo(request), HttpStatus.OK);
     }
 
-    @PutMapping("/user")
+    @PutMapping
     public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
         @RequestBody @Valid TrafficInput parameter) {
         trafficService.update(request, parameter);
@@ -42,14 +42,14 @@ public class TrafficController {
         return ResponseEntity.ok().body("업데이트 되었습니다.");
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping
     public ResponseEntity<?> deleteUserInfo(HttpServletRequest request) {
         trafficService.delete(request);
 
         return ResponseEntity.ok().body("삭제되었습니다.");
     }
 
-    @GetMapping
+    @GetMapping("/duration")
     public ResponseEntity<?> getTrafficDuration(HttpServletRequest request) {
         return new ResponseEntity<>(trafficService.getTrafficDuration(request), HttpStatus.OK);
     }
