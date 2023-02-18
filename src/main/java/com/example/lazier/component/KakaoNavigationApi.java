@@ -5,75 +5,62 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.json.simple.parser.JSONParser;
 
 @Component
-public class NaverGeocodingApi {
+public class KakaoNavigationApi {
 
-    @Value("${naver.geocoding.url}")
+    @Value("${kakao.navigation.url}")
     private String statisticUrl;
 
-    @Value("${naver.geocoding.id}")
-    private String clientId;
-
-    @Value("${naver.geocoding.key}")
+    @Value("${kakao.navigation.key}")
     private String key;
 
-    public String getGeoCode(String location) {
-        String data = getData(location);
+    public String getDuration(String startingGeoCode, String destinationGeoCode) {
+        String data = getData(startingGeoCode, destinationGeoCode);
 
-        StringBuilder geoCode = new StringBuilder();
         JSONParser jsonParser = new JSONParser();
-
         try {
             JSONObject jsonObject = (JSONObject) jsonParser.parse(data);
-            JSONArray jsonArray = (JSONArray) jsonObject.get("addresses");
+            JSONArray jsonArray = (JSONArray) jsonObject.get("routes");
+            JSONObject object = (JSONObject) jsonArray.get(0);
+            JSONObject summary = (JSONObject) object.get("summary");
 
-            for (Object o : jsonArray) {
-                JSONObject object = (JSONObject) o;
-                if (object.get("x") != null && object.get("y") != null) {
-                    geoCode.append(object.get("x").toString()).append(",")
-                        .append(object.get("y").toString());
-                }
-            }
+            return summary.get("duration").toString();
         } catch (ParseException e) {
             throw new RuntimeException("Failed to parse data");
         }
-        return geoCode.toString();
     }
 
-    public String getData(String location) {
-        StringBuilder sb = new StringBuilder();
-
+    public String getData(String startingGeoCode, String destinationGeoCode) {
         try {
-            String address = URLEncoder.encode(location, "UTF-8");
-            String apiUrl = statisticUrl + address;
+            String apiUrl = String.format(statisticUrl, startingGeoCode, destinationGeoCode);
 
             URL url = new URL(apiUrl);
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
-            connection.setRequestProperty("X-NCP-APIGW-API-KEY", key);
+            connection.setRequestProperty("Authorization", "KakaoAK " + key);
+            connection.connect();
 
             InputStreamReader input = new InputStreamReader(connection.getInputStream(),
                 StandardCharsets.UTF_8);
             BufferedReader bf = new BufferedReader(input);
-
+            StringBuilder sb = new StringBuilder();
             String line;
 
             while ((line = bf.readLine()) != null) {
                 sb.append(line);
             }
             if (sb.length() == 0) {
-                throw new RuntimeException("주소가 잘못되었습니다.");
+                throw new RuntimeException("잘못된 위경도 좌표 입니다.");
             }
+
             bf.close();
             input.close();
             connection.disconnect();
