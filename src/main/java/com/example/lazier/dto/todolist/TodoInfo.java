@@ -31,7 +31,7 @@ public class TodoInfo {
 	public static TodoInfo of(Todo todo) {
 		return TodoInfo.builder()
 			.id(todo.getId().toString())
-			.content(todo.getConetent())
+			.content(todo.getContent())
 			.build();
 	}
 }
