@@ -5,6 +5,8 @@ import com.example.lazier.component.NaverGeocodingApi;
 import com.example.lazier.dto.traffic.DurationDto;
 import com.example.lazier.dto.traffic.TrafficDto;
 import com.example.lazier.dto.traffic.TrafficInput;
+import com.example.lazier.exception.UserAlreadyExistException;
+import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.traffic.Traffic;
 import com.example.lazier.persist.repository.traffic.TrafficRepository;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +26,7 @@ public class TrafficService {
         parameter.setUserId((String) request.getAttribute("userId"));
 
         if (trafficRepository.existsById(parameter.getUserId())) {
-            throw new RuntimeException("사용자 정보가 존재합니다.");
+            throw new UserAlreadyExistException("사용자 정보가 존재합니다.");
         }
 
         String startingGeoCode = naverGeocodingApi.getGeoCode(parameter.getStartingPoint());
@@ -45,7 +47,7 @@ public class TrafficService {
         String userId = (String) request.getAttribute("userId");
 
         Traffic traffic = trafficRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         return TrafficDto.of(traffic);
     }
@@ -54,7 +56,7 @@ public class TrafficService {
         parameter.setUserId((String) request.getAttribute("userId"));
 
         Traffic traffic = trafficRepository.findById(parameter.getUserId())
-            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         String startingGeoCode = naverGeocodingApi.getGeoCode(parameter.getStartingPoint());
         String destinationGeoCode = naverGeocodingApi.getGeoCode(parameter.getDestination());
@@ -67,7 +69,7 @@ public class TrafficService {
         String userId = (String) request.getAttribute("userId");
 
         Traffic traffic = trafficRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         trafficRepository.delete(traffic);
     }
@@ -76,7 +78,7 @@ public class TrafficService {
         String userId = (String) request.getAttribute("userId");
 
         Traffic traffic = trafficRepository.findById(userId)
-            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         String duration = kakaoNavigationApi.getDuration(traffic.getStartingGeoCode(),
             traffic.getDestinationGeoCode());

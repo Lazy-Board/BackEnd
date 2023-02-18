@@ -1,5 +1,6 @@
 package com.example.lazier.component;
 
+import com.example.lazier.exception.WrongGeoCodeException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -58,7 +59,7 @@ public class KakaoNavigationApi {
                 sb.append(line);
             }
             if (sb.length() == 0) {
-                throw new RuntimeException("잘못된 위경도 좌표 입니다.");
+                throw new WrongGeoCodeException("잘못된 위경도 좌표 입니다.");
             }
 
             bf.close();

@@ -1,5 +1,6 @@
 package com.example.lazier.component;
 
+import com.example.lazier.exception.WrongAddressFormException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -72,7 +73,7 @@ public class NaverGeocodingApi {
                 sb.append(line);
             }
             if (sb.length() == 0) {
-                throw new RuntimeException("주소가 잘못되었습니다.");
+                throw new WrongAddressFormException("주소가 잘못되었습니다.");
             }
             bf.close();
             input.close();
