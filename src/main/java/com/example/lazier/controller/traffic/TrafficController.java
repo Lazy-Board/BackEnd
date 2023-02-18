@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,4 +32,13 @@ public class TrafficController {
     public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
         return new ResponseEntity<>(trafficService.getUserInfo(request), HttpStatus.OK);
     }
+
+    @PutMapping("/user")
+    public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
+        @RequestBody @Valid TrafficInput parameter) {
+        trafficService.update(request, parameter);
+
+        return ResponseEntity.ok().body("업데이트 되었습니다.");
+    }
+
 }

@@ -47,4 +47,16 @@ public class TrafficService {
         return TrafficDto.of(traffic);
     }
 
+    public void update(HttpServletRequest request, TrafficInput parameter) {
+        parameter.setUserId((String) request.getAttribute("userId"));
+
+        Traffic traffic = trafficRepository.findById(parameter.getUserId())
+            .orElseThrow(() -> new RuntimeException("사용자 정보가 존재하지 않습니다."));
+
+        String startingGeoCode = naverGeocodingApi.getGeoCode(parameter.getStartingPoint());
+        String destinationGeoCode = naverGeocodingApi.getGeoCode(parameter.getDestination());
+
+        traffic.update(parameter.getStartingPoint(), parameter.getDestination(), startingGeoCode,
+            destinationGeoCode);
+    }
 }
