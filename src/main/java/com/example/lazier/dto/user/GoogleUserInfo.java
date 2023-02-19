@@ -2,14 +2,14 @@ package com.example.lazier.dto.user;
 
 import java.util.Map;
 
-public class GoogleUserDto {
+public class GoogleUserInfo {
 
 	private final Map<String, Object> attributes;
 	private String getProviderId;
 	private String getProvider;
 	private String getUserEmail;
 
-	public GoogleUserDto(Map<String, Object> attributes) {
+	public GoogleUserInfo(Map<String, Object> attributes) {
 		this.attributes = attributes;
 	}
 

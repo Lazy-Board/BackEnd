@@ -1,13 +1,13 @@
 package com.example.lazier.service.user;
 
 import com.example.lazier.config.user.JwtTokenProvider;
-import com.example.lazier.dto.user.GoogleUserDto;
-import com.example.lazier.dto.user.OAuthTokenDto;
-import com.example.lazier.dto.user.TokenDto;
+import com.example.lazier.dto.user.GoogleUserInfo;
+import com.example.lazier.dto.user.OAuthTokenResponseDto;
+import com.example.lazier.dto.user.TokenResponseDto;
 import com.example.lazier.persist.entity.user.LazierUser;
-import com.example.lazier.type.UserStatus;
+import com.example.lazier.type.MemberStatus;
 import com.example.lazier.exception.user.InvalidAccessException;
-import com.example.lazier.persist.repository.UserRepository;
+import com.example.lazier.persist.repository.MemberRepository;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -30,7 +30,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 public class OAuthService {
 
-	private final UserRepository userRepository;
+	private final MemberRepository memberRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final RedisService redisService;
 	private final InMemoryClientRegistrationRepository inMemoryClientRegistrationRepository;
@@ -38,12 +38,12 @@ public class OAuthService {
 	@Transactional
 	public LazierUser getUser(String provider, String code) {
 		ClientRegistration clientRegistration = inMemoryClientRegistrationRepository.findByRegistrationId(provider.toLowerCase());
-		OAuthTokenDto oAuthTokenDto = getToken(clientRegistration, code);
+		OAuthTokenResponseDto oAuthTokenResponseDto = getToken(clientRegistration, code);
 
-		return saveUserInfo(provider.toLowerCase(), oAuthTokenDto, clientRegistration);
+		return saveUserInfo(provider.toLowerCase(), oAuthTokenResponseDto, clientRegistration);
 	}
 
-	private OAuthTokenDto getToken(ClientRegistration provider, String code) {
+	private OAuthTokenResponseDto getToken(ClientRegistration provider, String code) {
 		return WebClient.create()
 			.post()
 			.uri(provider.getProviderDetails().getTokenUri())
@@ -54,7 +54,7 @@ public class OAuthService {
 
 			.bodyValue(tokenRequest(provider, code))
 			.retrieve()
-			.bodyToMono(OAuthTokenDto.class)
+			.bodyToMono(OAuthTokenResponseDto.class)
 			.block();
 	}
 
@@ -70,61 +70,61 @@ public class OAuthService {
 		return formData;
 	}
 
-	private LazierUser saveUserInfo(String providerName, OAuthTokenDto oAuthTokenDto,
+	private LazierUser saveUserInfo(String providerName, OAuthTokenResponseDto oAuthTokenResponseDto,
 		ClientRegistration provider) {
 
-		Map<String, Object> attributes = getUserAttribute(provider, oAuthTokenDto); //user 담을 객체
-		GoogleUserDto googleUserDto;
+		Map<String, Object> attributes = getUserAttribute(provider, oAuthTokenResponseDto); //user 담을 객체
+		GoogleUserInfo googleUserInfo;
 		String oauthNickName = null;
 		String oauthName = null;
 
 		if (providerName.equals("google")) {
-			googleUserDto = new GoogleUserDto(attributes);
-			oauthName = googleUserDto.getName();
+			googleUserInfo = new GoogleUserInfo(attributes);
+			oauthName = googleUserInfo.getName();
 		} else {
 			log.info("잘못된 접근입니다.");
 			throw new InvalidAccessException("잘못된 접근입니다.");
 		}
 
-		String oauthProvider = googleUserDto.getProvider(); //타입
-		String oauthProviderId = googleUserDto.getProviderId(); //sub
-		String oauthEmail = googleUserDto.getUserEmail();
+		String oauthProvider = googleUserInfo.getProvider(); //타입
+		String oauthProviderId = googleUserInfo.getProviderId(); //sub
+		String oauthEmail = googleUserInfo.getUserEmail();
 
-		Optional<LazierUser> lazierUser = userRepository.findByOauthId(oauthProviderId);
+		Optional<LazierUser> lazierUser = memberRepository.findByOauthId(oauthProviderId);
 
-		if (lazierUser.isEmpty()) {
+		if (lazierUser == null) {
 			LazierUser member = LazierUser.builder()
 				.userEmail(oauthEmail)
 				.userName(oauthName)
 				.oauthId(oauthProviderId)
 				.createdAt(LocalDateTime.now())
-				.userStatus(UserStatus.STATUS_ACTIVE.getUserStatus())
+				.userStatus(MemberStatus.STATUS_ACTIVE.getUserStatus())
 				.socialType(oauthProvider)
 				.build();
-			return userRepository.save(member); //없으면 저장
+			return memberRepository.save(member); //없으면 저장
 		} else {
 			return lazierUser.get(); //있으면 리턴
 		}
 	}
 
 	private Map<String, Object> getUserAttribute(ClientRegistration provider,
-		OAuthTokenDto oAuthTokenDto) {
+		OAuthTokenResponseDto oAuthTokenResponseDto) {
 		return WebClient.create()
 			.get()
 			.uri(provider.getProviderDetails().getUserInfoEndpoint().getUri())
-			.headers(header -> header.setBearerAuth(oAuthTokenDto.getAccessToken()))
+			.headers(header -> header.setBearerAuth(oAuthTokenResponseDto.getAccessToken()))
 			.retrieve()
 			.bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
 			})
 			.block();
 	}
 
-	public TokenDto loginResult(LazierUser lazierUser) {
+	public TokenResponseDto loginResult(LazierUser lazierUser) {
 		return getMemberLoginResponseDto(lazierUser);
 	}
 
-	private TokenDto getMemberLoginResponseDto(LazierUser lazierUser) {
-		TokenDto tokenDto = jwtTokenProvider.createAccessToken(
+	private TokenResponseDto getMemberLoginResponseDto(LazierUser lazierUser) {
+		TokenResponseDto tokenDto = jwtTokenProvider.createAccessToken(
 			String.valueOf(lazierUser.getUserId()));
 
 		redisService.setValues(tokenDto.getRefreshToken()); //tokenDto에서 refresh token은 redis에 저장

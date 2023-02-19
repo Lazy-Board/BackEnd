@@ -16,6 +16,5 @@ public class RefreshToken {
 
     @Id
     private String refreshToken;
-
     private String keyId;
 }

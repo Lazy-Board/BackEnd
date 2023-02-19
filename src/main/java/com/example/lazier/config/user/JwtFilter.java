@@ -16,7 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JwtFilter extends OncePerRequestFilter { //login
+public class JwtFilter extends OncePerRequestFilter {
 
 	private final JwtTokenProvider jwtTokenProvider;
 
@@ -34,7 +34,6 @@ public class JwtFilter extends OncePerRequestFilter { //login
 				request.setAttribute("userId", authentication.getName());
 			}
 		} catch (IllegalArgumentException | JwtException e) {
-			logger.info("filter error message: " + e.getMessage());
 			request.setAttribute("exception", e.getMessage());
 		}
 		filterChain.doFilter(request, response);

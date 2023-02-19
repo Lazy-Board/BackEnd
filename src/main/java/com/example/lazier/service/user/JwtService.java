@@ -1,7 +1,7 @@
 package com.example.lazier.service.user;
 
 import com.example.lazier.config.user.JwtTokenProvider;
-import com.example.lazier.dto.user.AccessTokenDto;
+import com.example.lazier.dto.user.AccessTokenResponseDto;
 import com.example.lazier.persist.entity.user.RefreshToken;
 import com.example.lazier.exception.user.InvalidTokenException;
 import com.example.lazier.exception.user.UnauthorizedRefreshTokenException;
@@ -23,7 +23,7 @@ public class JwtService {
         return redisService.getValues(userId);
     }
 
-    public AccessTokenDto validateRefreshToken(HttpServletRequest request) { //refresh 유효성 검사
+    public AccessTokenResponseDto validateRefreshToken(HttpServletRequest request) { //refresh 유효성 검사
 
         String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
         String userId = jwtTokenProvider.getUserPk(refreshToken);
@@ -48,9 +48,9 @@ public class JwtService {
     }
 
     //token -> dto
-    public AccessTokenDto createdRefreshJson(String createdAcessToken) {
+    public AccessTokenResponseDto createdRefreshJson(String createdAcessToken) {
 
-        return AccessTokenDto.builder()
+        return AccessTokenResponseDto.builder()
                 .accessToken(createdAcessToken)
                 .grantType("Bearer")
                 .build();
