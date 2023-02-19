@@ -1,7 +1,7 @@
 package com.example.lazier.controller;
 
 import com.example.lazier.dto.module.UserQuotesInput;
-import com.example.lazier.service.UserQuoteService;
+import com.example.lazier.service.Impl.UserQuotesService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -20,41 +20,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/userQuotes")
 public class UserQuotesController {
 
-    private final UserQuoteService userQuoteService;
+    private final UserQuotesService userQuotesService;
 
     @PostMapping
     public ResponseEntity<?> add(HttpServletRequest request,
         @RequestBody @Valid UserQuotesInput parameter) {
-        String userId = (String) request.getAttribute("userId");
-        parameter.setUserId(userId);
 
-        userQuoteService.add(parameter);
+        userQuotesService.add(request, parameter);
         return ResponseEntity.status(HttpStatus.CREATED).body("저장되었습니다.");
     }
 
     @GetMapping
     public ResponseEntity<?> get(HttpServletRequest request) {
-        String userId = (String) request.getAttribute("userId");
 
-        return new ResponseEntity<>(userQuoteService.get(userId), HttpStatus.OK);
+        return new ResponseEntity<>(userQuotesService.get(request), HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<?> update(HttpServletRequest request,
         @RequestBody @Valid UserQuotesInput parameter) {
-        String userId = (String) request.getAttribute("userId");
-        parameter.setUserId(userId);
 
-        userQuoteService.update(parameter);
+        userQuotesService.update(request, parameter);
 
         return ResponseEntity.ok().body("업데이트 되었습니다.");
     }
 
     @DeleteMapping
     public ResponseEntity<?> delete(HttpServletRequest request) {
-        String userId = (String) request.getAttribute("userId");
 
-        userQuoteService.delete(userId);
+        userQuotesService.delete(request);
         return ResponseEntity.ok().body("삭제되었습니다.");
     }
 }
