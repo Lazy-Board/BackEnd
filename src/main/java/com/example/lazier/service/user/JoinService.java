@@ -36,7 +36,7 @@ public class JoinService {
                 .phoneNumber(memberInfo.getPhoneNumber())
 
                 .createdAt(LocalDateTime.now())
-                .userStatus(MemberStatus.STATUS_READY.toString())
+                .userStatus(MemberStatus.STATUS_READY.getUserStatus())
                 .emailAuthKey(uuid)
                 .emailAuthYn(false)
                 .build();

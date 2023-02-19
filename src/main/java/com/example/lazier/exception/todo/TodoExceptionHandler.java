@@ -16,4 +16,10 @@ public class TodoExceptionHandler {
 
 		return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
 	}
+
+	@ExceptionHandler(AlreadyDeleteException.class)
+	public ResponseEntity<ErrorMessage> alreadyDeleteException(AlreadyDeleteException exception) {
+
+		return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+	}
 }
