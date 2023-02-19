@@ -8,7 +8,9 @@ import com.example.lazier.dto.traffic.TrafficInput;
 import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.traffic.Traffic;
+import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.persist.repository.traffic.TrafficRepository;
+import com.example.lazier.service.user.MemberService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,12 +22,13 @@ public class TrafficService {
     private final TrafficRepository trafficRepository;
     private final NaverGeocodingApi naverGeocodingApi;
     private final KakaoNavigationApi kakaoNavigationApi;
-
+    private final MemberService memberService;
 
     public void add(HttpServletRequest request, TrafficInput parameter) {
-        parameter.setUserId((String) request.getAttribute("userId"));
+        long userId = Long.parseLong(request.getAttribute("userId").toString());
+        LazierUser lazierUser = memberService.searchMember(userId);
 
-        if (trafficRepository.existsById(parameter.getUserId())) {
+        if (trafficRepository.existsByLazierUser(lazierUser)) {
             throw new UserAlreadyExistException("사용자 정보가 존재합니다.");
         }
 
@@ -33,7 +36,7 @@ public class TrafficService {
         String destinationGeoCode = naverGeocodingApi.getGeoCode(parameter.getDestination());
 
         Traffic traffic = Traffic.builder()
-            .userId(parameter.getUserId())
+            .lazierUser(lazierUser)
             .startingPoint(parameter.getStartingPoint())
             .startingGeoCode(startingGeoCode)
             .destination(parameter.getDestination())
@@ -44,18 +47,20 @@ public class TrafficService {
     }
 
     public TrafficDto getUserInfo(HttpServletRequest request) {
-        String userId = (String) request.getAttribute("userId");
+        long userId = Long.parseLong(request.getAttribute("userId").toString());
+        LazierUser lazierUser = memberService.searchMember(userId);
 
-        Traffic traffic = trafficRepository.findById(userId)
+        Traffic traffic = trafficRepository.findByLazierUser(lazierUser)
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         return TrafficDto.of(traffic);
     }
 
     public void update(HttpServletRequest request, TrafficInput parameter) {
-        parameter.setUserId((String) request.getAttribute("userId"));
+        long userId = Long.parseLong(request.getAttribute("userId").toString());
+        LazierUser lazierUser = memberService.searchMember(userId);
 
-        Traffic traffic = trafficRepository.findById(parameter.getUserId())
+        Traffic traffic = trafficRepository.findByLazierUser(lazierUser)
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         String startingGeoCode = naverGeocodingApi.getGeoCode(parameter.getStartingPoint());
@@ -66,18 +71,20 @@ public class TrafficService {
     }
 
     public void delete(HttpServletRequest request) {
-        String userId = (String) request.getAttribute("userId");
+        long userId = Long.parseLong(request.getAttribute("userId").toString());
+        LazierUser lazierUser = memberService.searchMember(userId);
 
-        Traffic traffic = trafficRepository.findById(userId)
+        Traffic traffic = trafficRepository.findByLazierUser(lazierUser)
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         trafficRepository.delete(traffic);
     }
 
     public DurationDto getTrafficDuration(HttpServletRequest request) {
-        String userId = (String) request.getAttribute("userId");
+        long userId = Long.parseLong(request.getAttribute("userId").toString());
+        LazierUser lazierUser = memberService.searchMember(userId);
 
-        Traffic traffic = trafficRepository.findById(userId)
+        Traffic traffic = trafficRepository.findByLazierUser(lazierUser)
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         String duration = kakaoNavigationApi.getDuration(traffic.getStartingGeoCode(),
