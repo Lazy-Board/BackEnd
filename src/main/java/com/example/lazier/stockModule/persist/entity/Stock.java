@@ -10,27 +10,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "Kospi")
+@Entity(name = "Stock")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class Kospi {
+public class Stock {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String userId;
     private String stockName;                       // 종목명
     private String price;                           // 현재가
     private String diffAmount;                      // 전일비
     private String dayRange;                        // 등락률
-    private String parValue;                        // 액면가
-    private String turnover;                        // 거래량
-    private String numberOfListedShares;            // 상장주식수
-    private String marketCap;                       // 시가총액
-    private String foreignOwnRate;                  // 외국인비율
-    private String per;                             // PER (주가수익률)
-    private String roe;                             // ROE (자기자본이익률)
+    private String marketPrice;                     // 시가
+    private String highPrice;                       // 고가
+    private String lowPrice;                        // 저가
+    private String tradingVolume;                   // 거래량
+    private String updateAt;                        // 업데이트 시간
 
 }
