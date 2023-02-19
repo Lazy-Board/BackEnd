@@ -1,9 +1,8 @@
-package com.example.lazier.dto.todolist;
+package com.example.lazier.dto.todo;
 
 import com.example.lazier.persist.entity.todo.Todo;
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +12,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@NotBlank
 public class TodoInfo {
 
-	@NotBlank(message = "할 일을 입력하세요.")
 	private String content;
 	private String id;
 

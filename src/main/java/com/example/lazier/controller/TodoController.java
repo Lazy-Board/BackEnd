@@ -1,9 +1,8 @@
 package com.example.lazier.controller;
 
-import com.example.lazier.dto.todolist.TodoInfo;
+import com.example.lazier.dto.todo.TodoInfo;
 import com.example.lazier.service.todo.TodoService;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,21 +24,21 @@ public class TodoController {
 
 	@PostMapping("/write")
 	public ResponseEntity<?> write(HttpServletRequest request,
-		@RequestBody @Valid TodoInfo todoInfo) {
+		@RequestBody TodoInfo todoInfo) {
 
 		todoService.write(request, todoInfo);
 		return ResponseEntity.ok().build();
 	}
 
 	@DeleteMapping("/delete")
-	public ResponseEntity<?> delete(@RequestBody @Valid TodoInfo todoInfo) {
+	public ResponseEntity<?> delete(@RequestBody TodoInfo todoInfo) {
 
 		todoService.delete(todoInfo);
 		return ResponseEntity.ok().build();
 	}
 
 	@PutMapping("/update")
-	public ResponseEntity<?> update(@RequestBody @Valid TodoInfo todoInfo) {
+	public ResponseEntity<?> update(@RequestBody TodoInfo todoInfo) {
 
 		todoService.update(todoInfo);
 		return ResponseEntity.ok().build();

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice(basePackageClasses = TodoController.class)
-public class CustomerExceptionHandler {
+public class TodoExceptionHandler {
 
 	@ExceptionHandler(FailedWriteException.class)
 	public ResponseEntity<ErrorMessage> failedWriteException(FailedWriteException exception) {
