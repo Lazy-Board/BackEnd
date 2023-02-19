@@ -1,4 +1,7 @@
 spring:
+  profiles:
+    include: oauth
+
   h2:
     console:
       enabled: true
@@ -15,6 +18,7 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -22,6 +26,42 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: {port}
+    username: {username}
+    password: {password}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+
+  messages:
+    basename: validation
+    encoding: UTF-8
+    properties:
+      hibernate:
+        auto_quote_keyword: true
+
+  redis:
+    port: {port}
+    host: localhost
+
+jwt:
+  secret: {secret}
+  refreshToken-validity-in-seconds: {refreshToken-validity-in-seconds}
+  token-validity-in-seconds: {token-validity-in-seconds}
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    property:
+      prefix: ENC(
+      suffix: )
+    password: {password}
+
 
 scheduler:
   scrap:
@@ -32,10 +72,10 @@ scheduler:
 naver:
   geocoding:
     url: "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query="
-    id: ${NAVER_CLIENT_ID}
-    key: ${NAVER_API_KEY}
+    id: "gbgbgbgbgbg"
+    key: "gbggbgbgb"
 
 kakao:
   navigation:
     url: "https://apis-navi.kakaomobility.com/v1/directions?origin=%s&destination=%s&waypoints=&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false"
-    key: ${KAKAO_API_KEY}
+    key: "gbgbgbgb"
