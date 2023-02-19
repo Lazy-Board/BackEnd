@@ -1,0 +1,11 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ENC(8fSWy+RYeTTNjQ874xGy4+Pr/giyp+d960BWcNOs0zKVRQ5Dx497CAfJerQEw0y5/qc2ac5MpQRx4fe0BtkwczdTI1fwSqsFhcTHAfCQwOJ1J+F2PiF/Tw==)
+            client-secret: ENC(gg4T/s0gRBApTxLL9ZDTHmG0XRujh6m6qx6YWLHCcUAyU099bZYgnfJFjpXFvP7R)
+            scope: profile
+            redirect-uri: http://localhost:8080/user/login/oauth2/code/google
+            client-name: google
