@@ -1,6 +1,6 @@
 package com.example.lazier.controller;
 
-import com.example.lazier.dto.module.Youtube;
+import com.example.lazier.dto.module.YoutubeDto;
 import com.example.lazier.service.Impl.YoutubeServiceImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class YoutubeController {
 
   @GetMapping
   public ResponseEntity<?> showYoutube() {
-    List<Youtube> result = this.youtubeService.getYoutube();
+    List<YoutubeDto> result = this.youtubeService.getYoutube();
     return ResponseEntity.ok(result);
   }
 

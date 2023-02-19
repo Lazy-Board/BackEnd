@@ -24,6 +24,7 @@ public class Youtube {
   private LocalDateTime createdAt;
   private String length;
 
+  private String videoUrl;
   private String imagePath;
 
   private LocalDateTime updatedAt;

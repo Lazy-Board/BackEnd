@@ -1,10 +1,10 @@
 package com.example.lazier.service;
 
-import com.example.lazier.dto.module.Youtube;
+import com.example.lazier.dto.module.YoutubeDto;
 import java.util.List;
 
 public interface YoutubeService {
 
-  List<Youtube> getYoutube();
+  List<YoutubeDto> getYoutube();
 
 }

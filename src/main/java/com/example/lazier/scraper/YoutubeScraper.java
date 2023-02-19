@@ -1,7 +1,7 @@
 package com.example.lazier.scraper;
 
 import com.example.lazier.dto.module.ScrapedResult;
-import com.example.lazier.dto.module.Youtube;
+import com.example.lazier.dto.module.YoutubeDto;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -83,27 +83,27 @@ public class YoutubeScraper {
           .getAsJsonArray("items");
 
       //Array 순서대로 돌며 youtube 객체로 저장
-      List<Youtube> youtubeList = new ArrayList<>();
+      List<YoutubeDto> youtubeDtoList = new ArrayList<>();
 
       for (int i = 0; i < hotClipArray.size(); i++) {
-        Youtube youtube = new Youtube();
+        YoutubeDto youtubeDto = new YoutubeDto();
         JsonObject baseObject = hotClipArray.get(i).getAsJsonObject()
             .getAsJsonObject("videoRenderer");
-        youtube.setVideoId(baseObject.get("videoId").getAsString());
-        youtube.setContentName(
+        youtubeDto.setVideoId(baseObject.get("videoId").getAsString());
+        youtubeDto.setVideoUrl("https://www.youtube.com/watch?v=" + baseObject.get("videoId").getAsString());
+        youtubeDto.setContentName(
             baseObject.getAsJsonObject("title").getAsJsonArray("runs").get(0).getAsJsonObject()
                 .get("text").getAsString());
-        youtube.setChannelName(
+        youtubeDto.setChannelName(
             baseObject.getAsJsonObject("longBylineText").getAsJsonArray("runs").get(0)
                 .getAsJsonObject().get("text").getAsString());
-        youtube.setImagePath(baseObject.getAsJsonObject("thumbnail")
+        youtubeDto.setImagePath(baseObject.getAsJsonObject("thumbnail")
             .getAsJsonArray("thumbnails").get(0).getAsJsonObject().get("url").getAsString());
 
         //수정필요
         String dateString = baseObject.getAsJsonObject("publishedTimeText").get("simpleText")
             .getAsString();               //*일 전   //*주 전
         String beforeText = dateString.substring(0, dateString.indexOf(" ")).trim();
-        System.out.println(beforeText);
         String beforeDayOrWeek = beforeText.substring(beforeText.length() - 1);
         int beforeNum ;
         if (beforeDayOrWeek.equals("간")) {
@@ -111,25 +111,26 @@ public class YoutubeScraper {
         } else beforeNum = Integer.parseInt(beforeText.substring(0, beforeText.length() - 1));
 
         if (beforeDayOrWeek.equals("일")) {
-          youtube.setCreatedAt(LocalDateTime.now().minusDays(beforeNum));
+          youtubeDto.setCreatedAt(LocalDateTime.now().minusDays(beforeNum));
         } else if (beforeDayOrWeek.equals("간")) {
-          youtube.setCreatedAt(LocalDateTime.now().minusHours(beforeNum));
+          youtubeDto.setCreatedAt(LocalDateTime.now().minusHours(beforeNum));
         } else {
-          youtube.setCreatedAt(LocalDateTime.now().minusWeeks(beforeNum));
+          youtubeDto.setCreatedAt(LocalDateTime.now().minusWeeks(beforeNum));
         }
 
-        youtube.setLength(
+        youtubeDto.setLength(
             baseObject.getAsJsonObject("lengthText").get("simpleText").getAsString());
-        youtube.setHit(baseObject.getAsJsonObject("viewCountText")
+        youtubeDto.setHit(baseObject.getAsJsonObject("viewCountText")
             .get("simpleText").getAsString());
-        youtube.setUpdatedAt(LocalDateTime.now());
+
+        youtubeDto.setUpdatedAt(LocalDateTime.now());
 
 //                컨텐츠 설명은 우선 저장하지 않는 것으로
 //                youtube.setContentExplanation(baseObject.getAsJsonObject("descriptionSnippet")
 //                        .getAsJsonArray("runs").get(0).getAsJsonObject().get("text").getAsString());
-        youtubeList.add(youtube);
+        youtubeDtoList.add(youtubeDto);
       }
-      scrapResult.setYoutubeList(youtubeList);
+      scrapResult.setYoutubeDtoList(youtubeDtoList);
 
     } catch (IOException e) {
       throw new RuntimeException(e);

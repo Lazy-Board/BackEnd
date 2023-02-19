@@ -1,6 +1,7 @@
 package com.example.lazier.service.Impl;
 
 import com.example.lazier.dto.module.ScrapedResult;
+import com.example.lazier.dto.module.YoutubeDto;
 import com.example.lazier.persist.entity.module.Youtube;
 import com.example.lazier.persist.repository.YoutubeRepository;
 import com.example.lazier.scraper.YoutubeScraper;
@@ -9,11 +10,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class YoutubeServiceImpl implements YoutubeService {
 
   private final YoutubeScraper youtubeScraper;
@@ -22,13 +25,13 @@ public class YoutubeServiceImpl implements YoutubeService {
 
   @Override
   @Transactional(readOnly = true)
-  public List<com.example.lazier.dto.module.Youtube> getYoutube() {
+  public List<YoutubeDto> getYoutube() {
     List<Youtube> youtubeEntities = youtubeRepository.findTop3ByOrderByCreatedAtDesc();
-    List<com.example.lazier.dto.module.Youtube> youtubeList = new ArrayList<>();
+    List<YoutubeDto> youtubeDtoList = new ArrayList<>();
     for (Youtube entity : youtubeEntities) {
-      youtubeList.add(new com.example.lazier.dto.module.Youtube().from(entity));
+      youtubeDtoList.add(new YoutubeDto().from(entity));
     }
-    return youtubeList;
+    return youtubeDtoList;
   }
 
   @Transactional
@@ -46,24 +49,25 @@ public class YoutubeServiceImpl implements YoutubeService {
     ScrapedResult scrapedResult = this.youtubeScraper.crawl();
 
     // 스크래핑한 정보 중 없는 값을 저장
-    scrapedResult.getYoutubeList().stream().map(e ->
-        new Youtube().builder()
-            .videoId(e.getVideoId())
-            .contentName(e.getContentName())
-            .createdAt(e.getCreatedAt())
-            .channelName(e.getChannelName())
-            .updatedAt(e.getUpdatedAt())
-            .length(e.getLength())
-            .imagePath(e.getImagePath())
-            .hit(e.getHit())
-            .updatedAt(LocalDateTime.now())
-            .build()
+    scrapedResult.getYoutubeDtoList().stream().map(youtubeDto -> Youtube.builder()
+        .videoId(youtubeDto.getVideoId())
+        .contentName(youtubeDto.getContentName())
+        .createdAt(youtubeDto.getCreatedAt())
+        .channelName(youtubeDto.getChannelName())
+        .updatedAt(youtubeDto.getUpdatedAt())
+        .length(youtubeDto.getLength())
+        .videoUrl(youtubeDto.getVideoUrl())
+        .imagePath(youtubeDto.getImagePath())
+        .hit(youtubeDto.getHit())
+        .updatedAt(LocalDateTime.now())
+        .build()
     ).forEach(entity ->
     {
       boolean exists = this.youtubeRepository.existsById(entity.getVideoId());
       if (!exists) {
         this.youtubeRepository.save(entity);
-        System.out.println(entity.getContentName() + " is saved");
+        log.info(entity.getContentName() + " is saved");
+        log.info(entity.getVideoUrl());
       }
     });
   }

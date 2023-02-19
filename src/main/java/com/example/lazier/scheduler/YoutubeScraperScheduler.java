@@ -32,14 +32,15 @@ public class YoutubeScraperScheduler {
     ScrapedResult scrapedResult = this.youtubeScraper.crawl();
 
     // 스크래핑한 정보 중 없는 값을 저장
-    scrapedResult.getYoutubeList().stream()
-        .map(e -> new Youtube().builder()
+    scrapedResult.getYoutubeDtoList().stream()
+        .map(e -> Youtube.builder()
             .videoId(e.getVideoId())
             .contentName(e.getContentName())
             .createdAt(e.getCreatedAt())
             .channelName(e.getChannelName())
             .updatedAt(e.getUpdatedAt())
             .length(e.getLength())
+            .videoUrl(e.getVideoUrl())
             .imagePath(e.getImagePath())
             .hit(e.getHit())
             .updatedAt(LocalDateTime.now())
