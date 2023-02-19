@@ -8,10 +8,10 @@ spring:
       path: /h2-console
 
   datasource:
-    url: jdbc:mariadb://localhost:3310/team
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: team_user
-    password: 1234
+    url: jdbc:h2:~/test
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
 
   jpa:
     generate-ddl: true
@@ -29,9 +29,9 @@ spring:
 
   mail:
     host: smtp.gmail.com
-    port: {port}
-    username: {username}
-    password: {password}
+    port: 587
+    username: ENC(n3ajWPr7jT9INxIxkA9jw+cHC3Mb+lofFJqlay4H8P0=)
+    password: ENC(oxHwE1sp2Auc1doY2EqEFzmLEEaMmEMX0CLohpq6TeE=)
     properties:
       mail:
         smtp:
@@ -46,13 +46,13 @@ spring:
         auto_quote_keyword: true
 
   redis:
-    port: {port}
+    port: 6379
     host: localhost
 
 jwt:
-  secret: {secret}
-  refreshToken-validity-in-seconds: {refreshToken-validity-in-seconds}
-  token-validity-in-seconds: {token-validity-in-seconds}
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  refreshToken-validity-in-seconds: 86400000
+  token-validity-in-seconds: 1800000
 
 jasypt:
   encryptor:
@@ -60,13 +60,14 @@ jasypt:
     property:
       prefix: ENC(
       suffix: )
-    password: {password}
+    password: testpassword
 
 
 scheduler:
   scrap:
     youtube: "0 0/30 * * * *"
     weather: "0 0 0 * * *"
+    exchange: "0 0 0 * * *"
 
 
 naver:
