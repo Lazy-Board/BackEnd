@@ -60,7 +60,7 @@ public class NaverWeatherScraper implements Scraper {
             String low = temperatures[1].substring(4); // 9°
 
             return WeatherDto.builder()
-                .userId(userWeather.getUserId())
+                .userId(userWeather.getLazierUser().getUserId())
                 .cityName(userWeather.getCityName())
                 .locationName(userWeather.getLocationName())
                 .temperature(todayTemperature)
