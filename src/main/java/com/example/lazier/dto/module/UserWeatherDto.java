@@ -9,13 +9,13 @@ import lombok.Data;
 @Builder
 public class UserWeatherDto {
 
-    String userId;
+    long userId;
     String cityName;
     String locationName;
 
     public static UserWeatherDto of(UserWeather userWeather) {
         return UserWeatherDto.builder()
-            .userId(userWeather.getUserId())
+            .userId(userWeather.getLazierUser().getUserId())
             .cityName(userWeather.getCityName())
             .locationName(userWeather.getLocationName())
             .build();

@@ -1,6 +1,8 @@
 package com.example.lazier.persist.entity.user;
 
 import com.example.lazier.dto.user.MemberInfo;
+import com.example.lazier.persist.entity.module.UserWeather;
+import com.example.lazier.persist.entity.module.Weather;
 import com.example.lazier.persist.entity.todo.Todo;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,13 @@ public class LazierUser implements UserDetails {
 		orphanRemoval = true)
 	private List<Todo> todo = new ArrayList<>();
 
+	@OneToMany(mappedBy = "lazierUser", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST,
+		orphanRemoval = true)
+	private List<Weather> weather = new ArrayList<>();
+
+	@OneToMany(mappedBy = "lazierUser", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST,
+		orphanRemoval = true)
+	private List<UserWeather> userWeather = new ArrayList<>();
 	public void delete() {
 		for (Todo todo : this.getTodo()) {
 			todo.setLazierUser(null);

@@ -2,10 +2,14 @@ package com.example.lazier.persist.entity.module;
 
 
 import com.example.lazier.dto.module.WeatherDto;
+import com.example.lazier.persist.entity.user.LazierUser;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -20,7 +24,9 @@ public class Weather {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private LazierUser lazierUser;
     private String cityName; // 시/군/구 이름
     private String locationName; // 동 이름
     private String temperature;
@@ -37,8 +43,8 @@ public class Weather {
     private String windDirection;
     private String updatedAt;
 
-    public Weather(WeatherDto weatherDto) {
-        this.userId = weatherDto.getUserId();
+    public Weather(LazierUser lazierUser, WeatherDto weatherDto) {
+        this.lazierUser = lazierUser;
         this.cityName = weatherDto.getCityName();
         this.locationName = weatherDto.getLocationName();
         this.temperature = weatherDto.getTemperature();

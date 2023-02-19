@@ -1,6 +1,6 @@
 package com.example.lazier.controller;
 
-import com.example.lazier.service.WeatherService;
+import com.example.lazier.service.Impl.WeatherService;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;

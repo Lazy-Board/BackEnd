@@ -1,7 +1,7 @@
 package com.example.lazier.controller;
 
 import com.example.lazier.dto.module.UserWeatherInput;
-import com.example.lazier.service.UserWeatherService;
+import com.example.lazier.service.Impl.UserWeatherService;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
