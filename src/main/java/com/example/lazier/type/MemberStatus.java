@@ -3,7 +3,7 @@ package com.example.lazier.type;
 import lombok.Getter;
 
 @Getter
-public enum UserStatus {
+public enum MemberStatus {
 
     STATUS_READY("READY"),
     STATUS_ACTIVE("ACTIVE"),
@@ -11,7 +11,7 @@ public enum UserStatus {
 
     private String userStatus;
 
-    UserStatus(String userStatus) {
+    MemberStatus(String userStatus) {
         this.userStatus = userStatus;
     }
 }

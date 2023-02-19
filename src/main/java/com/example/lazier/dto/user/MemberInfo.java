@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfo {
+public class MemberInfo {
 
 	@Email
 	@NotBlank
@@ -34,8 +34,8 @@ public class UserInfo {
 
 	String socialType;
 
-	public static UserInfo of(LazierUser lazierUser) {
-		return UserInfo.builder()
+	public static MemberInfo of(LazierUser lazierUser) {
+		return MemberInfo.builder()
 			.userEmail(lazierUser.getUserEmail())
 			.userName(lazierUser.getUsername())
 			.phoneNumber(lazierUser.getPhoneNumber())

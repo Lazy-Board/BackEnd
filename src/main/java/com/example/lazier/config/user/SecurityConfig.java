@@ -56,13 +56,13 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/user/signup", //허용
+                .antMatchers("/user/signup",
                         "/user/login",
                         "/user/email-auth",
                         "/user/find-password",
                         "/user/reissue",
                         "/h2-console",
-                    "/user/login/**").permitAll() //테스트
+                    "/user/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()

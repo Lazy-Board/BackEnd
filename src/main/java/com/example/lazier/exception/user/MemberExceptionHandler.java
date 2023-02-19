@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RestControllerAdvice(basePackageClasses = MemberController.class)
-public class CustomerExceptionHandler {
+public class MemberExceptionHandler {
 
     @ExceptionHandler(FailedSignUpException.class)
     public ResponseEntity<ErrorMessage> failedSignUpException(FailedSignUpException exception) {

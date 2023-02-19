@@ -6,7 +6,7 @@ import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.exception.user.NotFoundMemberException;
 import com.example.lazier.exception.user.NotMatchMemberException;
 import com.example.lazier.dto.user.LoginRequestDto;
-import com.example.lazier.persist.repository.UserRepository;
+import com.example.lazier.persist.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,13 +21,13 @@ import org.springframework.stereotype.Service;
 public class CreateTokenService {
 
 	private final JwtTokenProvider jwtTokenProvider;
-	private final UserRepository userRepository;
+	private final MemberRepository memberRepository;
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;
 	private final PasswordEncoder passwordEncoder;
 
 	public TokenResponseDto createAccessToken(LoginRequestDto userLogin) {
 
-		LazierUser lazierUser = userRepository.findByUserEmail(userLogin.getUserEmail())
+		LazierUser lazierUser = memberRepository.findByUserEmail(userLogin.getUserEmail())
 			.orElseThrow(() -> new NotFoundMemberException("사용자 정보를 찾을 수 없습니다."));
 
 		if (!passwordEncoder.matches(userLogin.getPassword(), lazierUser.getPassword())) {

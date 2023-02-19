@@ -3,12 +3,12 @@ package com.example.lazier.service.user;
 import com.example.lazier.component.MailComponents;
 import com.example.lazier.dto.user.FindPasswordRequestDto;
 import com.example.lazier.dto.user.UpdatePasswordRequestDto;
-import com.example.lazier.dto.user.UserInfo;
+import com.example.lazier.dto.user.MemberInfo;
 import com.example.lazier.exception.user.FailedFindPasswordException;
 import com.example.lazier.exception.user.NotFoundMemberException;
 import com.example.lazier.exception.user.NotMatchMemberException;
 import com.example.lazier.persist.entity.user.LazierUser;
-import com.example.lazier.persist.repository.UserRepository;
+import com.example.lazier.persist.repository.MemberRepository;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -22,19 +22,19 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class MemberService {
 
-	private final UserRepository userRepository;
+	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final RedisService redisService;
 	private final MailComponents mailComponents;
 
-	public UserInfo showUserInfo(HttpServletRequest request) {
+	public MemberInfo showUserInfo(HttpServletRequest request) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
-		return UserInfo.of(lazierUser);
+		return MemberInfo.of(lazierUser);
 	}
 
-	public void updateUserInfo(HttpServletRequest request, UserInfo userInfo) {
+	public void updateUserInfo(HttpServletRequest request, MemberInfo memberInfo) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
-		lazierUser.updateUserInfo(userInfo);
+		lazierUser.updateUserInfo(memberInfo);
 	}
 
 	public void updatePassword(HttpServletRequest request, UpdatePasswordRequestDto passwordDto) {
@@ -58,7 +58,6 @@ public class MemberService {
 		String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0,6);
 		lazierUser.setPassword(passwordEncoder.encode(uuid));
 
-		//메일 전송
 		String email = lazierUser.getUserEmail();
 		String title = "Lazier 새 비밀번호 발급";
 		String contents = "임시 비밀번호 : " + uuid;
@@ -71,7 +70,8 @@ public class MemberService {
 	public void withdrawal(HttpServletRequest request) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
 		redisService.delValues(request);
-		userRepository.delete(lazierUser); //@ManyToOne(fetch = FetchType.LAZY);
+		lazierUser.delete();
+		memberRepository.delete(lazierUser);
 	}
 
 	public Long parseUserId(HttpServletRequest request) {
@@ -79,7 +79,7 @@ public class MemberService {
 	}
 
 	public LazierUser searchMember(Long userId) {
-		LazierUser lazierUser = userRepository.findByUserId(userId)
+		LazierUser lazierUser = memberRepository.findByUserId(userId)
 			.orElseThrow(() -> new NotFoundMemberException("사용자 정보가 없습니다."));
 
 		return lazierUser;

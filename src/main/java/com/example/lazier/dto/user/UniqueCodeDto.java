@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class UniqueCodeDto {
-
     private String uuid;
 }

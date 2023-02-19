@@ -2,11 +2,11 @@ package com.example.lazier.service.user;
 
 import com.example.lazier.component.MailComponents;
 import com.example.lazier.dto.user.UniqueCodeDto;
-import com.example.lazier.dto.user.UserInfo;
+import com.example.lazier.dto.user.MemberInfo;
 import com.example.lazier.persist.entity.user.LazierUser;
-import com.example.lazier.type.UserStatus;
+import com.example.lazier.type.MemberStatus;
 import com.example.lazier.exception.user.FailedSignUpException;
-import com.example.lazier.persist.repository.UserRepository;
+import com.example.lazier.persist.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,32 +18,32 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class JoinService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final MailComponents mailComponents;
     private final PasswordEncoder passwordEncoder;
 
-    public UniqueCodeDto signUp(UserInfo userInfo) {
+    public UniqueCodeDto signUp(MemberInfo memberInfo) {
 
-        boolean existsEmail = userRepository.existsByUserEmail(userInfo.getUserEmail());
+        boolean existsEmail = memberRepository.existsByUserEmail(memberInfo.getUserEmail());
         if (existsEmail) { throw new FailedSignUpException("이미 가입된 이메일입니다."); }
 
         String uuid = UUID.randomUUID().toString();
 
         LazierUser lazierUser = LazierUser.builder()
-                .userEmail(userInfo.getUserEmail())
-                .password(passwordEncoder.encode(userInfo.getPassword()))
-                .userName(userInfo.getUserName())
-                .phoneNumber(userInfo.getPhoneNumber())
+                .userEmail(memberInfo.getUserEmail())
+                .password(passwordEncoder.encode(memberInfo.getPassword()))
+                .userName(memberInfo.getUserName())
+                .phoneNumber(memberInfo.getPhoneNumber())
 
                 .createdAt(LocalDateTime.now())
-                .userStatus(UserStatus.STATUS_READY.toString())
+                .userStatus(MemberStatus.STATUS_READY.toString())
                 .emailAuthKey(uuid)
                 .emailAuthYn(false)
                 .build();
 
-        userRepository.save(lazierUser);
+        memberRepository.save(lazierUser);
 
-        String email = userInfo.getUserEmail();
+        String email = memberInfo.getUserEmail();
         String title = "Lazier 가입을 축하드립니다.";
         String contents = "아래 링크를 클릭하여 가입을 완료하세요." +
                 "<p>" +
@@ -59,12 +59,12 @@ public class JoinService {
     }
 
     public void emailAuth(String uuid) {
-        LazierUser lazierUser = userRepository.findByEmailAuthKey(uuid)
+        LazierUser lazierUser = memberRepository.findByEmailAuthKey(uuid)
                 .orElseThrow(() -> new FailedSignUpException("회원가입을 진행하세요."));
 
         lazierUser.setEmailAuthYn(true);
         lazierUser.setEmailAuthDt(LocalDateTime.now());
-        lazierUser.setUserStatus(UserStatus.STATUS_ACTIVE.toString());
-        userRepository.save(lazierUser);
+        lazierUser.setUserStatus(MemberStatus.STATUS_ACTIVE.toString());
+        memberRepository.save(lazierUser);
     }
 }

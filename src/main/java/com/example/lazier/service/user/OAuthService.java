@@ -5,9 +5,9 @@ import com.example.lazier.dto.user.GoogleUserInfo;
 import com.example.lazier.dto.user.OAuthTokenResponseDto;
 import com.example.lazier.dto.user.TokenResponseDto;
 import com.example.lazier.persist.entity.user.LazierUser;
-import com.example.lazier.type.UserStatus;
+import com.example.lazier.type.MemberStatus;
 import com.example.lazier.exception.user.InvalidAccessException;
-import com.example.lazier.persist.repository.UserRepository;
+import com.example.lazier.persist.repository.MemberRepository;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -30,7 +30,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 public class OAuthService {
 
-	private final UserRepository userRepository;
+	private final MemberRepository memberRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final RedisService redisService;
 	private final InMemoryClientRegistrationRepository inMemoryClientRegistrationRepository;
@@ -90,7 +90,7 @@ public class OAuthService {
 		String oauthProviderId = googleUserInfo.getProviderId(); //sub
 		String oauthEmail = googleUserInfo.getUserEmail();
 
-		Optional<LazierUser> lazierUser = userRepository.findByOauthId(oauthProviderId);
+		Optional<LazierUser> lazierUser = memberRepository.findByOauthId(oauthProviderId);
 
 		if (lazierUser == null) {
 			LazierUser member = LazierUser.builder()
@@ -98,10 +98,10 @@ public class OAuthService {
 				.userName(oauthName)
 				.oauthId(oauthProviderId)
 				.createdAt(LocalDateTime.now())
-				.userStatus(UserStatus.STATUS_ACTIVE.getUserStatus())
+				.userStatus(MemberStatus.STATUS_ACTIVE.getUserStatus())
 				.socialType(oauthProvider)
 				.build();
-			return userRepository.save(member); //없으면 저장
+			return memberRepository.save(member); //없으면 저장
 		} else {
 			return lazierUser.get(); //있으면 리턴
 		}

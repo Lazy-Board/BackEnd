@@ -2,7 +2,7 @@ package com.example.lazier.controller;
 
 import com.example.lazier.dto.user.FindPasswordRequestDto;
 import com.example.lazier.dto.user.UpdatePasswordRequestDto;
-import com.example.lazier.dto.user.UserInfo;
+import com.example.lazier.dto.user.MemberInfo;
 import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.service.user.JwtService;
 import com.example.lazier.dto.user.TokenResponseDto;
@@ -35,8 +35,8 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> join(@RequestBody @Valid UserInfo userInfo) {
-		return new ResponseEntity<>(joinService.signUp(userInfo), HttpStatus.OK);
+	public ResponseEntity<?> join(@RequestBody @Valid MemberInfo memberInfo) {
+		return new ResponseEntity<>(joinService.signUp(memberInfo), HttpStatus.OK);
 	}
 
 	@GetMapping("/email-auth")
@@ -83,9 +83,9 @@ public class MemberController {
 
 	@PutMapping("/update")
 	public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
-		@RequestBody @Valid UserInfo userInfo) {
+		@RequestBody @Valid MemberInfo memberInfo) {
 
-		memberService.updateUserInfo(request, userInfo);
+		memberService.updateUserInfo(request, memberInfo);
 		return ResponseEntity.ok().build();
 	}
 

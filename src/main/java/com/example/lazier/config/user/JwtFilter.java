@@ -34,7 +34,6 @@ public class JwtFilter extends OncePerRequestFilter {
 				request.setAttribute("userId", authentication.getName());
 			}
 		} catch (IllegalArgumentException | JwtException e) {
-			logger.info("filter error message: " + e.getMessage());
 			request.setAttribute("exception", e.getMessage());
 		}
 		filterChain.doFilter(request, response);
