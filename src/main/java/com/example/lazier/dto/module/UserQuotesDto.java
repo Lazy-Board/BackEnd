@@ -8,12 +8,12 @@ import lombok.Data;
 @Builder
 public class UserQuotesDto {
 
-    private String userId;
+    private long userId;
     private String content;
 
     public static UserQuotesDto of(UserQuotes userQuotes) {
         return UserQuotesDto.builder()
-            .userId(userQuotes.getUserId())
+            .userId(userQuotes.getLazierUser().getUserId())
             .content(userQuotes.getContent())
             .build();
     }

@@ -1,12 +1,17 @@
 package com.example.lazier.persist.entity.module;
 
+import com.example.lazier.persist.entity.user.LazierUser;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Entity
 @Builder
@@ -16,8 +21,12 @@ import lombok.ToString;
 public class UserQuotes {
 
     @Id
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private LazierUser lazierUser;
     private String content;
 
     public void update(String content) {
