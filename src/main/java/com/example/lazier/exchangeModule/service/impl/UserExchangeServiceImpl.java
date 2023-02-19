@@ -14,6 +14,8 @@ import static com.example.lazier.exchangeModule.type.CurrencyName.USD;
 import com.example.lazier.exchangeModule.dto.UserAllExchangeDto;
 import com.example.lazier.exchangeModule.dto.UserPartialExchangeDto;
 import com.example.lazier.exchangeModule.exception.NotFoundExchangeException;
+import com.example.lazier.exchangeModule.exception.UserAlreadyExistException;
+import com.example.lazier.exchangeModule.exception.UserNotFoundException;
 import com.example.lazier.exchangeModule.model.UserExchangeInput;
 import com.example.lazier.exchangeModule.persist.entity.Exchange;
 import com.example.lazier.exchangeModule.persist.entity.UserExchange;
@@ -41,7 +43,14 @@ public class UserExchangeServiceImpl implements UserExchangeService {
 
     @Override
     @Transactional
-    public void add(UserExchangeInput parameter) {
+    public void add(HttpServletRequest request, UserExchangeInput parameter) {
+        String userId = (String) request.getAttribute("userId");
+        parameter.setUserId(userId);
+
+        if (userExchangeRepository.existsById(parameter.getUserId())) {
+            throw new UserAlreadyExistException("사용자 정보가 이미 존재합니다.");
+        }
+
         UserExchange userExchange = UserExchange.builder()
                                                 .userId(parameter.getUserId())
                                                 .usd(parameter.getUsd() + USD)
@@ -64,12 +73,8 @@ public class UserExchangeServiceImpl implements UserExchangeService {
         String userId = (String) request.getAttribute("userId");
         parameter.setUserId(userId);
 
-        Optional<UserExchange> optionalUserExchange = userExchangeRepository.findById(userId);
-        if (!optionalUserExchange.isPresent()) {
-            throw new NotFoundExchangeException("정보가 존재하지 않습니다.");
-        }
-
-        UserExchange userExchange = optionalUserExchange.get();
+        UserExchange userExchange = userExchangeRepository.findById(parameter.getUserId())
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         userExchange.setUsd(parameter.getUsd() + USD);
         userExchange.setJpy(parameter.getJpy() + JPY);
@@ -86,10 +91,14 @@ public class UserExchangeServiceImpl implements UserExchangeService {
     }
 
     @Override
-    public List<UserAllExchangeDto> getUserWantedExchange(String userId) {
+    public List<UserAllExchangeDto> getUserWantedExchange(HttpServletRequest request,
+        UserExchangeInput parameter) {
+        String userId = (String) request.getAttribute("userId");
+        parameter.setUserId(userId);
         List<UserAllExchangeDto> userAllExchangeDtoList = new ArrayList<>();
-        Optional<UserExchange> optionalUserExchange = userExchangeRepository.findById(userId);
-        UserExchange userExchange = optionalUserExchange.get();
+
+        UserExchange userExchange = userExchangeRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         String[] checkList = {userExchange.getUsd(), userExchange.getJpy(), userExchange.getEur(),
                             userExchange.getCny(), userExchange.getHkd(), userExchange.getGbp(),
@@ -99,24 +108,23 @@ public class UserExchangeServiceImpl implements UserExchangeService {
         for (int i = 0; i < 10; i++) {
             if (checkList[i].charAt(0) == 'Y') {
                 String currencyName = checkList[i].substring(1);
-                Optional<Exchange> optionalExchange =
-                    exchangeRepository.findByCurrencyNameOrderByUpdateAtDescCountryNameDesc(currencyName);
 
-                Exchange exchange = optionalExchange.get();
+                Exchange exchange = exchangeRepository.findByCurrencyNameOrderByUpdateAtDescCountryNameDesc(currencyName)
+                    .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
                 UserAllExchangeDto userAllExchangeDto = UserAllExchangeDto.builder()
-                                    .currencyName(exchange.getCurrencyName())
-                                    .countryName(exchange.getCountryName())
-                                    .tradingStandardRate(exchange.getTradingStandardRate())
-                                    .comparedPreviousDay(exchange.getComparedPreviousDay())
-                                    .fluctuationRate(exchange.getFluctuationRate())
-                                    .buyCash(exchange.getBuyCash())
-                                    .sellCash(exchange.getSellCash())
-                                    .sendMoney(exchange.getSendMoney())
-                                    .receiveMoney(exchange.getReceiveMoney())
-                                    .updateAt(exchange.getUpdateAt())
-                                    .round(exchange.getRound())
-                                    .build();
+                                            .currencyName(exchange.getCurrencyName())
+                                            .countryName(exchange.getCountryName())
+                                            .tradingStandardRate(exchange.getTradingStandardRate())
+                                            .comparedPreviousDay(exchange.getComparedPreviousDay())
+                                            .fluctuationRate(exchange.getFluctuationRate())
+                                            .buyCash(exchange.getBuyCash())
+                                            .sellCash(exchange.getSellCash())
+                                            .sendMoney(exchange.getSendMoney())
+                                            .receiveMoney(exchange.getReceiveMoney())
+                                            .updateAt(exchange.getUpdateAt())
+                                            .round(exchange.getRound())
+                                            .build();
 
                 userAllExchangeDtoList.add(userAllExchangeDto);
             }
@@ -125,10 +133,14 @@ public class UserExchangeServiceImpl implements UserExchangeService {
     }
 
     @Override
-    public List<UserPartialExchangeDto> getUserPartialExchange(String userId) {
+    public List<UserPartialExchangeDto> getUserPartialExchange(HttpServletRequest request,
+        UserExchangeInput parameter) {
+        String userId = (String) request.getAttribute("userId");
+        parameter.setUserId(userId);
         List<UserPartialExchangeDto> userPartialExchangeDtoList = new ArrayList<>();
-        Optional<UserExchange> optionalUserExchange = userExchangeRepository.findById(userId);
-        UserExchange userExchange = optionalUserExchange.get();
+
+        UserExchange userExchange = userExchangeRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         String[] checkList = {userExchange.getUsd(), userExchange.getJpy(), userExchange.getEur(),
                             userExchange.getCny(), userExchange.getHkd(), userExchange.getGbp(),
@@ -139,10 +151,8 @@ public class UserExchangeServiceImpl implements UserExchangeService {
             if (checkList[i].charAt(0) == 'Y') {
                 String currencyName = checkList[i].substring(1);
 
-                Optional<Exchange> optionalExchange =
-                    exchangeRepository.findByCurrencyNameOrderByUpdateAtDescCountryNameDesc(currencyName);
-
-                Exchange exchange = optionalExchange.get();
+                Exchange exchange = exchangeRepository.findByCurrencyNameOrderByUpdateAtDescCountryNameDesc(currencyName)
+                    .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
                 UserPartialExchangeDto userPartialExchangeDto = UserPartialExchangeDto.builder()
                                         .currencyName(exchange.getCurrencyName())

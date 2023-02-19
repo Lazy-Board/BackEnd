@@ -9,11 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface UserExchangeService {
 
-    void add(UserExchangeInput parameter);
+    void add(HttpServletRequest request, UserExchangeInput parameter);
 
-    List<UserAllExchangeDto> getUserWantedExchange(String userId);
+    List<UserAllExchangeDto> getUserWantedExchange(HttpServletRequest request,
+                                                    UserExchangeInput userExchangeInput);
 
-    List<UserPartialExchangeDto> getUserPartialExchange(String userId);
+    List<UserPartialExchangeDto> getUserPartialExchange(HttpServletRequest request,
+                                                        UserExchangeInput userExchangeInput);
 
     void update(HttpServletRequest request, UserExchangeInput parameter);
 

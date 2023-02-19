@@ -38,6 +38,5 @@ public class ExchangeServiceImpl implements ExchangeService {
                             .round(exchangeDto.get(i).getRound())
                             .build());
         }
-
     }
 }

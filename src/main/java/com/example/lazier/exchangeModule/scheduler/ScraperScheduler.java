@@ -17,24 +17,11 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class ScraperScheduler {
     private final ExchangeService exchangeService;
-    private final ExchangeScraper exchangeScraper;
-    private final UserExchangeRepository userExchangeRepository;
-    private HttpServletRequest request;
 
     // 일정 기간동안 수행
     @Scheduled(cron = "${scheduler.scrap.exchange}")
     public void exchangeScheduling() {
         log.info("scraping scheduler is started");
-        exchangeScraper.scrap();
-        String userId = (String)request.getAttribute("userId");
-
-        Optional<UserExchange> optionalUserExchange = userExchangeRepository.findById(userId);
-
-        UserExchange userExchange = optionalUserExchange.get();
-
-        if (userExchangeRepository.existsById(userExchange.getUserId())) {
-            exchangeService.add();
-        }
-
+        exchangeService.add();
     }
 }
