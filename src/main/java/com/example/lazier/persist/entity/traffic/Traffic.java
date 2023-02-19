@@ -1,7 +1,13 @@
 package com.example.lazier.persist.entity.traffic;
 
+import com.example.lazier.persist.entity.user.LazierUser;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +23,12 @@ import lombok.ToString;
 public class Traffic {
 
     @Id
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private LazierUser lazierUser;
 
     private String startingPoint; // 출발지
     private String startingGeoCode; // 위경도 정보

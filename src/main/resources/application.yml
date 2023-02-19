@@ -50,7 +50,7 @@ spring:
     host: localhost
 
 jwt:
-  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  secret: ENC(u5X5vXlo3pTDrak8Z7aqtfZVkiBXIb7JFqldni20CiVtl1twhqsjMZy+Q4kX5eHiW/UmcycU0EyPNR4FRXWT6bl7MLXwIELkYRH4ywe9HcT62w5YU+3RrCDzb0el9mUrElAKWMZFtIZN7nLyZTtcPrHhkhBVTpkA5dNDNe8JyjeDhZXH0yMkibgTM7zco+YC)
   refreshToken-validity-in-seconds: 86400000
   token-validity-in-seconds: 1800000
 
@@ -72,11 +72,11 @@ scheduler:
 
 naver:
   geocoding:
-    url: "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query="
-    id: "gbgbgbgbgbg"
-    key: "gbggbgbgb"
+    url: https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=
+    id: 12345
+    key: 12345
 
 kakao:
   navigation:
-    url: "https://apis-navi.kakaomobility.com/v1/directions?origin=%s&destination=%s&waypoints=&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false"
-    key: "gbgbgbgb"
+    url: https://apis-navi.kakaomobility.com/v1/directions?origin=%s&destination=%s&waypoints=&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false
+    key: 12345

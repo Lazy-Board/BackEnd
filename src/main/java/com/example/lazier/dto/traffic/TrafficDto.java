@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class TrafficDto {
 
-    private String userId;
+    private long userId;
     private String startingPoint;
     private String startingGeoCode; // 위경도 정보
     private String destination;
@@ -16,7 +16,7 @@ public class TrafficDto {
 
     public static TrafficDto of(Traffic traffic) {
         return TrafficDto.builder()
-            .userId(traffic.getUserId())
+            .userId(traffic.getLazierUser().getUserId())
             .startingPoint(traffic.getStartingPoint())
             .startingGeoCode(traffic.getStartingGeoCode())
             .destination(traffic.getDestination())
