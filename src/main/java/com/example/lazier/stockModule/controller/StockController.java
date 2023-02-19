@@ -2,6 +2,7 @@ package com.example.lazier.stockModule.controller;
 
 import com.example.lazier.stockModule.dto.UserStockInput;
 import com.example.lazier.stockModule.service.UserStockService;
+import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class StockController {
     private final UserStockService userStockService;
 
+    @ApiOperation(value = "주식 정보 저장")
     @PostMapping("/add")
     public ResponseEntity<?> addStockInfo(HttpServletRequest request,
         @RequestBody UserStockInput parameter) {
@@ -27,6 +29,7 @@ public class StockController {
     }
 
     // Main 페이지 - 주식 정보 VIEW (4가지)
+    @ApiOperation(value = "주식 정보 조회 - 주식 종목, 전일비, 현재가, 등락률")
     @GetMapping("/search")
     public ResponseEntity<?> getUserPartialStock(HttpServletRequest request,
         @RequestBody UserStockInput parameter) {
@@ -35,6 +38,7 @@ public class StockController {
     }
 
     // 상세 페이지 - 주식 정보 전체 VIEW
+    @ApiOperation(value = "주식 상세 정보 조회")
     @GetMapping("/detail")
     public ResponseEntity<?> getUserAllStock(HttpServletRequest request,
         @RequestBody UserStockInput parameter) {
@@ -43,6 +47,7 @@ public class StockController {
     }
 
     // 주식 종목 선택 정보 업데이트
+    @ApiOperation(value = "주식 종목 선택값 업데이트")
     @PutMapping("/update")
     public ResponseEntity<?> updateUserStock(HttpServletRequest request,
         @RequestBody UserStockInput parameter) {
