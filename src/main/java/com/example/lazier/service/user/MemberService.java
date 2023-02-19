@@ -9,6 +9,7 @@ import com.example.lazier.exception.user.NotFoundMemberException;
 import com.example.lazier.exception.user.NotMatchMemberException;
 import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.persist.repository.MemberRepository;
+import com.example.lazier.type.MemberStatus;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -70,8 +71,9 @@ public class MemberService {
 	public void withdrawal(HttpServletRequest request) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
 		redisService.delValues(request);
-		lazierUser.delete();
-		memberRepository.delete(lazierUser);
+		//lazierUser.delete();
+		//memberRepository.delete(lazierUser);
+		lazierUser.setUserStatus(MemberStatus.STATUS_WITHDRAW.getUserStatus());
 	}
 
 	public Long parseUserId(HttpServletRequest request) {

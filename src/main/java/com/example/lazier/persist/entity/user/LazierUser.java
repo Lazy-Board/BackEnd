@@ -49,6 +49,7 @@ public class LazierUser implements UserDetails {
 	private boolean emailAuthYn;
 	private LocalDateTime emailAuthDt;
 
+	/*
 	@OneToMany(mappedBy = "lazierUser", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST,
 		orphanRemoval = true)
 	private List<Todo> todo = new ArrayList<>();
@@ -58,6 +59,7 @@ public class LazierUser implements UserDetails {
 			todo.setLazierUser(null);
 		}
 	}
+	*/
 
 	public void updateUserInfo(MemberInfo memberInfo) {
 		if (!memberInfo.getSocialType().toLowerCase().trim().equals("google")) {

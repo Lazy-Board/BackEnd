@@ -25,11 +25,11 @@ public class LoginService implements UserDetailsService {
 		LazierUser lazierUser = memberRepository.findByUserId(Long.valueOf(username))
 			.orElseThrow(() -> new NotFoundMemberException("사용자 정보가 없습니다."));
 
-		if (MemberStatus.STATUS_READY.toString().equals(lazierUser.getUserStatus())) {
+		if (MemberStatus.STATUS_READY.getUserStatus().equals(lazierUser.getUserStatus())) {
 			throw new FailedLoginException("이메일 활성화 이후에 로그인 하세요.");
 		}
 
-		if (MemberStatus.STATUS_WITHDRAW.toString().equals(lazierUser.getUserStatus())) {
+		if (MemberStatus.STATUS_WITHDRAW.getUserStatus().equals(lazierUser.getUserStatus())) {
 			throw new FailedLoginException("탈퇴한 회원입니다.");
 		}
 		return lazierUser;
