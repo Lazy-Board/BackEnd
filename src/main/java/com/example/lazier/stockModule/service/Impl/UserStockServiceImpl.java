@@ -14,7 +14,8 @@ import static com.example.lazier.stockModule.type.StockName.현대차;
 import com.example.lazier.stockModule.dto.UserAllStockDto;
 import com.example.lazier.stockModule.dto.UserPartialStockDto;
 import com.example.lazier.stockModule.dto.UserStockInput;
-import com.example.lazier.stockModule.exception.NotFoundStockException;
+import com.example.lazier.stockModule.exception.UserAlreadyExistException;
+import com.example.lazier.stockModule.exception.UserNotFoundException;
 import com.example.lazier.stockModule.persist.entity.Stock;
 import com.example.lazier.stockModule.persist.entity.UserStock;
 import com.example.lazier.stockModule.persist.repository.StockRepository;
@@ -23,7 +24,6 @@ import com.example.lazier.stockModule.service.StockService;
 import com.example.lazier.stockModule.service.UserStockService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,22 +39,31 @@ public class UserStockServiceImpl implements UserStockService {
 
     private final StockRepository stockRepository;
 
+
     @Override
     @Transactional
-    public void add(UserStockInput parameter) {
+    public void add(HttpServletRequest request, UserStockInput parameter) {
+        String userId = (String) request.getAttribute("userId");
+        parameter.setUserId(userId);
+
+        if (userStockRepository.existsById(parameter.getUserId())) {
+            throw new UserAlreadyExistException("사용자 정보가 이미 존재합니다.");
+        }
+
         UserStock userStock = UserStock.builder()
                             .userId(parameter.getUserId())
-                            .samsungElectronic("Y" + 삼성전자)
-                            .skHynix("Y" + SK하이닉스)
-                            .naver("Y" + NAVER)
-                            .kakao("Y" + 카카오)
-                            .hyundaiCar("N" + 현대차)
-                            .kia("N" + 기아)
-                            .lgElectronic("N" + LG전자)
-                            .kakaoBank("N" + 카카오뱅크)
-                            .samsungSdi("N" + 삼성SDI)
-                            .hive("N" + 하이브)
+                            .samsungElectronic(parameter.getSamsungElectronic() + 삼성전자)
+                            .skHynix(parameter.getSkHynix() + SK하이닉스)
+                            .naver(parameter.getNaver() + NAVER)
+                            .kakao(parameter.getKakao() + 카카오)
+                            .hyundaiCar(parameter.getHyundaiCar() + 현대차)
+                            .kia(parameter.getKia() + 기아)
+                            .lgElectronic(parameter.getLgElectronic() + LG전자)
+                            .kakaoBank(parameter.getKakaoBank() + 카카오뱅크)
+                            .samsungSdi(parameter.getSamsungSdi() + 삼성SDI)
+                            .hive(parameter.getHive() + 하이브)
                             .build();
+
         userStockRepository.save(userStock);
         stockService.add();
     }
@@ -64,37 +73,32 @@ public class UserStockServiceImpl implements UserStockService {
         String userId = (String) request.getAttribute("userId");
         parameter.setUserId(userId);
 
-        Optional<UserStock> optionalUserStock = userStockRepository.findById(userId);
-        if (!optionalUserStock.isPresent()) {
-            throw new NotFoundStockException("정보가 존재하지 않습니다.");
-        }
+        UserStock userStock = userStockRepository.findById(parameter.getUserId())
+                .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
-        UserStock userStock = optionalUserStock.get();
-
-        userStock.setSamsungElectronic("N" + 삼성전자);
-        userStock.setSkHynix("Y" + SK하이닉스);
-        userStock.setNaver("Y" + NAVER);
-        userStock.setKakao("N" + 카카오);
-        userStock.setHyundaiCar("Y" + 현대차);
-        userStock.setKia("Y" + 기아);
-        userStock.setLgElectronic("Y" + LG전자);
-        userStock.setKakaoBank("N" + 카카오뱅크);
-        userStock.setSamsungSdi("Y" + 삼성SDI);
-        userStock.setHive("Y" + 하이브);
+        userStock.setSamsungElectronic(parameter.getSamsungElectronic() + 삼성전자);
+        userStock.setSkHynix(parameter.getSkHynix() + SK하이닉스);
+        userStock.setNaver(parameter.getNaver() + NAVER);
+        userStock.setKakao(parameter.getKakao() + 카카오);
+        userStock.setHyundaiCar(parameter.getHyundaiCar() + 현대차);
+        userStock.setKia(parameter.getKia() + 기아);
+        userStock.setLgElectronic(parameter.getLgElectronic() + LG전자);
+        userStock.setKakaoBank(parameter.getKakaoBank() + 카카오뱅크);
+        userStock.setSamsungSdi(parameter.getSamsungSdi() + 삼성SDI);
+        userStock.setHive(parameter.getHive() + 하이브);
 
         userStockRepository.save(userStock);
     }
 
     @Override
-    public List<UserAllStockDto> getUserWantedStock(String userId) {
+    public List<UserAllStockDto> getUserWantedStock(HttpServletRequest request,
+        UserStockInput parameter) {
+        String userId = (String) request.getAttribute("userId");
+        parameter.setUserId(userId);
         List<UserAllStockDto> userAllStockDtoList = new ArrayList<>();
-        Optional<UserStock> optionalUserStock = userStockRepository.findById(userId);
 
-        if (!optionalUserStock.isPresent()) {
-            throw new NotFoundStockException("정보가 존재하지 않습니다.");
-        }
-
-        UserStock userStock = optionalUserStock.get();
+        UserStock userStock = userStockRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         String[] checkList = {userStock.getSamsungElectronic(), userStock.getSkHynix(),
                             userStock.getNaver(), userStock.getKakao(), userStock.getHyundaiCar(),
@@ -105,14 +109,9 @@ public class UserStockServiceImpl implements UserStockService {
         for (int i = 0; i < 10; i++) {
             if (checkList[i].charAt(0) == 'Y') {
                 String stockName = checkList[i].substring(1);
-                Optional<Stock> optionalStock =
-                    stockRepository.findByStockNameOrderByUpdateAtDesc(stockName);
 
-                if (!optionalStock.isPresent()) {
-                    throw new NotFoundStockException("정보가 존재하지 않습니다.");
-                }
-
-                Stock stock = optionalStock.get();
+                Stock stock = stockRepository.findByStockNameOrderByUpdateAtDesc(stockName)
+                    .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
                 UserAllStockDto userAllStockDto = UserAllStockDto.builder()
                                                             .stockName(stock.getStockName())
@@ -133,15 +132,14 @@ public class UserStockServiceImpl implements UserStockService {
     }
 
     @Override
-    public List<UserPartialStockDto> getUserPartialStock(String userId) {
+    public List<UserPartialStockDto> getUserPartialStock(HttpServletRequest request,
+        UserStockInput parameter) {
+        String userId = (String) request.getAttribute("userId");
+        parameter.setUserId(userId);
         List<UserPartialStockDto> userPartialStockDtoList = new ArrayList<>();
-        Optional<UserStock> optionalUserStock = userStockRepository.findById(userId);
 
-        if (!optionalUserStock.isPresent()) {
-            throw new NotFoundStockException("정보가 존재하지 않습니다.");
-        }
-
-        UserStock userStock = optionalUserStock.get();
+        UserStock userStock = userStockRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         String[] checkList = {userStock.getSamsungElectronic(), userStock.getSkHynix(),
                             userStock.getNaver(), userStock.getKakao(), userStock.getHyundaiCar(),
@@ -153,14 +151,8 @@ public class UserStockServiceImpl implements UserStockService {
             if (checkList[i].charAt(0) == 'Y') {
                 String stockName = checkList[i].substring(1);
 
-                Optional<Stock> optionalStock =
-                    stockRepository.findByStockNameOrderByUpdateAtDesc(stockName);
-
-                if (!optionalStock.isPresent()) {
-                    throw new NotFoundStockException("정보가 존재하지 않습니다.");
-                }
-
-                Stock stock = optionalStock.get();
+                Stock stock = stockRepository.findByStockNameOrderByUpdateAtDesc(stockName)
+                    .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
                 UserPartialStockDto userPartialStockDto = UserPartialStockDto.builder()
                                                                 .stockName(stock.getStockName())
