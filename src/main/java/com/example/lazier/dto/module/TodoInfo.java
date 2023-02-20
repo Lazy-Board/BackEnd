@@ -1,4 +1,4 @@
-package com.example.lazier.dto.todo;
+package com.example.lazier.dto.module;
 
 import com.example.lazier.persist.entity.todo.Todo;
 import java.util.ArrayList;

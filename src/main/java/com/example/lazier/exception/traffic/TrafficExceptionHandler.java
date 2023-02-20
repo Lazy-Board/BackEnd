@@ -1,6 +1,6 @@
 package com.example.lazier.exception.traffic;
 
-import com.example.lazier.controller.traffic.TrafficController;
+import com.example.lazier.controller.TrafficController;
 import com.example.lazier.exception.ErrorMessage;
 import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;

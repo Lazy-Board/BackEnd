@@ -2,7 +2,7 @@ package com.example.lazier.controller;
 
 import com.example.lazier.dto.module.UserExchangeInput;
 import com.example.lazier.persist.repository.UserExchangeRepository;
-import com.example.lazier.service.UserExchangeService;
+import com.example.lazier.service.Impl.UserExchangeService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,9 @@
-package com.example.lazier.exchangeModule.service.impl;
+package com.example.lazier.service.Impl;
 
 import com.example.lazier.dto.module.ExchangeDto;
 import com.example.lazier.persist.entity.module.Exchange;
 import com.example.lazier.persist.repository.ExchangeRepository;
 import com.example.lazier.scraper.ExchangeScraper;
-import com.example.lazier.service.ExchangeService;
 import java.util.List;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -12,13 +11,12 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class ExchangeServiceImpl implements ExchangeService {
+public class ExchangeService {
 
     private final ExchangeRepository exchangeRepository;
     private final ExchangeScraper scraper;
 
     // 환율 정보 추가 (10개 정보)
-    @Override
     @Transactional
     public void add() {
         List<ExchangeDto> exchangeDto = scraper.scrap();

@@ -1,4 +1,4 @@
-package com.example.lazier.dto.traffic;
+package com.example.lazier.dto.module;
 
 import javax.validation.constraints.NotBlank;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.example.lazier.dto.traffic;
+package com.example.lazier.dto.module;
 
 import lombok.Builder;
 import lombok.Data;

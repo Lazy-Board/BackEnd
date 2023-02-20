@@ -1,7 +1,7 @@
 package com.example.lazier.controller;
 
 import com.example.lazier.dto.module.YoutubeDto;
-import com.example.lazier.service.Impl.YoutubeServiceImpl;
+import com.example.lazier.service.Impl.YoutubeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class YoutubeController {
 
-  private final YoutubeServiceImpl youtubeService;
+  private final YoutubeService youtubeService;
 //    private final CacheManager redisCacheManager;
 
   @GetMapping

@@ -1,4 +1,4 @@
-package com.example.lazier.exchangeModule.service.impl;
+package com.example.lazier.service.Impl;
 
 import static com.example.lazier.type.CurrencyName.AUD;
 import static com.example.lazier.type.CurrencyName.CAD;
@@ -19,8 +19,6 @@ import com.example.lazier.persist.entity.module.Exchange;
 import com.example.lazier.persist.entity.module.UserExchange;
 import com.example.lazier.persist.repository.ExchangeRepository;
 import com.example.lazier.persist.repository.UserExchangeRepository;
-import com.example.lazier.service.ExchangeService;
-import com.example.lazier.service.UserExchangeService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
-public class UserExchangeServiceImpl implements UserExchangeService {
+public class UserExchangeService {
 
     private final ExchangeService exchangeService;
 
@@ -39,7 +37,6 @@ public class UserExchangeServiceImpl implements UserExchangeService {
 
     private final ExchangeRepository exchangeRepository;
 
-    @Override
     @Transactional
     public void add(UserExchangeInput parameter) {
         UserExchange userExchange = UserExchange.builder()
@@ -59,7 +56,6 @@ public class UserExchangeServiceImpl implements UserExchangeService {
     }
 
     @Transactional
-    @Override
     public void update(HttpServletRequest request, UserExchangeInput parameter) {
         String userId = (String) request.getAttribute("userId");
         parameter.setUserId(userId);
@@ -85,7 +81,7 @@ public class UserExchangeServiceImpl implements UserExchangeService {
         userExchangeRepository.save(userExchange);
     }
 
-    @Override
+
     public List<UserAllExchangeDto> getUserWantedExchange(String userId) {
         List<UserAllExchangeDto> userAllExchangeDtoList = new ArrayList<>();
         Optional<UserExchange> optionalUserExchange = userExchangeRepository.findById(userId);
@@ -124,7 +120,6 @@ public class UserExchangeServiceImpl implements UserExchangeService {
         return userAllExchangeDtoList;
     }
 
-    @Override
     public List<UserPartialExchangeDto> getUserPartialExchange(String userId) {
         List<UserPartialExchangeDto> userPartialExchangeDtoList = new ArrayList<>();
         Optional<UserExchange> optionalUserExchange = userExchangeRepository.findById(userId);

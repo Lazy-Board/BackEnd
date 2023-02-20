@@ -3,7 +3,7 @@ package com.example.lazier.scheduler;
 import com.example.lazier.persist.entity.module.UserExchange;
 import com.example.lazier.persist.repository.UserExchangeRepository;
 import com.example.lazier.scraper.ExchangeScraper;
-import com.example.lazier.service.ExchangeService;
+import com.example.lazier.service.Impl.ExchangeService;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;

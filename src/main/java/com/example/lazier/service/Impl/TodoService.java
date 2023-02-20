@@ -1,6 +1,6 @@
-package com.example.lazier.service.todo;
+package com.example.lazier.service.Impl;
 
-import com.example.lazier.dto.todo.TodoInfo;
+import com.example.lazier.dto.module.TodoInfo;
 import com.example.lazier.exception.todo.AlreadyDeleteException;
 import com.example.lazier.exception.todo.FailedWriteException;
 import com.example.lazier.persist.entity.todo.Todo;

@@ -1,10 +1,10 @@
-package com.example.lazier.service.traffic;
+package com.example.lazier.service.Impl;
 
 import com.example.lazier.component.KakaoNavigationApi;
 import com.example.lazier.component.NaverGeocodingApi;
-import com.example.lazier.dto.traffic.DurationDto;
-import com.example.lazier.dto.traffic.TrafficDto;
-import com.example.lazier.dto.traffic.TrafficInput;
+import com.example.lazier.dto.module.DurationDto;
+import com.example.lazier.dto.module.TrafficDto;
+import com.example.lazier.dto.module.TrafficInput;
 import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.traffic.Traffic;

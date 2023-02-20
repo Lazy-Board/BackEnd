@@ -1,6 +1,6 @@
 package com.example.lazier.persist.entity.todo;
 
-import com.example.lazier.dto.todo.TodoInfo;
+import com.example.lazier.dto.module.TodoInfo;
 import com.example.lazier.persist.entity.user.LazierUser;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

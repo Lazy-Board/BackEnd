@@ -5,7 +5,6 @@ import com.example.lazier.dto.module.YoutubeDto;
 import com.example.lazier.persist.entity.module.Youtube;
 import com.example.lazier.persist.repository.YoutubeRepository;
 import com.example.lazier.scraper.YoutubeScraper;
-import com.example.lazier.service.YoutubeService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class YoutubeServiceImpl implements YoutubeService {
+public class YoutubeService {
 
   private final YoutubeScraper youtubeScraper;
   private final YoutubeRepository youtubeRepository;
 
 
-  @Override
   @Transactional(readOnly = true)
   public List<YoutubeDto> getYoutube() {
     List<Youtube> youtubeEntities = youtubeRepository.findTop3ByOrderByCreatedAtDesc();

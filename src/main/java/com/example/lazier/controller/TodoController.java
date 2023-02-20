@@ -1,7 +1,7 @@
 package com.example.lazier.controller;
 
-import com.example.lazier.dto.todo.TodoInfo;
-import com.example.lazier.service.todo.TodoService;
+import com.example.lazier.dto.module.TodoInfo;
+import com.example.lazier.service.Impl.TodoService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
