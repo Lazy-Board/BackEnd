@@ -103,7 +103,9 @@ public class YoutubeScraper {
         //수정필요
         String dateString = baseObject.getAsJsonObject("publishedTimeText").get("simpleText")
             .getAsString();               //*일 전   //*주 전
-        String beforeText = dateString.substring(0, dateString.indexOf(" ")).trim();
+        System.out.println("dateString = " + dateString);
+        String beforeText = dateString.substring(0, dateString.lastIndexOf(" ")).replace("스트리밍 시간: ","").trim();
+        System.out.println("beforeText = " + beforeText);
         String beforeDayOrWeek = beforeText.substring(beforeText.length() - 1);
         int beforeNum ;
         if (beforeDayOrWeek.equals("간")) {
