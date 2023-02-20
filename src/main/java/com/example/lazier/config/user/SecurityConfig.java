@@ -36,9 +36,7 @@ public class SecurityConfig {
             .antMatchers(HttpMethod.GET, "/login")
             .antMatchers("/youtube/**")
             .antMatchers("/youtube")
-            .antMatchers("/h2-console/**")
-            .antMatchers("/weather/user-info")
-            .antMatchers("/weather");
+            .antMatchers("/h2-console/**");
     }
 
     @Bean
