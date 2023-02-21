@@ -1,5 +1,6 @@
 package com.example.lazier.scraper;
 
+import com.example.lazier.dto.module.NewsDto;
 import com.example.lazier.dto.module.NewsPressDto;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,8 +21,9 @@ public class NewsScraper {
   String html = null;
   HttpURLConnection con;
   final String NEWS_PRESS_LIST_URL = "https://news.naver.com/main/officeList.naver";
+  final String NEWS_URL_BY_PRESS_AND_DATE = "https://news.naver.com/main/list.naver?mode=LPOD&mid=sec&oid=%&listType=summary&date=%";
 
-  public List<NewsPressDto> pressListCrawl() {
+    public List<NewsPressDto> crawlPressList() {
     List<NewsPressDto> newsPressDtos = new ArrayList<>();
     try {
       URL url = new URL(NEWS_PRESS_LIST_URL);
@@ -64,6 +66,14 @@ public class NewsScraper {
       throw new RuntimeException(e);
     }
     return newsPressDtos;
+  }
+
+
+  //String date : 8자리 날짜 입력. ex 20230220
+  public List<NewsDto> crawlNewsByPressAndDate(String pressId, String date) {
+    List<NewsDto> newsDtos = new ArrayList<>();
+
+    return newsDtos;
   }
 
 }
