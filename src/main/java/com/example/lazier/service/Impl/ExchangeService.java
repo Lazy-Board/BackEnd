@@ -19,6 +19,7 @@ public class ExchangeService {
     // 환율 정보 추가 (10개 정보)
     @Transactional
     public void add() {
+        delete();
         List<ExchangeDto> exchangeDto = scraper.scrap();
 
         for (int i = 0; i < 10; i++) {
@@ -37,5 +38,10 @@ public class ExchangeService {
                             .build());
         }
 
+    }
+
+    @Transactional
+    public void delete() {
+        exchangeRepository.deleteAll();
     }
 }
