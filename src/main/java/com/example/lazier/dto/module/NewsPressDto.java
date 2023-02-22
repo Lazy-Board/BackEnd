@@ -9,18 +9,18 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class NewsPressDto {
   private String pressId; //oid
 
   private String pressName;
   private String sector;
-  @Builder
-  public NewsPressDto from(NewsPress entity){
-
-    this.pressId = entity.getPressId();
-    this.pressName = entity.getPressName();
-    this.sector = entity.getSector();
-    return this;
+  public static NewsPressDto from (NewsPress entity){
+    return NewsPressDto.builder()
+        .pressId(entity.getPressId())
+        .pressName(entity.getPressName())
+        .sector(entity.getSector())
+        .build();
   }
   public NewsPressDto (String sector){
     this.sector = sector;
