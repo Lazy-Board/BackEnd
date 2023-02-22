@@ -15,16 +15,17 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "YOUTUBE")
+@Entity(name = "NEWS")
 @Builder
 public class News {
 
   @Id
   private String newsId;
 
-  private String Subject;
-  private String PressId;
-  private LocalDateTime createdAt;
+  private String subject;
+  private String pressId;
+  private String contents;
+  private String createdAt;
 
   private String url;
   private String imagePath;

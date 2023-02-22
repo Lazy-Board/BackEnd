@@ -14,9 +14,10 @@ public class NewsDto {
 
   private String newsId;
 
-  private String Subject;
-  private String PressId;
-  private LocalDateTime createdAt;
+  private String subject;
+  private String contents;
+  private String pressId;
+  private String  createdAt;
 
   private String url;
   private String imagePath;
