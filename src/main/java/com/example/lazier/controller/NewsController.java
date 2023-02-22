@@ -1,0 +1,47 @@
+package com.example.lazier.controller;
+
+import com.example.lazier.service.Impl.NewsService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
+@RestController
+@RequestMapping("/news")
+@RequiredArgsConstructor
+public class NewsController {
+
+  private final NewsService newsService;
+//    private final CacheManager redisCacheManager;
+
+  //서비스 미사용 컨트롤러(작동확인용)
+  @GetMapping("/init")
+  public ResponseEntity<?> init() {
+    this.newsService.dbInit();
+    return ResponseEntity.ok("news DB가 크롤링되었습니다.");
+  }
+
+//  @GetMapping
+//  public ResponseEntity<?> showYoutube() {
+//    List<YoutubeDto> result = this.youtubeService.getYoutube();
+//    return ResponseEntity.ok(result);
+//  }
+//
+//  //서비스 미사용 컨트롤러(작동확인용)
+//  @GetMapping("/init")
+//  public ResponseEntity<?> initDB() {
+//    this.youtubeService.youtubeinit();
+//    return ResponseEntity.ok("유튜브 DB가 크롤링되었습니다.");
+//  }
+//
+//  //서비스 미사용 컨트롤러(작동확인용)
+//  @DeleteMapping("/dbupdate")
+//  public ResponseEntity<?> deleteOldYoutube() {
+//    this.youtubeService.updateYoutubeDbTest();
+//    return ResponseEntity.ok("오래된 DB를 삭제하였습니다.");
+//  }
+}
+
+

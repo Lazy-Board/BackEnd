@@ -37,7 +37,8 @@ public class SecurityConfig {
             .antMatchers("/youtube/**")
             .antMatchers("/h2-console/**")
             .antMatchers("/weather/user-info")
-            .antMatchers("/weather");
+            .antMatchers("/weather")
+            .antMatchers("/news/**");
     }
 
     @Bean

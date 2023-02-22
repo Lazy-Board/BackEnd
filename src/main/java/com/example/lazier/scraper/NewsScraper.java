@@ -46,15 +46,21 @@ public class NewsScraper {
       Document document = Jsoup.parse(html);
       Elements baseElements = document.getElementsByAttributeValue("class", "group_table")
           .select("tbody tr");
+      System.out.println(baseElements.size());
 
       for (int i = 0; i < baseElements.size(); i++) {
         String sectorName = baseElements.get(i).select("th").text();
         Elements pressNameElements = baseElements.get(i).select("td ul li");
-        NewsPressDto dto = new NewsPressDto(sectorName);
+        System.out.println(pressNameElements);
+        System.out.println(pressNameElements.size());
+
         for (int j = 0; j < pressNameElements.size(); j++) {
+        NewsPressDto dto = new NewsPressDto(sectorName);
+          System.out.println("j = " + j);
           Element pressInfo = pressNameElements.select("a").get(j);
           String pressIdUrl = pressInfo.attr("href");
-          String pressId = pressIdUrl.substring(pressIdUrl.lastIndexOf('=') + 1);
+          int index = pressIdUrl.indexOf("oid=")+4;
+          String pressId = pressIdUrl.substring(index,index+3);
           String pressName = pressInfo.text();
 
           dto.setPressName(pressInfo.text());

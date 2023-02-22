@@ -1,6 +1,7 @@
 package com.example.lazier.persist.entity.module;
 
 
+import com.example.lazier.dto.module.NewsDto;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -17,6 +18,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Entity(name = "NEWS")
 @Builder
+
 public class News {
 
   @Id
@@ -31,6 +33,17 @@ public class News {
   private String imagePath;
 
   private LocalDateTime updatedAt;
+
+  public News(NewsDto dto) {
+    this.newsId = dto.getNewsId();
+    this.subject = dto.getSubject();
+    this.pressId = dto.getPressId();
+    this.contents = dto.getContents();
+    this.createdAt = dto.getCreatedAt();
+    this.url = dto.getUrl();
+    this.imagePath = dto.getImagePath();
+    this.updatedAt = LocalDateTime.now();
+  }
 
 
 }

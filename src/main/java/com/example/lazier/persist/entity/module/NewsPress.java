@@ -1,6 +1,7 @@
 package com.example.lazier.persist.entity.module;
 
 
+import com.example.lazier.dto.module.NewsPressDto;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -15,7 +16,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "YOUTUBE")
+@Entity(name = "NEWS_PRESS")
 @Builder
 public class NewsPress {
 
@@ -26,6 +27,13 @@ public class NewsPress {
   private String sector;
 
   private LocalDateTime updatedAt;
+
+  public NewsPress(NewsPressDto dto){
+    this.pressId = dto.getPressId();
+    this.pressName = dto.getPressName();
+    this.sector = dto.getSector();
+    this.updatedAt = LocalDateTime.now();
+  }
 
 
 }
