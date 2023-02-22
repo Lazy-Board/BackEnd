@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NewsRepository extends JpaRepository<News, String> {
-  List<News> findTop3ByOrderByCreatedAtDesc();
+  List<News> findTop10ByPressIdOrderByUpdatedAtDesc(String pressId);
 
 
 

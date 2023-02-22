@@ -1,5 +1,6 @@
 package com.example.lazier.dto.module;
 
+import com.example.lazier.persist.entity.module.News;
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,15 +18,24 @@ public class NewsDto {
   private String subject;
   private String contents;
   private String pressId;
-  private String  createdAt;
+  private String createdAt;
 
   private String url;
   private String imagePath;
 
   private LocalDateTime updatedAt;
 
-  public NewsDto(String newsId) {
-    this.newsId = newsId;
+
+  public static NewsDto from(News entity) {
+    return NewsDto.builder()
+        .newsId(entity.getNewsId())
+        .subject(entity.getSubject())
+        .contents(entity.getContents())
+        .pressId(entity.getPressId())
+        .createdAt(entity.getCreatedAt())
+        .url(entity.getUrl())
+        .imagePath(entity.getImagePath())
+        .build();
   }
 
 }
