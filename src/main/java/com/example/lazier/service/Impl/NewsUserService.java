@@ -1,5 +1,6 @@
 package com.example.lazier.service.Impl;
 
+import com.example.lazier.dto.module.NewsPressDto;
 import com.example.lazier.dto.module.NewsUserInput;
 import com.example.lazier.exception.PressNotFoundException;
 import com.example.lazier.exception.UserNotFoundException;
@@ -11,6 +12,7 @@ import com.example.lazier.persist.repository.NewsUserRepository;
 import com.example.lazier.service.user.MemberService;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +47,17 @@ public class NewsUserService {
       newsUserRepository.save(
           NewsUser.builder().lazierUser(lazierUser).userPress(userPress).build());
     }
+  }
+  @Transactional
+  public List<NewsPressDto> showUserPressList(HttpServletRequest request) {
+    long userId = Long.parseLong(request.getAttribute("userId").toString());
+    //멤버인지 확인 -> 아닐경우 멤버서비스에서 Error Throw
+    LazierUser lazierUser = memberService.searchMember(userId);
+    NewsUser user = newsUserRepository.findByLazierUser(lazierUser)
+        .orElseThrow(() -> new UserNotFoundException("해당모듈 사용자가 아닙니다."));
+
+    return user.getUserPress().stream().map(NewsPressDto::from)
+        .collect(Collectors.toList());
   }
 
   @Transactional
