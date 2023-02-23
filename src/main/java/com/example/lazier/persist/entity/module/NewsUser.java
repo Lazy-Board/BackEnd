@@ -9,8 +9,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +34,12 @@ public class NewsUser  {
   private LazierUser lazierUser;
 
 
-  @OneToMany(mappedBy = "pressName")
+  @ManyToMany
+  @JoinTable(
+      name = "NewsUser_NewsPress_TABLE",
+      joinColumns = @JoinColumn(name = "id"),
+      inverseJoinColumns = @JoinColumn(name = "press_name")
+  )
   private List<NewsPress> userPress;
 
   public void update(List<NewsPress> newPressList) {

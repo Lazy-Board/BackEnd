@@ -3,6 +3,7 @@ package com.example.lazier.service.Impl;
 import com.example.lazier.dto.module.NewsPressDto;
 import com.example.lazier.dto.module.NewsUserInput;
 import com.example.lazier.exception.PressNotFoundException;
+import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.NewsPress;
 import com.example.lazier.persist.entity.module.NewsUser;
@@ -30,9 +31,8 @@ public class NewsUserService {
   private final NewsPressRepository newsPressRepository;
 
   /**
-   * 추가: 멤버조회(전체) 되면 -> 모듈멤버확인 ->없으면 -> 유저레포초기화 ;
-   * 수정: userInput//3개의 스트링(언론사명) ;
-   * 삭제: 하지 않음 (* 회원탈퇴의 영역);
+   * 추가: 멤버조회(전체) 되면 -> 모듈멤버확인 ->없으면 -> 유저레포초기화 ; 수정: userInput//3개의 스트링(언론사명) ; 삭제: 하지 않음 (* 회원탈퇴의
+   * 영역);
    */
   //
   @Transactional
@@ -46,8 +46,11 @@ public class NewsUserService {
       List<NewsPress> userPress = newsPressRepository.findTop3ByOrderByPressIdAsc();
       newsUserRepository.save(
           NewsUser.builder().lazierUser(lazierUser).userPress(userPress).build());
+    } else {
+      throw new UserAlreadyExistException("이미 사용중인 모듈입니다.");
     }
   }
+
   @Transactional
   public List<NewsPressDto> showUserPressList(HttpServletRequest request) {
     long userId = Long.parseLong(request.getAttribute("userId").toString());

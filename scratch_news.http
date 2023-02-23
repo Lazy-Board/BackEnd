@@ -1,12 +1,54 @@
-### DB초기화
+###1. 멤버가입 (uuid 확인)
+POST http://localhost:8080/user/signup
+Content-Type: application/json
+
+{
+  "userEmail": "test2@gmail.com",
+  "password": "1234567890",
+  "userName": "test",
+  "nickName": "testNickname",
+  "phoneNumber": "01012341234"
+}
+
+### 2. uuid인증
+GET localhost:8080/user/email-auth?uuid=8cf0bec1-da91-42a1-8e36-84983f289553
+Content-Type: application/json
+
+### 3. 멤버로그인(token확인)
+POST http://localhost:8080/user/login
+Content-Type: application/json
+
+{
+  "userEmail": "test2@gmail.com",
+  "password": "1234567890"
+}
+
+### 4.NewsDB초기화 (db가 없을경우에만)
 GET http://localhost:8080/news/init
 Content-Type: application/json
 
-#### 유튜브 정보 조회
-#GET http://localhost:8080/youtube
-#Content-Type: application/json
-#
-#### 오래된 DB 삭제
-#DELETE http://localhost:8080/youtube/dbupdate
-#Content-Type: application/json
-#
+### NewsDB모듈 추가
+POST http://localhost:8080/newsuser
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3MTQ3MTM1LCJleHAiOjE2NzcxNDg5MzV9.FsQAVCPndZNce8Lit7llpMEK531emz5OJ0uKXuikjSw
+
+### NewsUser Press List 보여주기
+GET http://localhost:8080/newsuser
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3MTQ3MTM1LCJleHAiOjE2NzcxNDg5MzV9.FsQAVCPndZNce8Lit7llpMEK531emz5OJ0uKXuikjSw
+
+### News 보여주기(회원별)
+GET http://localhost:8080/news
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3MTQ3MTM1LCJleHAiOjE2NzcxNDg5MzV9.FsQAVCPndZNce8Lit7llpMEK531emz5OJ0uKXuikjSw
+
+### News PressList 수정하기
+PUT http://localhost:8080/newsuser
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3MTQ3MTM1LCJleHAiOjE2NzcxNDg5MzV9.FsQAVCPndZNce8Lit7llpMEK531emz5OJ0uKXuikjSw
+
+{
+  "press1": "연합뉴스",
+  "press2": "동아일보",
+  "press3": "중앙일보"
+}

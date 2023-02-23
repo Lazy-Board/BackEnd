@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NewsRepository extends JpaRepository<News, String> {
-  List<News> findTop10ByPressIdOrderByUpdatedAtDesc(String pressId);
 
+  List<News> findTop10ByPressIdOrderByUpdatedAtDesc(String pressId);
 
 
 }

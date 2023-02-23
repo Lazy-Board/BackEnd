@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +40,7 @@ public class NewsUserController {
   }
 
   @PutMapping
-  public ResponseEntity<?> updateUserPressList(HttpServletRequest request, NewsUserInput userInput) {
+  public ResponseEntity<?> updateUserPressList(HttpServletRequest request,@RequestBody NewsUserInput userInput) {
     newsUserService.update(request,userInput);
     return ResponseEntity.ok("유저의 언론사 리스트가 정상적으로 수정되었습니다.");
   }

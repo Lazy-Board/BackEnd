@@ -28,6 +28,7 @@ public class NewsPress {
 
   private LocalDateTime updatedAt;
 
+
   public NewsPress(NewsPressDto dto){
     this.pressId = dto.getPressId();
     this.pressName = dto.getPressName();
