@@ -1,4 +1,4 @@
-package com.example.lazier.service.Impl;
+package com.example.lazier.service.module;
 
 import com.example.lazier.component.KakaoNavigationApi;
 import com.example.lazier.component.NaverGeocodingApi;
@@ -7,9 +7,9 @@ import com.example.lazier.dto.module.TrafficDto;
 import com.example.lazier.dto.module.TrafficInput;
 import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
-import com.example.lazier.persist.entity.traffic.Traffic;
+import com.example.lazier.persist.entity.module.Traffic;
 import com.example.lazier.persist.entity.user.LazierUser;
-import com.example.lazier.persist.repository.traffic.TrafficRepository;
+import com.example.lazier.persist.repository.TrafficRepository;
 import com.example.lazier.service.user.MemberService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;

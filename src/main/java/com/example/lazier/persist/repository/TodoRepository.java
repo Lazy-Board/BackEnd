@@ -1,6 +1,6 @@
 package com.example.lazier.persist.repository;
 
-import com.example.lazier.persist.entity.todo.Todo;
+import com.example.lazier.persist.entity.module.Todo;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

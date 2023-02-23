@@ -1,4 +1,4 @@
-package com.example.lazier.service.Impl;
+package com.example.lazier.service.module;
 
 import com.example.lazier.dto.module.NewsPressDto;
 import com.example.lazier.dto.module.NewsUserInput;

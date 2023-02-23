@@ -2,7 +2,7 @@ package com.example.lazier.controller;
 
 import com.example.lazier.dto.module.NewsPressDto;
 import com.example.lazier.dto.module.NewsUserInput;
-import com.example.lazier.service.Impl.NewsUserService;
+import com.example.lazier.service.module.NewsUserService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

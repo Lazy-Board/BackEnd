@@ -1,4 +1,4 @@
-package com.example.lazier.service.Impl;
+package com.example.lazier.service.module;
 
 import com.example.lazier.dto.module.StockDto;
 import com.example.lazier.persist.entity.module.Stock;
