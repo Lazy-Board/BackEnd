@@ -1,6 +1,6 @@
 package com.example.lazier.controller;
 
-import com.example.lazier.service.Impl.QuotesService;
+import com.example.lazier.service.module.QuotesService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

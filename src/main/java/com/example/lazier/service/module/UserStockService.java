@@ -1,4 +1,4 @@
-package com.example.lazier.service.Impl;
+package com.example.lazier.service.module;
 
 import static com.example.lazier.type.StockName.LG전자;
 import static com.example.lazier.type.StockName.NAVER;

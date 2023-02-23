@@ -1,7 +1,7 @@
 package com.example.lazier.controller;
 
 import com.example.lazier.dto.module.YoutubeDto;
-import com.example.lazier.service.Impl.YoutubeService;
+import com.example.lazier.service.module.YoutubeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

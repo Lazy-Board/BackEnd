@@ -1,7 +1,6 @@
 spring:
   profiles:
     include: oauth
-
   h2:
     console:
       enabled: true
@@ -17,7 +16,7 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
 
   mvc:
     pathmatch:
@@ -68,6 +67,8 @@ scheduler:
     youtube: "0 0/30 * * * *"
     weather: "0 0 0 * * *"
     exchange: "0 0 0 * * *"
+    news: "0 0 0 * * *"
+    newspress: "0 0 0 1 * *"
 
 
 naver:

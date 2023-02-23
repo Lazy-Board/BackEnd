@@ -1,7 +1,7 @@
 package com.example.lazier.controller;
 
 import com.example.lazier.dto.module.UserQuotesInput;
-import com.example.lazier.service.Impl.UserQuotesService;
+import com.example.lazier.service.module.UserQuotesService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;

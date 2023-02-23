@@ -1,6 +1,6 @@
 package com.example.lazier.dto.module;
 
-import com.example.lazier.persist.entity.todo.Todo;
+import com.example.lazier.persist.entity.module.Todo;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
