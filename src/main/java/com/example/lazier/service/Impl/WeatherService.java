@@ -6,7 +6,7 @@ import com.example.lazier.persist.entity.module.UserWeather;
 import com.example.lazier.persist.entity.module.Weather;
 import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.persist.repository.WeatherRepository;
-import com.example.lazier.scraper.Scraper;
+import com.example.lazier.scraper.NaverWeatherScraper;
 import com.example.lazier.service.user.MemberService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class WeatherService {
 
-    private final Scraper naverWeatherScraper;
+    private final NaverWeatherScraper naverWeatherScraper;
     private final WeatherRepository weatherRepository;
     private final MemberService memberService;
 

@@ -13,11 +13,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class NaverWeatherScraper implements Scraper {
+public class NaverWeatherScraper {
 
     private static final String STATISTICS_URL = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=%s%s%s";
 
-    @Override
     public WeatherDto scrap(UserWeather userWeather) {
 
         try {

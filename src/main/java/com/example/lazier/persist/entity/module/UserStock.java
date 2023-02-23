@@ -14,13 +14,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "USER_EXCHANGE")
+@Entity(name = "USER_STOCK")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-public class UserExchange {
+public class UserStock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,15 +29,15 @@ public class UserExchange {
     @ManyToOne(fetch = FetchType.LAZY)
     private LazierUser lazierUser;
 
-    private String usd;
-    private String jpy;
-    private String eur;
-    private String cny;
-    private String hkd;
-    private String gbp;
-    private String chf;
-    private String cad;
-    private String aud;
-    private String nzd;
+    private String samsungElectronic;
+    private String skHynix;
+    private String naver;
+    private String kakao;
+    private String hyundaiCar;
+    private String kia;
+    private String lgElectronic;
+    private String kakaoBank;
+    private String samsungSdi;
+    private String hive;
 
 }
