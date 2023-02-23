@@ -80,7 +80,7 @@ public class NewsService {
 
     List<NewsDto> newsByUser = new ArrayList<>();
     user.getUserPress()
-        .forEach(entity -> newsRepository.findTop10ByPressIdOrderByUpdatedAtDesc(
+        .forEach(entity -> newsRepository.findTop10ByPressIdOrderByNewsIdDesc(
             entity.getPressId()).stream().map(NewsDto::from).forEach(newsByUser::add));
     return newsByUser;
   }

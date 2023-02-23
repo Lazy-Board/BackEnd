@@ -55,14 +55,15 @@ public class NewsScraper {
         System.out.println(pressNameElements.size());
 
         for (int j = 0; j < pressNameElements.size(); j++) {
-        NewsPressDto dto = new NewsPressDto(sectorName);
           System.out.println("j = " + j);
           Element pressInfo = pressNameElements.select("a").get(j);
           String pressIdUrl = pressInfo.attr("href");
           int index = pressIdUrl.indexOf("oid=")+4;
+          if (index == 3) continue;
           String pressId = pressIdUrl.substring(index,index+3);
           String pressName = pressInfo.text();
 
+          NewsPressDto dto = new NewsPressDto(sectorName);
           dto.setPressName(pressInfo.text());
           dto.setPressId(pressId);
           dto.setPressName(pressName);
@@ -131,8 +132,7 @@ public class NewsScraper {
           Element newsElement = newsElements.get(j);
 
           String subject = newsElement.select("dl dt a").text();
-          String newsUrl = newsElement.select("dl dt a").attr("href")
-              .toString();
+          String newsUrl = newsElement.select("dl dt a").attr("href");
           int index = newsUrl.lastIndexOf('/');
           String newsId = newsUrl.substring(index + 1);
           String contents = newsElement.select("span.lede").text();
