@@ -20,7 +20,6 @@ public class NaverWeatherScraper {
     public WeatherDto scrap(UserWeather userWeather) {
 
         try {
-
             String url = String.format(STATISTICS_URL, userWeather.getCityName(),
                 userWeather.getLocationName(), "날씨");
 

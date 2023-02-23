@@ -15,9 +15,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -38,7 +35,6 @@ public class SecurityConfig {
             .antMatchers(HttpMethod.POST, "/user/reissue")
             .antMatchers(HttpMethod.GET, "/login")
             .antMatchers("/youtube/**")
-            .antMatchers("/youtube")
             .antMatchers("/h2-console/**");
     }
 
@@ -52,23 +48,6 @@ public class SecurityConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     } //비밀번호 암호화
 
-
-    // CORS
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-
-        corsConfiguration.addAllowedOrigin("http://35.77.78.168:5173/");
-        corsConfiguration.addAllowedOrigin("http://localhost:3000/");
-        corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
-        corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
-        corsConfiguration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
-        return source;
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.cors().and().
@@ -79,13 +58,11 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user/signup",
-                        "/favicon.ico",
                         "/user/login",
                         "/user/email-auth",
                         "/user/find-password",
                         "/user/reissue",
                         "/h2-console",
-                        "/youtube",
                     "/user/login/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -94,9 +71,7 @@ public class SecurityConfig {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-            .authorizeRequests();
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
-
 }
