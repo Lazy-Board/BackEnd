@@ -1,7 +1,7 @@
 package com.example.lazier.controller;
 
 import com.example.lazier.dto.module.UserStockInput;
-import com.example.lazier.service.Impl.UserStockService;
+import com.example.lazier.service.module.UserStockService;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

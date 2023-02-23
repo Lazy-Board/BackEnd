@@ -1,7 +1,7 @@
 package com.example.lazier.controller;
 
 import com.example.lazier.dto.module.TrafficInput;
-import com.example.lazier.service.Impl.TrafficService;
+import com.example.lazier.service.module.TrafficService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;

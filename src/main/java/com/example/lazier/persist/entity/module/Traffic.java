@@ -1,4 +1,4 @@
-package com.example.lazier.persist.entity.traffic;
+package com.example.lazier.persist.entity.module;
 
 import com.example.lazier.persist.entity.user.LazierUser;
 import javax.persistence.Entity;

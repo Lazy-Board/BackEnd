@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ### 2. uuid인증
-GET localhost:8080/user/email-auth?uuid=8cf0bec1-da91-42a1-8e36-84983f289553
+GET localhost:8080/user/email-auth?uuid=ec53e93e-1c50-4732-b161-01d2834a1bc5
 Content-Type: application/json
 
 ### 3. 멤버로그인(token확인)
@@ -26,11 +26,12 @@ Content-Type: application/json
 ### 4.NewsDB초기화 (db가 없을경우에만)
 GET http://localhost:8080/news/init
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNjc3MTY0NzkxLCJleHAiOjE2NzcxNjY1OTF9.vvFSYOIU27usaa8T-DMco97xf5a0o55zPjHawZ8O33g
 
 ### NewsDB모듈 추가
 POST http://localhost:8080/newsuser
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3MTQ3MTM1LCJleHAiOjE2NzcxNDg5MzV9.FsQAVCPndZNce8Lit7llpMEK531emz5OJ0uKXuikjSw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNjc3MTY0NzkxLCJleHAiOjE2NzcxNjY1OTF9.vvFSYOIU27usaa8T-DMco97xf5a0o55zPjHawZ8O33g
 
 ### NewsUser Press List 보여주기
 GET http://localhost:8080/newsuser

@@ -2,7 +2,7 @@ package com.example.lazier.scheduler;
 
 import com.example.lazier.persist.entity.module.UserWeather;
 import com.example.lazier.persist.repository.UserWeatherRepository;
-import com.example.lazier.service.Impl.WeatherService;
+import com.example.lazier.service.module.WeatherService;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

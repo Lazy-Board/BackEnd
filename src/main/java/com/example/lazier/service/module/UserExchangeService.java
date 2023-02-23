@@ -1,4 +1,4 @@
-package com.example.lazier.service.Impl;
+package com.example.lazier.service.module;
 
 import static com.example.lazier.type.CurrencyName.AUD;
 import static com.example.lazier.type.CurrencyName.CAD;

@@ -1,6 +1,6 @@
 package com.example.lazier.dto.module;
 
-import com.example.lazier.persist.entity.traffic.Traffic;
+import com.example.lazier.persist.entity.module.Traffic;
 import lombok.Builder;
 import lombok.Data;
 
