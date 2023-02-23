@@ -67,6 +67,8 @@ scheduler:
     youtube: "0 0/30 * * * *"
     weather: "0 0 0 * * *"
     exchange: "0 0 0 * * *"
+    news: "0 0 0 * * *"
+    newspress: "0 0 0 0 * *"
 
 
 naver:
