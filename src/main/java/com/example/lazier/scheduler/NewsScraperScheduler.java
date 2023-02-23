@@ -71,7 +71,7 @@ public class NewsScraperScheduler {
   }
 
   //업데이트 된지 2일 이상 된 영상은 삭제한다.
-  @Scheduled(cron = "${scheduler.scrap.News}")
+  @Scheduled(cron = "${scheduler.scrap.news}")
   @Transactional
   public void NewsDbUpdater() {
     log.info("NewsDb Deleting scheduler has started");

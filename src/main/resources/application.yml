@@ -68,7 +68,7 @@ scheduler:
     weather: "0 0 0 * * *"
     exchange: "0 0 0 * * *"
     news: "0 0 0 * * *"
-    newspress: "0 0 0 0 * *"
+    newspress: "0 0 0 1 * *"
 
 
 naver:
