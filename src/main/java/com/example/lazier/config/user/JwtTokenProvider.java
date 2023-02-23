@@ -10,6 +10,8 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Date;
 import javax.annotation.PostConstruct;
@@ -31,18 +33,18 @@ public class JwtTokenProvider {
 	@Value("${jwt.secret}")
 	private String secretKey;
 
-	@Value("${jwt.token-validity-in-seconds}")
-	private long accessTokenValidTime; //30 * 60 * 1000L 30분
+//	@Value("${jwt.token-validity-in-seconds}")
+//	private long accessTokenValidTime; 								//30 * 60 * 1000L 30분
 
-	@Value("${jwt.refreshToken-validity-in-seconds}")
-	private long refreshTokenValidTime; //24 * 60 * 60 * 1000L 1일
+//	@Value("${jwt.refreshToken-validity-in-seconds}")
+//	private long refreshTokenValidTime; 							//24 * 60 * 60 * 1000L 1일
 
 	public static final String AUTHORIZATION = "Authorization";
 	public static final String BEARER_TYPE = "Bearer";
 	public static final String REFRESH_TOKEN = "RefreshToken";
 
-	//private long accessTokenValidTime = 1 * 60 * 1000L; //1분 (test)
-	//private long refreshTokenValidTime = 5 * 60 * 1000L; //5분 (test)
+	private long accessTokenValidTime = 24 * 60 * 60 * 1000L; 		//1분 (test)
+	private long refreshTokenValidTime = 5 * 60 * 1000L; 			//5분 (test)
 
 	private final LoginService loginService;
 
@@ -52,14 +54,24 @@ public class JwtTokenProvider {
 			.encodeToString(secretKey.getBytes()); //객체 조기화, secretKey를 Base64로 인코딩
 	}
 
-	public String getUserPk(String token) {
-		if (token.isEmpty()) {
-			throw new JwtException("유효하지 않는 토큰입니다.");
-		}
+//	public String getUserPk(String token) {
+//		if (token.isEmpty()) {
+//			throw new JwtException("유효하지 않는 토큰입니다.");
+//		}
+//
+//		String username = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject(); //username
+//		log.info("getUserPk: " + username);
+//		return username;
+//	}
 
-		String username = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject(); //username
-		log.info("getUserPk: " + username);
-		return username;
+	public String getUserPk(String token) { // <-여기 고침
+		try { //여기서 refresh token 관련한 모든 에러 나옴 (만료까지)
+			String username = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject(); //username
+			log.info("getUserPk 토큰 검증;;; : " + username);
+			return username;
+		} catch (Exception e) {
+			throw new JwtException("getUserPk에서 에러남 - 에러 메시지: " + e.getMessage()); //<-오늘 refresh 테스트 이 에러 보면 됨
+		}
 	}
 
 	public Authentication getAuthentication(String token) {
@@ -78,15 +90,17 @@ public class JwtTokenProvider {
 		String accessToken = Jwts.builder()
 			.setClaims(claims)
 			.setIssuedAt(now)
-			.setExpiration(new Date(now.getTime() + accessTokenValidTime))
+			.setExpiration(new Date(System.currentTimeMillis() + accessTokenValidTime))
 			.signWith(SignatureAlgorithm.HS256, secretKey) //signature에 들어갈 secretKey
 			.compact();
+
+		LocalDateTime expiredTime = LocalDateTime.now().plusSeconds(accessTokenValidTime / 1000);
 
 		//Refresh Token
 		String refreshToken = Jwts.builder()
 			.setClaims(claims)
 			.setIssuedAt(now)
-			.setExpiration(new Date(now.getTime() + refreshTokenValidTime))
+			.setExpiration(new Date(System.currentTimeMillis() + refreshTokenValidTime))
 			.signWith(SignatureAlgorithm.HS256, secretKey)
 			.compact();
 
@@ -94,6 +108,7 @@ public class JwtTokenProvider {
 			.accessToken(accessToken)
 			.grantType(BEARER_TYPE)
 			.refreshToken(refreshToken)
+			.expiredTime(expiredTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
 			.build();
 	}
 
@@ -117,7 +132,7 @@ public class JwtTokenProvider {
 		} catch (IllegalArgumentException e) {
 			log.warn("JWT 토큰이 잘못되었습니다.");
 		}
-		return false;
+		throw new JwtException("만료된 JWT 토큰입니다");
 	}
 
 	//refresh token
@@ -129,13 +144,14 @@ public class JwtTokenProvider {
 		return Jwts.builder() //new access Token
 			.setClaims(claims)
 			.setIssuedAt(now)
-			.setExpiration(new Date(now.getTime() + refreshTokenValidTime))
+			.setExpiration(new Date(System.currentTimeMillis() + refreshTokenValidTime))
 			.signWith(SignatureAlgorithm.HS256, secretKey)
 			.compact();
 	}
 
 	public String resolveRefreshToken(HttpServletRequest request) {
 		String token = request.getHeader(REFRESH_TOKEN); //"RefreshToken" : "Token"
+		log.info("리프레시 토큰: " + request.getHeader(REFRESH_TOKEN));
 		if (!ObjectUtils.isEmpty(token) && token.toLowerCase()
 			.startsWith(BEARER_TYPE.toLowerCase())) {
 			return token.substring(BEARER_TYPE.length()).trim();

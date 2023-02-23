@@ -24,7 +24,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfig {
 
-    private final JwtFilter jwtFilter;
+    private final JwtTokenProvider jwtTokenProvider;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
@@ -37,6 +37,7 @@ public class SecurityConfig {
             .antMatchers(HttpMethod.GET, "/user/login/**")
             .antMatchers(HttpMethod.POST, "/user/reissue")
             .antMatchers(HttpMethod.GET, "/login")
+            .antMatchers(HttpMethod.OPTIONS, "/**")
             .antMatchers("/youtube/**")
             .antMatchers("/youtube")
             .antMatchers("/h2-console/**");
@@ -94,7 +95,7 @@ public class SecurityConfig {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests();
         return http.build();
     }
