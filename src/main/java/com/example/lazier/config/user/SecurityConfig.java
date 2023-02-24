@@ -24,80 +24,84 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfig {
 
-    private final JwtTokenProvider jwtTokenProvider;
-    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+  private final JwtTokenProvider jwtTokenProvider;
+  private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring()
-            .antMatchers(HttpMethod.GET, "/user/email-auth")
-            .antMatchers(HttpMethod.POST, "/user/find-password")
-            .antMatchers(HttpMethod.POST, "/user/signup")
-            .antMatchers(HttpMethod.POST, "/user/login")
-            .antMatchers(HttpMethod.GET, "/user/login/**")
-            .antMatchers(HttpMethod.POST, "/user/reissue")
-            .antMatchers(HttpMethod.GET, "/login")
-            .antMatchers(HttpMethod.OPTIONS, "/**")
-            .antMatchers("/youtube/**")
-            .antMatchers("/youtube")
-            .antMatchers("/h2-console/**");
-    }
+  @Bean
+  public WebSecurityCustomizer webSecurityCustomizer() {
+    return web -> web.ignoring()
+        .antMatchers(HttpMethod.GET, "/user/email-auth")
+        .antMatchers(HttpMethod.POST, "/user/find-password")
+        .antMatchers(HttpMethod.POST, "/user/signup")
+        .antMatchers(HttpMethod.POST, "/user/login")
+        .antMatchers(HttpMethod.GET, "/user/login/**")
+        .antMatchers(HttpMethod.POST, "/user/reissue")
+        .antMatchers(HttpMethod.GET, "/login")
+        .antMatchers(HttpMethod.OPTIONS, "/**")
+        .antMatchers("/h2-console/**");
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
+  }
 
-    @Bean
-    PasswordEncoder getPasswordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    } //비밀번호 암호화
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
+      throws Exception {
+    return configuration.getAuthenticationManager();
+  }
+
+  @Bean
+  PasswordEncoder getPasswordEncoder() {
+    return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+  } //비밀번호 암호화
 
 
-    // CORS
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
+  // CORS
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-        corsConfiguration.addAllowedOrigin("http://35.77.78.168:5173/");
-        corsConfiguration.addAllowedOrigin("http://localhost:3000/");
-        corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
-        corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
-        corsConfiguration.setAllowCredentials(true);
+    corsConfiguration.addAllowedOrigin("http://35.77.78.168:5173/");
+    corsConfiguration.addAllowedOrigin("http://localhost:3000/");
+    corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
+    corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
+    corsConfiguration.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
-        return source;
-    }
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", corsConfiguration);
+    return source;
+  }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and().
-            csrf().disable()
-                .formLogin().disable()
-            .httpBasic().disable()
-                .headers().frameOptions().disable()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/user/signup",
-                        "/favicon.ico",
-                        "/user/login",
-                        "/user/email-auth",
-                        "/user/find-password",
-                        "/user/reissue",
-                        "/h2-console",
-                        "/youtube",
-                    "/user/login/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(customAuthenticationEntryPoint)
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(new JwtFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-            .authorizeRequests();
-        return http.build();
-    }
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.cors().and().
+        csrf().disable()
+        .formLogin().disable()
+        .httpBasic().disable()
+        .headers().frameOptions().disable()
+        .and()
+        .authorizeRequests()
+        .antMatchers("/user/signup",
+            "/favicon.ico",
+            "/user/login",
+            "/user/email-auth",
+            "/user/find-password",
+            "/user/reissue",
+            "/h2-console",
+            "/youtube",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/user/login/**").permitAll()
+        .anyRequest().authenticated()
+        .and()
+        .exceptionHandling()
+        .authenticationEntryPoint(customAuthenticationEntryPoint)
+        .and()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .addFilterBefore(new JwtFilter(jwtTokenProvider),
+            UsernamePasswordAuthenticationFilter.class)
+        .authorizeRequests();
+    return http.build();
+  }
 
 }
