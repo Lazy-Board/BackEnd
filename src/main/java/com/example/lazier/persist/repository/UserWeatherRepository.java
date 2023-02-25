@@ -7,7 +7,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface UserWeatherRepository extends JpaRepository<UserWeather, String> {
+public interface UserWeatherRepository extends JpaRepository<UserWeather, Long> {
 
     Optional<UserWeather> findByLazierUser(LazierUser lazierUser);
 

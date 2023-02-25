@@ -1,6 +1,7 @@
 package com.example.lazier.controller;
 
 import com.example.lazier.service.Impl.WeatherService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = {"날씨를 조회하기 위한 api"})
 @RestController
 @AllArgsConstructor
 @RequestMapping("/weather")
