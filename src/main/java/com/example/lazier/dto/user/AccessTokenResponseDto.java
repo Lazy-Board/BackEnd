@@ -13,5 +13,6 @@ public class AccessTokenResponseDto {
 
     private String accessToken;
     private String grantType;
+    private String expiredTime;
 
 }

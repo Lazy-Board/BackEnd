@@ -1,4 +1,4 @@
-package com.example.lazier.persist.entity.traffic;
+package com.example.lazier.persist.entity.module;
 
 import com.example.lazier.persist.entity.user.LazierUser;
 import javax.persistence.Entity;
@@ -12,16 +12,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
-@Entity
-@Builder
-@Getter
-@ToString
+@Entity(name = "USER_STOCK")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Traffic {
-
+@Getter
+@Setter
+@Builder
+public class UserStock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,16 +29,15 @@ public class Traffic {
     @ManyToOne(fetch = FetchType.LAZY)
     private LazierUser lazierUser;
 
-    private String startingPoint; // 출발지
-    private String startingGeoCode; // 위경도 정보
-    private String destination; // 도착지
-    private String destinationGeoCode; // 위경도 정보
+    private String samsungElectronic;
+    private String skHynix;
+    private String naver;
+    private String kakao;
+    private String hyundaiCar;
+    private String kia;
+    private String lgElectronic;
+    private String kakaoBank;
+    private String samsungSdi;
+    private String hive;
 
-    public void update(String startingPoint, String destination, String startingGeoCode,
-        String destinationGeoCode) {
-        this.startingPoint = startingPoint;
-        this.startingGeoCode = startingGeoCode;
-        this.destination = destination;
-        this.destinationGeoCode = destinationGeoCode;
-    }
 }

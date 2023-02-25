@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
@@ -37,5 +36,10 @@ public class JwtFilter extends OncePerRequestFilter {
 			request.setAttribute("exception", e.getMessage());
 		}
 		filterChain.doFilter(request, response);
+	}
+
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		return request.getMethod().equals("OPTIONS");
 	}
 }

@@ -41,7 +41,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 		response.setContentType("application/json,charset=utf-8");
 		makeResultResponse(
 			response,
-			new UnauthorizedMemberException("로그인이 필요합니다."),
+			new UnauthorizedAccessTokenException("로그인이 필요합니다."),
 			HttpStatus.UNAUTHORIZED //401
 		);
 	}

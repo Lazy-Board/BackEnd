@@ -1,7 +1,7 @@
 package com.example.lazier.controller;
 
 import com.example.lazier.dto.module.UserExchangeInput;
-import com.example.lazier.service.Impl.UserExchangeService;
+import com.example.lazier.service.module.UserExchangeService;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

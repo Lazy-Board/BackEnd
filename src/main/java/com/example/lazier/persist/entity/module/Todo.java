@@ -1,4 +1,4 @@
-package com.example.lazier.persist.entity.todo;
+package com.example.lazier.persist.entity.module;
 
 import com.example.lazier.dto.module.TodoInfo;
 import com.example.lazier.persist.entity.user.LazierUser;

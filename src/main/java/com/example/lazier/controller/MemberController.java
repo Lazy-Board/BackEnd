@@ -14,6 +14,7 @@ import com.example.lazier.service.user.OAuthService;
 import com.example.lazier.service.user.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,8 @@ public class MemberController {
 	private final OAuthService oAuthService;
 	private final MemberService memberService;
 
+	public static final String AUTHORIZATION = "Authorization";
+
 	@PostMapping("/signup")
 	public ResponseEntity<?> join(@RequestBody @Valid MemberInfo memberInfo) {
 		return new ResponseEntity<>(joinService.signUp(memberInfo), HttpStatus.OK);
@@ -50,7 +53,9 @@ public class MemberController {
 		TokenResponseDto tokenDto = createTokenService.createAccessToken(userLogin);
 		redisService.setValues(tokenDto.getRefreshToken());
 
-		return ResponseEntity.ok(tokenDto);
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.add(AUTHORIZATION, "Bearer " + tokenDto.getAccessToken());
+		return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
 	}
 
 	@PostMapping("/login/oauth2/code/{provider}")
