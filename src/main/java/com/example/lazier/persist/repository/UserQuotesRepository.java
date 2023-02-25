@@ -5,7 +5,7 @@ import com.example.lazier.persist.entity.user.LazierUser;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserQuotesRepository extends JpaRepository<UserQuotes, String> {
+public interface UserQuotesRepository extends JpaRepository<UserQuotes, Long> {
 
     boolean existsByLazierUser(LazierUser lazierUser);
 
