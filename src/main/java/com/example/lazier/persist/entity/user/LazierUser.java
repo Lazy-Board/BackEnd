@@ -1,6 +1,6 @@
 package com.example.lazier.persist.entity.user;
 
-import com.example.lazier.dto.user.MemberInfo;
+import com.example.lazier.dto.user.MemberInfoDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,12 +47,12 @@ public class LazierUser implements UserDetails {
     private LocalDateTime emailAuthDt;
 
 
-    public void updateUserInfo(MemberInfo memberInfo) {
-        if (!memberInfo.getSocialType().toLowerCase().trim().equals("google")) {
-            this.userEmail = memberInfo.getUserEmail();
+    public void updateUserInfo(MemberInfoDto memberInfoDto) {
+        if (!memberInfoDto.getSocialType().toLowerCase().trim().equals("google")) {
+            this.userEmail = memberInfoDto.getUserEmail();
         }
-        this.userName = memberInfo.getUserName();
-        this.phoneNumber = memberInfo.getPhoneNumber();
+        this.userName = memberInfoDto.getUserName();
+        this.phoneNumber = memberInfoDto.getPhoneNumber();
     }
 
     @Override

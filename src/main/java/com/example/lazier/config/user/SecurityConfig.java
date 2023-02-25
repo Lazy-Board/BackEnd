@@ -15,9 +15,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
@@ -34,12 +31,12 @@ public class SecurityConfig {
         .antMatchers(HttpMethod.POST, "/user/find-password")
         .antMatchers(HttpMethod.POST, "/user/signup")
         .antMatchers(HttpMethod.POST, "/user/login")
-        .antMatchers(HttpMethod.GET, "/user/login/**")
         .antMatchers(HttpMethod.POST, "/user/reissue")
-        .antMatchers(HttpMethod.GET, "/login")
         .antMatchers(HttpMethod.OPTIONS, "/**")
+        .antMatchers("/v3/api-docs/**")
+        .antMatchers("/swagger-resources/**")
+        .antMatchers("/swagger-ui/**")
         .antMatchers("/h2-console/**");
-
   }
 
   @Bean
@@ -53,22 +50,6 @@ public class SecurityConfig {
     return PasswordEncoderFactories.createDelegatingPasswordEncoder();
   } //비밀번호 암호화
 
-
-  // CORS
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration corsConfiguration = new CorsConfiguration();
-
-    corsConfiguration.addAllowedOrigin("http://35.77.78.168:5173/");
-    corsConfiguration.addAllowedOrigin("http://localhost:3000/");
-    corsConfiguration.addAllowedHeader(CorsConfiguration.ALL);
-    corsConfiguration.addAllowedMethod(CorsConfiguration.ALL);
-    corsConfiguration.setAllowCredentials(true);
-
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", corsConfiguration);
-    return source;
-  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -85,12 +66,7 @@ public class SecurityConfig {
             "/user/email-auth",
             "/user/find-password",
             "/user/reissue",
-            "/h2-console",
-            "/youtube",
-            "/v3/api-docs/**",
-            "/swagger-resources/**",
-            "/swagger-ui/**",
-            "/user/login/**").permitAll()
+            "/h2-console").permitAll()
         .anyRequest().authenticated()
         .and()
         .exceptionHandling()

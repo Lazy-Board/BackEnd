@@ -21,16 +21,14 @@ public class JwtService {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
-
     private final RedisTemplate<String, String> redisTemplate;
-
     private long refreshTokenValidTime = 5 * 60 * 1000L;
 
     public String getRefreshToken(String userId) {
         return redisService.getValues(userId);
     }
 
-    public AccessTokenResponseDto validateRefreshToken(HttpServletRequest request) { //refresh 유효성 검사
+    public AccessTokenResponseDto validateRefreshToken(HttpServletRequest request) {
 
         String userId;
         String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
@@ -38,6 +36,7 @@ public class JwtService {
         try {
             userId = jwtTokenProvider.getUserPk(refreshToken);
         } catch (Exception e) {
+            log.info("getUserPk 에러: " + e.getMessage());
             throw new UnauthorizedRefreshTokenException(e.getMessage());
         }
 
@@ -66,7 +65,6 @@ public class JwtService {
         return createdRefreshJson(createdAccessToken);
     }
 
-    //token -> dto
     public AccessTokenResponseDto createdRefreshJson(String createdAcessToken) {
 
         LocalDateTime expiredTime = LocalDateTime.now().plusSeconds(refreshTokenValidTime / 1000);
@@ -74,7 +72,7 @@ public class JwtService {
         return AccessTokenResponseDto.builder()
                 .accessToken(createdAcessToken)
                 .grantType("Bearer")
-                .expiredTime(expiredTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))) //<- 얘
+                .expiredTime(expiredTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
 
     }

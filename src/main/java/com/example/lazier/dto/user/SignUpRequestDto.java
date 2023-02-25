@@ -1,7 +1,7 @@
 package com.example.lazier.dto.user;
 
-
-import com.example.lazier.persist.entity.user.LazierUser;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberInfo {
+public class SignUpRequestDto {
 
 	@Email
 	@NotBlank
@@ -30,16 +30,7 @@ public class MemberInfo {
 
 	@NotBlank
 	@Pattern(regexp = "[0-9]{10,11}", message = "010-xxxx-xxxx 형식으로 입력해주세요.")
+	@ApiParam(value = "사용자 전화번호")
 	String phoneNumber;
 
-	String socialType;
-
-	public static MemberInfo of(LazierUser lazierUser) {
-		return MemberInfo.builder()
-			.userEmail(lazierUser.getUserEmail())
-			.userName(lazierUser.getUsername())
-			.phoneNumber(lazierUser.getPhoneNumber())
-			.socialType(lazierUser.getSocialType().toLowerCase().trim()) //google이라면 email 비활성
-			.build();
-	}
 }

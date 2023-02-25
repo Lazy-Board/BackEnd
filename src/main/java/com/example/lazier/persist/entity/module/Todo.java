@@ -1,6 +1,7 @@
 package com.example.lazier.persist.entity.module;
 
-import com.example.lazier.dto.module.TodoInfo;
+import com.example.lazier.dto.module.TodoUpdateRequestDto;
+import com.example.lazier.dto.module.TodoWriteRequestDto;
 import com.example.lazier.persist.entity.user.LazierUser;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -32,10 +33,10 @@ public class Todo {
 	//private Long userId;
 	private String content;
 
-	public static Todo of(LazierUser lazierUser, TodoInfo todoInfo) {
+	public static Todo of(LazierUser lazierUser, TodoWriteRequestDto todoWriteRequestDto) {
 		return Todo.builder()
 			.lazierUser(lazierUser)
-			.content(todoInfo.getContent())
+			.content(todoWriteRequestDto.getContent())
 			.build();
 	}
 

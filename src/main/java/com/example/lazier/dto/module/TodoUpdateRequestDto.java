@@ -12,21 +12,21 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TodoInfo {
+public class TodoUpdateRequestDto {
 
 	private String content;
 	private String id;
 
-	public static List<TodoInfo> of(List<Todo> list) {
-		List<TodoInfo> todoInfoList = new ArrayList<>();
+	public static List<TodoUpdateRequestDto> of(List<Todo> list) {
+		List<TodoUpdateRequestDto> todoUpdateRequestDtoList = new ArrayList<>();
 		for (Todo todo : list) {
-			todoInfoList.add(TodoInfo.of(todo));
+			todoUpdateRequestDtoList.add(TodoUpdateRequestDto.of(todo));
 		}
-		return todoInfoList;
+		return todoUpdateRequestDtoList;
 	}
 
-	public static TodoInfo of(Todo todo) {
-		return TodoInfo.builder()
+	public static TodoUpdateRequestDto of(Todo todo) {
+		return TodoUpdateRequestDto.builder()
 			.id(todo.getId().toString())
 			.content(todo.getContent())
 			.build();
