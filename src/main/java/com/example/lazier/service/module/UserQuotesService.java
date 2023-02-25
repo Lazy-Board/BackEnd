@@ -8,6 +8,7 @@ import com.example.lazier.persist.entity.module.UserQuotes;
 import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.persist.repository.UserQuotesRepository;
 import com.example.lazier.service.user.MemberService;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,10 +39,11 @@ public class UserQuotesService {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = memberService.searchMember(userId);
 
-        UserQuotes userQuotes = userQuotesRepository.findByLazierUser(lazierUser)
-            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
-        return UserQuotesDto.of(userQuotes);
+        Optional<UserQuotes> optionalUserQuotes = userQuotesRepository.findByLazierUser(lazierUser);
+
+        return optionalUserQuotes.map(UserQuotesDto::of).orElse(null);
     }
+
     @Transactional
     public void update(HttpServletRequest request, UserQuotesInput parameter) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());

@@ -11,6 +11,7 @@ import com.example.lazier.persist.entity.module.Traffic;
 import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.persist.repository.TrafficRepository;
 import com.example.lazier.service.user.MemberService;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -51,10 +52,9 @@ public class TrafficService {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = memberService.searchMember(userId);
 
-        Traffic traffic = trafficRepository.findByLazierUser(lazierUser)
-            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
+        Optional<Traffic> optionalTraffic = trafficRepository.findByLazierUser(lazierUser);
 
-        return TrafficDto.of(traffic);
+        return optionalTraffic.map(TrafficDto::of).orElse(null);
     }
 
     @Transactional
@@ -86,9 +86,12 @@ public class TrafficService {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = memberService.searchMember(userId);
 
-        Traffic traffic = trafficRepository.findByLazierUser(lazierUser)
-            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
+        Optional<Traffic> optionalTraffic = trafficRepository.findByLazierUser(lazierUser);
+        if (!optionalTraffic.isPresent()) {
+            return null;
+        }
 
+        Traffic traffic = optionalTraffic.get();
         String duration = kakaoNavigationApi.getDuration(traffic.getStartingGeoCode(),
             traffic.getDestinationGeoCode());
 

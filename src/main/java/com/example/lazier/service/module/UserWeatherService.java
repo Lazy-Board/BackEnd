@@ -8,6 +8,7 @@ import com.example.lazier.persist.entity.module.UserWeather;
 import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.persist.repository.UserWeatherRepository;
 import com.example.lazier.service.user.MemberService;
+import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -46,9 +47,9 @@ public class UserWeatherService {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = memberService.searchMember(userId);
 
-        UserWeather userWeather = userWeatherRepository.findByLazierUser(lazierUser)
-            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
-        return UserWeatherDto.of(userWeather);
+        Optional<UserWeather> optionalUserWeather = userWeatherRepository.findByLazierUser(
+            lazierUser);
+        return optionalUserWeather.map(UserWeatherDto::of).orElse(null);
     }
 
     @Transactional
