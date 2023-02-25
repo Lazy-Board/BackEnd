@@ -50,6 +50,7 @@ public class MemberService {
 	}
 
 	//사용자 정보(이메일, 전화번호)가 일치하면 -> 이메일로 임시 비밀번호 전송
+	@Transactional
 	public void findPassword(HttpServletRequest request, FindPasswordRequestDto passwordDto) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
 
