@@ -33,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
 			}
 		} catch (IllegalArgumentException | JwtException e) {
 			log.warn("jwtException에러: " + e.getMessage());
-			request.setAttribute("exception", e.getMessage());
+			request.setAttribute("jwtexception", e.getMessage());
 		} catch (Exception e) {
 			log.warn("nonjwtException에러: " + e.getMessage());
 			request.setAttribute("nonjwtexception", e.getMessage());
