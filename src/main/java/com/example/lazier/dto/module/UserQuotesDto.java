@@ -1,11 +1,15 @@
 package com.example.lazier.dto.module;
 
 import com.example.lazier.persist.entity.module.UserQuotes;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserQuotesDto {
 
     private long userId;

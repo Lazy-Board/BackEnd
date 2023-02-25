@@ -11,6 +11,7 @@ import com.example.lazier.service.user.MemberService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -41,7 +42,7 @@ public class UserQuotesService {
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
         return UserQuotesDto.of(userQuotes);
     }
-
+    @Transactional
     public void update(HttpServletRequest request, UserQuotesInput parameter) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = memberService.searchMember(userId);

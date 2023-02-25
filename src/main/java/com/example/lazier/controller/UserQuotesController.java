@@ -1,7 +1,7 @@
 package com.example.lazier.controller;
 
 import com.example.lazier.dto.module.UserQuotesInput;
-import com.example.lazier.service.Impl.UserQuotesService;
+import com.example.lazier.service.module.UserQuotesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +40,7 @@ public class UserQuotesController {
 
         return new ResponseEntity<>(userQuotesService.get(request), HttpStatus.OK);
     }
+
 
     @ApiOperation(value = "문구를 수정(업데이트)하기위한 메소드")
     @PutMapping
