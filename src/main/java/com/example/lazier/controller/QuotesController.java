@@ -1,6 +1,6 @@
 package com.example.lazier.controller;
 
-import com.example.lazier.service.Impl.QuotesService;
+import com.example.lazier.service.module.QuotesService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;

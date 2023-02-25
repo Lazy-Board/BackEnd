@@ -1,7 +1,7 @@
 package com.example.lazier.controller;
 
 import com.example.lazier.dto.module.TrafficInput;
-import com.example.lazier.service.Impl.TrafficService;
+import com.example.lazier.service.module.TrafficService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;

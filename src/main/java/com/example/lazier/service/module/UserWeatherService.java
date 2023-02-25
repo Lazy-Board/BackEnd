@@ -11,6 +11,7 @@ import com.example.lazier.service.user.MemberService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -50,7 +51,7 @@ public class UserWeatherService {
         return UserWeatherDto.of(userWeather);
     }
 
-
+    @Transactional
     public void update(HttpServletRequest request, UserWeatherInput parameter) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = memberService.searchMember(userId);
