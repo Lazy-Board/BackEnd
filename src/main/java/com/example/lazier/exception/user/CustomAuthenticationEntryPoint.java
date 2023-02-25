@@ -27,10 +27,10 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException e) throws IOException {
 		log.info("CustomAuthenticationEntryPoint");
-		log.warn("jwt-exception: " + request.getAttribute("exception"));
+		log.warn("jwt-exception: " + request.getAttribute("jwtexception"));
 		log.warn("nonjwt-exception: " + request.getAttribute("nonjwtexception"));
 
-		Object errorObject = request.getAttribute("exception");
+		Object errorObject = request.getAttribute("jwtexception");
 		if (errorObject != null) {
 			sendErrorUnauthorized(response);
 		} else {
