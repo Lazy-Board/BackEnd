@@ -3,7 +3,7 @@ package com.example.lazier.service.user;
 import com.example.lazier.component.MailComponents;
 import com.example.lazier.dto.user.FindPasswordRequestDto;
 import com.example.lazier.dto.user.UpdatePasswordRequestDto;
-import com.example.lazier.dto.user.MemberInfo;
+import com.example.lazier.dto.user.MemberInfoDto;
 import com.example.lazier.exception.user.FailedFindPasswordException;
 import com.example.lazier.exception.user.NotFoundMemberException;
 import com.example.lazier.exception.user.NotMatchMemberException;
@@ -28,16 +28,18 @@ public class MemberService {
 	private final RedisService redisService;
 	private final MailComponents mailComponents;
 
-	public MemberInfo showUserInfo(HttpServletRequest request) {
+	public MemberInfoDto showUserInfo(HttpServletRequest request) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
-		return MemberInfo.of(lazierUser);
+		return MemberInfoDto.of(lazierUser);
 	}
 
-	public void updateUserInfo(HttpServletRequest request, MemberInfo memberInfo) {
+	@Transactional
+	public void updateUserInfo(HttpServletRequest request, MemberInfoDto memberInfoDto) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
-		lazierUser.updateUserInfo(memberInfo);
+		lazierUser.updateUserInfo(memberInfoDto);
 	}
 
+	@Transactional
 	public void updatePassword(HttpServletRequest request, UpdatePasswordRequestDto passwordDto) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
 

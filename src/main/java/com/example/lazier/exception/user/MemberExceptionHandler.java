@@ -38,24 +38,24 @@ public class MemberExceptionHandler {
     @ExceptionHandler(UnauthorizedRefreshTokenException.class)
     public ResponseEntity<ErrorMessage> unauthorizedRefreshTokenException(UnauthorizedRefreshTokenException exception) {
 
-        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.UNAUTHORIZED));
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
 
     @ExceptionHandler(UnauthorizedMemberException.class)
     public ResponseEntity<ErrorMessage> unauthorizedMemberException(UnauthorizedMemberException exception) {
 
-        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.UNAUTHORIZED));
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
 
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<ErrorMessage> invalidTokenException(InvalidTokenException exception) {
 
-        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.UNAUTHORIZED));
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
 
     @ExceptionHandler(InvalidAccessException.class)
     public ResponseEntity<ErrorMessage> invalidAccessException(InvalidAccessException exception) {
 
-        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.UNAUTHORIZED));
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }
 }
