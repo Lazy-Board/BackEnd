@@ -53,8 +53,8 @@ public class NaverWeatherScraper {
             String temperatureDetail = document.getElementsByClass("temperature_inner").get(0)
                 .text(); // 최저기온-1° / 최고기온9°
             String[] temperatures = temperatureDetail.split(" / ");
-            String high = temperatures[0].substring(4); // -1°
-            String low = temperatures[1].substring(4); // 9°
+            String low = temperatures[0].substring(4); // -1°
+            String high = temperatures[1].substring(4); // 9°
 
             return WeatherDto.builder()
                 .userId(userWeather.getLazierUser().getUserId())
