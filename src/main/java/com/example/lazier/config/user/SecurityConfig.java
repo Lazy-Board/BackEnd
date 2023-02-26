@@ -28,6 +28,7 @@ public class SecurityConfig {
   public WebSecurityCustomizer webSecurityCustomizer() {
     return web -> web.ignoring()
         .antMatchers(HttpMethod.GET, "/user/email-auth")
+        .antMatchers(HttpMethod.POST, "/user/saveModule")
         .antMatchers(HttpMethod.POST, "/user/find-password")
         .antMatchers(HttpMethod.POST, "/user/signup")
         .antMatchers(HttpMethod.POST, "/user/login")

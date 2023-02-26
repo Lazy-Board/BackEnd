@@ -2,6 +2,8 @@ package com.example.lazier.service.user;
 
 import com.example.lazier.component.MailComponents;
 import com.example.lazier.dto.user.FindPasswordRequestDto;
+import com.example.lazier.dto.user.MemberModuleResponseDto;
+import com.example.lazier.dto.user.MemberModuleUpdateRequestDto;
 import com.example.lazier.dto.user.UpdatePasswordRequestDto;
 import com.example.lazier.dto.user.MemberInfoDto;
 import com.example.lazier.exception.user.FailedFindPasswordException;
@@ -27,6 +29,14 @@ public class MemberService {
 	private final PasswordEncoder passwordEncoder;
 	private final RedisService redisService;
 	private final MailComponents mailComponents;
+
+	public MemberModuleResponseDto main(HttpServletRequest request) {
+		LazierUser lazierUser = searchMember(parseUserId(request));
+		return MemberModuleResponseDto
+			.builder()
+			.userModuleList(lazierUser.getUserModuleList())
+			.build();
+	}
 
 	public MemberInfoDto showUserInfo(HttpServletRequest request) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
@@ -59,7 +69,7 @@ public class MemberService {
 			throw new NotFoundMemberException("사용자 정보가 없습니다");
 		}
 
-		String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0,6);
+		String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 6);
 		lazierUser.setPassword(passwordEncoder.encode(uuid));
 
 		String email = lazierUser.getUserEmail();
@@ -67,7 +77,9 @@ public class MemberService {
 		String contents = "임시 비밀번호 : " + uuid;
 
 		boolean sendEmail = mailComponents.sendEmail(email, title, contents);
-		if (!sendEmail) { throw new FailedFindPasswordException("메일 전송에 실패하였습니다."); }
+		if (!sendEmail) {
+			throw new FailedFindPasswordException("메일 전송에 실패하였습니다.");
+		}
 	}
 
 	@Transactional
@@ -79,14 +91,23 @@ public class MemberService {
 		lazierUser.setUserStatus(MemberStatus.STATUS_WITHDRAW.getUserStatus());
 	}
 
+	public LazierUser searchMember(Long userId) {
+		return memberRepository.findByUserId(userId)
+			.orElseThrow(() -> new NotFoundMemberException("사용자 정보가 없습니다."));
+	}
+
 	public Long parseUserId(HttpServletRequest request) {
 		return Long.valueOf(request.getAttribute("userId").toString());
 	}
 
-	public LazierUser searchMember(Long userId) {
-		LazierUser lazierUser = memberRepository.findByUserId(userId)
-			.orElseThrow(() -> new NotFoundMemberException("사용자 정보가 없습니다."));
-
-		return lazierUser;
+	//모듈 업데이트
+	@Transactional
+	public void updateModule(HttpServletRequest request, MemberModuleUpdateRequestDto memberModuleUpdateRequestDto) {
+		LazierUser lazierUser = searchMember(parseUserId(request));
+		lazierUser.setUserModuleList(memberModuleUpdateRequestDto.getUserModuleList());
 	}
+
+	//사진 업데이트
+
+
 }
