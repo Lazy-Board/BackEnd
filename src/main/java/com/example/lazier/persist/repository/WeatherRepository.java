@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WeatherRepository extends JpaRepository<Weather, Long> {
 
-    Optional<Weather> findFirstByLazierUserOrderByUpdatedAt(LazierUser lazierUser);
+    Optional<Weather> findTopByLazierUserOrderByUpdatedAtDesc (LazierUser lazierUser);
 }

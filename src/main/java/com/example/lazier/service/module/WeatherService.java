@@ -30,7 +30,7 @@ public class WeatherService {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = memberService.searchMember(userId);
 
-        Optional<Weather> optionalWeather = weatherRepository.findFirstByLazierUserOrderByUpdatedAt(
+        Optional<Weather> optionalWeather = weatherRepository.findTopByLazierUserOrderByUpdatedAtDesc(
             lazierUser);
 
         return optionalWeather.map(WeatherDto::of).orElse(null);
