@@ -28,7 +28,7 @@ public class TodoController {
 
 	private final TodoService todoService;
 
-	@ApiOperation(value = "투두리스트 작성")
+	@ApiOperation(value = "투두리스트 작성", notes = "투두리스트 작성하기")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "작성 완료"),
 		@ApiResponse(code = 400, message = "리스트를 이미 3개까지 작성한 경우")
@@ -38,11 +38,11 @@ public class TodoController {
 		@RequestBody TodoWriteRequestDto todoWriteRequestDto) {
 
 		todoService.write(request, todoWriteRequestDto);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok("투두리스트 작성 완료");
 	}
 
 
-	@ApiOperation(value = "투두리스트 삭제")
+	@ApiOperation(value = "투두리스트 삭제", notes = "투두리스트 삭제하기")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "삭제 완료"),
 		@ApiResponse(code = 400, message = "이미 삭제된 경우")
@@ -51,11 +51,11 @@ public class TodoController {
 	public ResponseEntity<?> delete(@RequestBody TodoDeleteRequestDto todoDeleteRequestDto) {
 
 		todoService.delete(todoDeleteRequestDto);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok("투두리스트 삭제 완료");
 	}
 
 
-	@ApiOperation(value = "투두리스트 수정")
+	@ApiOperation(value = "투두리스트 수정", notes = "투두리스트 수정하기")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "수정 완료"),
 		@ApiResponse(code = 400, message = "이미 삭제된 경우")
@@ -64,11 +64,11 @@ public class TodoController {
 	public ResponseEntity<?> update(@RequestBody TodoUpdateRequestDto todoUpdateRequestDto) {
 
 		todoService.update(todoUpdateRequestDto);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok("투두리스트 수정 완료");
 	}
 
 
-	@ApiOperation(value = "투두리스트 조회")
+	@ApiOperation(value = "투두리스트 조회", notes = "투두리스트 조회하기")
 	@ApiResponse(code = 200, message = "조회 완료")
 	@GetMapping("/search")
 	public ResponseEntity<?> search(HttpServletRequest request) {

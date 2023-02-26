@@ -1,6 +1,5 @@
 package com.example.lazier.dto.user;
 
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
