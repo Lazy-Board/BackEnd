@@ -30,7 +30,7 @@ public class TodoService {
 		Long userId = memberService.parseUserId(request);
 		LazierUser lazierUser = memberService.searchMember(userId);
 
-		if (todoRepository.countByUserId(userId) >= 3) {
+		if (todoRepository.countByUserId(userId) > 3) {
 			throw new FailedWriteException("할 일은 3개까지 작성할 수 있습니다.");
 		}
 		Todo todo = todoRepository.save(Todo.of(lazierUser, todoWriteRequestDto));
