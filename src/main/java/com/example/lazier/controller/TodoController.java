@@ -37,7 +37,7 @@ public class TodoController {
 		@RequestBody TodoWriteRequestDto todoWriteRequestDto) {
 
 		todoService.write(request, todoWriteRequestDto);
-		return ResponseEntity.ok("투두리스트 작성 완료");
+		return new ResponseEntity<>(todoService.write(request, todoWriteRequestDto), HttpStatus.OK);
 	}
 
 

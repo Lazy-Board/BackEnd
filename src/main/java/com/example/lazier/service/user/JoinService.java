@@ -32,7 +32,7 @@ public class JoinService {
         LazierUser lazierUser = memberRepository.save(LazierUser.builder()
             .userEmail(signUpRequestDto.getUserEmail())
             .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
-            .userName(signUpRequestDto.getUserName())
+            .name(signUpRequestDto.getUserName())
             .phoneNumber(signUpRequestDto.getPhoneNumber())
             .socialType("no-social")
             .createdAt(LocalDateTime.now())
