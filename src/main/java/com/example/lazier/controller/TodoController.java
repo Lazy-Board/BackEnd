@@ -22,57 +22,57 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/todolist")
+@RequestMapping(value = "/todolist", produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
 public class TodoController {
 
-	private final TodoService todoService;
+  private final TodoService todoService;
 
-	@ApiOperation(value = "투두리스트 작성")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "작성 완료"),
-		@ApiResponse(code = 400, message = "리스트를 이미 3개까지 작성한 경우")
-	})
-	@PostMapping("/write")
-	public ResponseEntity<?> write(HttpServletRequest request,
-		@RequestBody TodoWriteRequestDto todoWriteRequestDto) {
+  @ApiOperation(value = "투두리스트 작성")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "작성 완료"),
+      @ApiResponse(code = 400, message = "리스트를 이미 3개까지 작성한 경우")
+  })
+  @PostMapping("/write")
+  public ResponseEntity<?> write(HttpServletRequest request,
+      @RequestBody TodoWriteRequestDto todoWriteRequestDto) {
 
-		todoService.write(request, todoWriteRequestDto);
-		return ResponseEntity.ok().build();
-	}
-
-
-	@ApiOperation(value = "투두리스트 삭제")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "삭제 완료"),
-		@ApiResponse(code = 400, message = "이미 삭제된 경우")
-	})
-	@DeleteMapping("/delete")
-	public ResponseEntity<?> delete(@RequestBody TodoDeleteRequestDto todoDeleteRequestDto) {
-
-		todoService.delete(todoDeleteRequestDto);
-		return ResponseEntity.ok().build();
-	}
+    todoService.write(request, todoWriteRequestDto);
+    return ResponseEntity.ok().build();
+  }
 
 
-	@ApiOperation(value = "투두리스트 수정")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "수정 완료"),
-		@ApiResponse(code = 400, message = "이미 삭제된 경우")
-	})
-	@PutMapping("/update")
-	public ResponseEntity<?> update(@RequestBody TodoUpdateRequestDto todoUpdateRequestDto) {
+  @ApiOperation(value = "투두리스트 삭제")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "삭제 완료"),
+      @ApiResponse(code = 400, message = "이미 삭제된 경우")
+  })
+  @DeleteMapping("/delete")
+  public ResponseEntity<?> delete(@RequestBody TodoDeleteRequestDto todoDeleteRequestDto) {
 
-		todoService.update(todoUpdateRequestDto);
-		return ResponseEntity.ok().build();
-	}
+    todoService.delete(todoDeleteRequestDto);
+    return ResponseEntity.ok().build();
+  }
 
 
-	@ApiOperation(value = "투두리스트 조회")
-	@ApiResponse(code = 200, message = "조회 완료")
-	@GetMapping("/search")
-	public ResponseEntity<?> search(HttpServletRequest request) {
-		return new ResponseEntity<>(todoService.search(request), HttpStatus.OK);
-	}
+  @ApiOperation(value = "투두리스트 수정")
+  @ApiResponses({
+      @ApiResponse(code = 200, message = "수정 완료"),
+      @ApiResponse(code = 400, message = "이미 삭제된 경우")
+  })
+  @PutMapping("/update")
+  public ResponseEntity<?> update(@RequestBody TodoUpdateRequestDto todoUpdateRequestDto) {
+
+    todoService.update(todoUpdateRequestDto);
+    return ResponseEntity.ok().build();
+  }
+
+
+  @ApiOperation(value = "투두리스트 조회")
+  @ApiResponse(code = 200, message = "조회 완료")
+  @GetMapping("/search")
+  public ResponseEntity<?> search(HttpServletRequest request) {
+    return new ResponseEntity<>(todoService.search(request), HttpStatus.OK);
+  }
 
 }

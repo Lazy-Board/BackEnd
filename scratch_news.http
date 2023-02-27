@@ -26,30 +26,28 @@ Content-Type: application/json
 ### 4.NewsDB초기화 (db가 없을경우에만)
 GET http://localhost:8080/news/init
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNjc3MTY0NzkxLCJleHAiOjE2NzcxNjY1OTF9.vvFSYOIU27usaa8T-DMco97xf5a0o55zPjHawZ8O33g
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3NTA1Mzk4LCJleHAiOjE2Nzc1OTE3OTh9.D9MZSHnls4_fx5AGpvq7-QDUooRAXBD166LVHerH_Bs
 
 ### NewsDB모듈 추가
 POST http://localhost:8080/newsuser
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI0IiwiaWF0IjoxNjc3MTY0NzkxLCJleHAiOjE2NzcxNjY1OTF9.vvFSYOIU27usaa8T-DMco97xf5a0o55zPjHawZ8O33g
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3NTA1Mzk4LCJleHAiOjE2Nzc1OTE3OTh9.D9MZSHnls4_fx5AGpvq7-QDUooRAXBD166LVHerH_Bs
 
 ### NewsUser Press List 보여주기
 GET http://localhost:8080/newsuser
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3MTQ3MTM1LCJleHAiOjE2NzcxNDg5MzV9.FsQAVCPndZNce8Lit7llpMEK531emz5OJ0uKXuikjSw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3NTA1Mzk4LCJleHAiOjE2Nzc1OTE3OTh9.D9MZSHnls4_fx5AGpvq7-QDUooRAXBD166LVHerH_Bs
 
 ### News 보여주기(회원별)
 GET http://localhost:8080/news
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3MTQ3MTM1LCJleHAiOjE2NzcxNDg5MzV9.FsQAVCPndZNce8Lit7llpMEK531emz5OJ0uKXuikjSw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3NTA1Mzk4LCJleHAiOjE2Nzc1OTE3OTh9.D9MZSHnls4_fx5AGpvq7-QDUooRAXBD166LVHerH_Bs
 
 ### News PressList 수정하기
 PUT http://localhost:8080/newsuser
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3MTQ3MTM1LCJleHAiOjE2NzcxNDg5MzV9.FsQAVCPndZNce8Lit7llpMEK531emz5OJ0uKXuikjSw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNjc3NTA1Mzk4LCJleHAiOjE2Nzc1OTE3OTh9.D9MZSHnls4_fx5AGpvq7-QDUooRAXBD166LVHerH_Bs
 
 {
-  "press1": "연합뉴스",
-  "press2": "동아일보",
-  "press3": "중앙일보"
+  "press1": "연합뉴스"
 }

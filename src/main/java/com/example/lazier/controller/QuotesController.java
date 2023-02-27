@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = {"명언 정보를 제공하는 api"})
 @RestController
 @AllArgsConstructor
-@RequestMapping("/quotes")
+@RequestMapping(value = "/quotes", produces = "application/json; charset=utf8")
 public class QuotesController {
 
-    public final QuotesService quotesService;
+  public final QuotesService quotesService;
 
-    @ApiOperation(value = "랜덤한 명언을 반환하는 메소드")
-    @GetMapping
-    public ResponseEntity<?> getQuotes() {
-        return new ResponseEntity<>(quotesService.get(), HttpStatus.OK);
-    }
+  @ApiOperation(value = "랜덤한 명언을 반환하는 메소드")
+  @GetMapping
+  public ResponseEntity<?> getQuotes() {
+    return new ResponseEntity<>(quotesService.get(), HttpStatus.OK);
+  }
 }

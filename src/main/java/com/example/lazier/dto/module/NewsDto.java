@@ -18,6 +18,7 @@ public class NewsDto {
   private String subject;
   private String contents;
   private String pressId;
+  private String pressName;
   private String createdAt;
 
   private String url;
@@ -32,6 +33,7 @@ public class NewsDto {
         .subject(entity.getSubject())
         .contents(entity.getContents())
         .pressId(entity.getPressId())
+        .pressName(entity.getPressName())
         .createdAt(entity.getCreatedAt())
         .url(entity.getUrl())
         .imagePath(entity.getImagePath())

@@ -8,9 +8,4 @@ public class NewsUserInput {
     long userId;
     @NotBlank
     String press1;
-    @NotBlank
-    String press2;
-    @NotBlank
-    String press3;
-
 }

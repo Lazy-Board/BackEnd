@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/newsuser")
+@RequestMapping(value = "/newsuser",produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
 public class NewsUserController {
 
