@@ -32,11 +32,8 @@ public class JwtFilter extends OncePerRequestFilter {
 				request.setAttribute("userId", authentication.getName());
 			}
 		} catch (IllegalArgumentException | JwtException e) {
-			log.warn("jwtException에러: " + e.getMessage());
-			request.setAttribute("jwtexception", e.getMessage());
-		} catch (Exception e) {
-			log.warn("nonjwtException에러: " + e.getMessage());
-			request.setAttribute("nonjwtexception", e.getMessage());
+			log.warn("filter-exception: " + e.getMessage());
+			request.setAttribute("exception", e.getMessage());
 		}
 		filterChain.doFilter(request, response);
 	}

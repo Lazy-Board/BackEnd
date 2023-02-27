@@ -1,9 +1,7 @@
 package com.example.lazier.controller;
 
-import com.example.lazier.dto.user.FindPasswordRequestDto;
+import com.example.lazier.dto.user.MemberModuleSaveRequestDto;
 import com.example.lazier.dto.user.SignUpRequestDto;
-import com.example.lazier.dto.user.UpdatePasswordRequestDto;
-import com.example.lazier.dto.user.MemberInfoDto;
 import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.service.user.JwtService;
 import com.example.lazier.dto.user.TokenResponseDto;
@@ -41,7 +39,7 @@ public class MemberController {
 	private final MemberService memberService;
 
 
-	@ApiOperation(value = "회원가입")
+	@ApiOperation(value = "회원가입", notes = "회원가입하기")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "회원가입 성공"),
 		@ApiResponse(code = 400, message = "사용자 정보가 없거나 이미 가입된 이메일인 경우")
@@ -52,7 +50,27 @@ public class MemberController {
 	}
 
 
-	@ApiOperation(value = "이메일 인증")
+	@ApiOperation(value = "모듈 저장" , notes = "보고 싶은 모듈 저장하기")
+	@ApiResponse(code = 200, message = "모듈 저장 완료")
+	@PostMapping("/saveModule")
+	public ResponseEntity<?> saveModule(
+		@RequestBody @Valid MemberModuleSaveRequestDto memberModuleSaveRequestDto) {
+		//joinService.saveModule(memberModuleInfo);
+		//return ResponseEntity.ok("모듈 저장 완료");
+		return new ResponseEntity<>(joinService.saveModule(memberModuleSaveRequestDto),
+			HttpStatus.OK);
+	}
+
+
+	@ApiOperation(value = "메인 : 모듈 정보 불러오기", notes= "사용자가 선택한 모듈 불러오기")
+	@ApiResponse(code = 200, message = "모듈 불러오기 완료")
+	@GetMapping("/main")
+	public ResponseEntity<?> main(HttpServletRequest request) {
+		return new ResponseEntity<>(memberService.main(request), HttpStatus.OK);
+	}
+
+
+	@ApiOperation(value = "이메일 인증", notes = "이메일 인증하기")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "이메일 인증 성공"),
 		@ApiResponse(code = 400, message = "회원가입을 아직 안한 경우")
@@ -64,7 +82,7 @@ public class MemberController {
 	}
 
 
-	@ApiOperation(value = "로그인")
+	@ApiOperation(value = "로그인", notes = "로그인하기")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "로그인 성공"),
 		@ApiResponse(code = 400, message = "아이디가 없거나 비밀번호가 잘못되었을 경우")
@@ -80,7 +98,7 @@ public class MemberController {
 	}
 
 
-	@ApiOperation(value = "구글 로그인")
+	@ApiOperation(value = "구글 로그인", notes = "소셜 로그인하기")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "토큰 발급"),
 		@ApiResponse(code = 400, message = "서버 측에서 잘못된 접근을 한 경우")
@@ -92,12 +110,12 @@ public class MemberController {
 	}
 
 
-	@ApiOperation(value = "로그아웃")
+	@ApiOperation(value = "로그아웃", notes = "로그아웃하기")
 	@ApiResponse(code = 200, message = "로그아웃 완료")
 	@PostMapping("/logout")
-	public ResponseEntity logout(HttpServletRequest request) {
+	public ResponseEntity<?> logout(HttpServletRequest request) {
 		redisService.delValues(request);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok("로그아웃 완료");
 	}
 
 
@@ -112,7 +130,7 @@ public class MemberController {
 	}
 
 
-	@ApiOperation(value = "토큰 재발급")
+	@ApiOperation(value = "토큰 재발급", notes = "토큰 재발급하기")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "토큰 재발급"),
 		@ApiResponse(code = 400, message = "일치하지 않는 토큰이거나 이미 재발급된 경우")
@@ -121,62 +139,6 @@ public class MemberController {
 	public ResponseEntity<?> validateRefreshToken(
 		HttpServletRequest request) {
 		return new ResponseEntity<>(jwtService.validateRefreshToken(request), HttpStatus.OK);
-	}
-
-
-	@ApiOperation(value = "마이 페이지 - 유저 정보 불러오기", notes = "socialType이 google인 경우 이메일 input 비활성화")
-	@ApiResponse(code = 200, message = "유저 정보 불러오기 완료")
-	@GetMapping("/search")
-	public ResponseEntity<?> search(HttpServletRequest request) {
-		return new ResponseEntity<>(memberService.showUserInfo(request), HttpStatus.OK);
-	}
-
-
-	@ApiOperation(value = "마이 페이지 - 유저 정보 업데이트")
-	@ApiResponse(code = 200, message = "유저 정보 수정 완료")
-	@PutMapping("/update")
-	public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
-		@RequestBody @Valid MemberInfoDto memberInfoDto) {
-
-		memberService.updateUserInfo(request, memberInfoDto);
-		return ResponseEntity.ok().build();
-	}
-
-
-	@ApiOperation(value = "마이 페이지 - 비밀번호 변경", notes = "기존 비밀번호와 새 비밀번호 입력")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "비밀번호 수정 완료"),
-		@ApiResponse(code = 400, message = "기존 비밀번호가 일치하지 않는 경우")
-	})
-	@PutMapping("/updatePassword")
-	public ResponseEntity<?> updatePassword(HttpServletRequest request,
-		@RequestBody @Valid UpdatePasswordRequestDto passwordDto) {
-
-		memberService.updatePassword(request, passwordDto);
-		return ResponseEntity.ok().build();
-	}
-
-
-	@ApiOperation(value = "마이 페이지 - 비밀번호 변경", notes = "사용자의 이메일과 전화번호 입력값이 일치한 경우 해당 이메일로 새 비밀번호 발급")
-	@ApiResponses({
-		@ApiResponse(code = 200, message = "이메일로 임시 비밀번호 발급 완료"),
-		@ApiResponse(code = 400, message = "기존 비밀번호가 일치하지 않는 경우")
-	})
-	@PostMapping("/find/password")
-	public ResponseEntity<?> findPassword(HttpServletRequest request,
-		FindPasswordRequestDto passwordDto) {
-
-		memberService.findPassword(request, passwordDto);
-		return ResponseEntity.ok().build(); //임시 비밀번호가 000.000 로 발급되었습니다.
-	}
-
-
-	@ApiOperation(value = "마이 페이지 - 탈퇴")
-	@ApiResponse(code = 200, message = "탈퇴 완료")
-	@PostMapping("/withdrawal")
-	public ResponseEntity<?> withdrawal(HttpServletRequest request) {
-		memberService.withdrawal(request);
-		return ResponseEntity.ok().build();
 	}
 
 }

@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UpdatePasswordRequestDto {
+public class MemberModuleSaveRequestDto {
 
 	@NotBlank
-	private String password;
+	private String userId;
 
 	@NotBlank
-	private String newPassword;
+	private String userModuleList;
 }
