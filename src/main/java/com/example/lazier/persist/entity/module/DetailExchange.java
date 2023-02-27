@@ -1,7 +1,6 @@
 package com.example.lazier.persist.entity.module;
 
 import com.example.lazier.persist.entity.user.LazierUser;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,17 +13,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 
-@Entity
+@Entity(name = "DETAIL_EXCHANGE")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-@DynamicInsert
-public class UserStock {
+public class DetailExchange {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -33,15 +29,15 @@ public class UserStock {
     @ManyToOne(fetch = FetchType.LAZY)
     private LazierUser lazierUser;
 
-    private String samsungElectronic;
-    private String skHynix;
-    private String naver;
-    private String kakao;
-    private String hyundaiCar;
-    private String kia;
-    private String lgElectronic;
-    private String kakaoBank;
-    private String samsungSdi;
-    private String hive;
+    private String usd;
+    private String jpy;
+    private String eur;
+    private String cny;
+    private String hkd;
+    private String gbp;
+    private String chf;
+    private String cad;
+    private String aud;
+    private String nzd;
 
 }

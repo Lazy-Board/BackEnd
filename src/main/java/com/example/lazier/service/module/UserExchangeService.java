@@ -14,11 +14,14 @@ import static com.example.lazier.type.CurrencyName.USD;
 import com.example.lazier.dto.module.UserAllExchangeDto;
 import com.example.lazier.dto.module.UserExchangeInput;
 import com.example.lazier.dto.module.UserPartialExchangeDto;
+import com.example.lazier.exception.NotFoundExchangeException;
 import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
+import com.example.lazier.persist.entity.module.DetailExchange;
 import com.example.lazier.persist.entity.module.Exchange;
 import com.example.lazier.persist.entity.module.UserExchange;
 import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.repository.DetailExchangeRepository;
 import com.example.lazier.persist.repository.ExchangeRepository;
 import com.example.lazier.persist.repository.UserExchangeRepository;
 import com.example.lazier.service.user.MemberService;
@@ -36,10 +39,11 @@ public class UserExchangeService {
     private final ExchangeService exchangeService;
     private final MemberService memberService;
     private final UserExchangeRepository userExchangeRepository;
+    private final DetailExchangeRepository detailExchangeRepository;
     private final ExchangeRepository exchangeRepository;
 
     @Transactional
-    public void add(HttpServletRequest request, UserExchangeInput parameter) {
+    public void add(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = memberService.searchMember(userId);
 
@@ -49,18 +53,34 @@ public class UserExchangeService {
 
         UserExchange userExchange = UserExchange.builder()
                                                 .lazierUser(lazierUser)
-                                                .usd(parameter.getUsd() + USD)
-                                                .jpy(parameter.getJpy() + JPY)
-                                                .eur(parameter.getEur() + EUR)
-                                                .cny(parameter.getCny() + CNY)
-                                                .aud(parameter.getAud() + AUD)
-                                                .cad(parameter.getCad() + CAD)
-                                                .chf(parameter.getChf() + CHF)
-                                                .nzd(parameter.getNzd() + NZD)
-                                                .hkd(parameter.getHkd() + HKD)
-                                                .gbp(parameter.getGbp() + GBP)
+                                                .usd(String.valueOf(USD))
+                                                .jpy(String.valueOf(JPY))
+                                                .eur(String.valueOf(EUR))
+                                                .cny(String.valueOf(CNY))
+                                                .aud("N")
+                                                .cad("N")
+                                                .chf("N")
+                                                .nzd("N")
+                                                .hkd("N")
+                                                .gbp("N")
                                                 .build();
+
+        DetailExchange detailexchange = DetailExchange.builder()
+                                                    .lazierUser(lazierUser)
+                                                    .usd(String.valueOf(USD))
+                                                    .jpy(String.valueOf(JPY))
+                                                    .eur(String.valueOf(EUR))
+                                                    .cny(String.valueOf(CNY))
+                                                    .aud(String.valueOf(AUD))
+                                                    .cad(String.valueOf(CAD))
+                                                    .chf(String.valueOf(CHF))
+                                                    .nzd(String.valueOf(NZD))
+                                                    .hkd(String.valueOf(HKD))
+                                                    .gbp(String.valueOf(GBP))
+                                                    .build();
+
         userExchangeRepository.save(userExchange);
+        detailExchangeRepository.save(detailexchange);
         exchangeService.add();
     }
 
@@ -72,42 +92,42 @@ public class UserExchangeService {
         UserExchange userExchange = userExchangeRepository.findByLazierUser(lazierUser)
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
-        userExchange.setUsd(parameter.getUsd() + USD);
-        userExchange.setJpy(parameter.getJpy() + JPY);
-        userExchange.setEur(parameter.getEur() + EUR);
-        userExchange.setCny(parameter.getCny() + CNY);
-        userExchange.setHkd(parameter.getHkd() + HKD);
-        userExchange.setGbp(parameter.getGbp() + GBP);
-        userExchange.setChf(parameter.getChf() + CHF);
-        userExchange.setCad(parameter.getCad() + CAD);
-        userExchange.setAud(parameter.getAud() + AUD);
-        userExchange.setNzd(parameter.getNzd() + NZD);
+        userExchange.setUsd(parameter.getUsd());
+        userExchange.setJpy(parameter.getJpy());
+        userExchange.setEur(parameter.getEur());
+        userExchange.setCny(parameter.getCny());
+        userExchange.setHkd(parameter.getHkd());
+        userExchange.setGbp(parameter.getGbp());
+        userExchange.setChf(parameter.getChf());
+        userExchange.setCad(parameter.getCad());
+        userExchange.setAud(parameter.getAud());
+        userExchange.setNzd(parameter.getNzd());
 
         userExchangeRepository.save(userExchange);
     }
 
-    public List<UserAllExchangeDto> getUserWantedExchange(HttpServletRequest request) {
+    public List<UserAllExchangeDto> getExchange(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = memberService.searchMember(userId);
 
         List<UserAllExchangeDto> userAllExchangeDtoList = new ArrayList<>();
 
-        UserExchange userExchange = userExchangeRepository.findByLazierUser(lazierUser)
+        DetailExchange detailExchange = detailExchangeRepository.findByLazierUser(lazierUser)
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
-        String[] checkList = {userExchange.getUsd(), userExchange.getJpy(), userExchange.getEur(),
-                            userExchange.getCny(), userExchange.getHkd(), userExchange.getGbp(),
-                            userExchange.getChf(), userExchange.getCad(), userExchange.getAud(),
-                            userExchange.getNzd()};
+        String[] checkList = {detailExchange.getUsd(), detailExchange.getJpy(),
+                                detailExchange.getEur(), detailExchange.getCny(),
+                                detailExchange.getHkd(), detailExchange.getGbp(),
+                                detailExchange.getChf(), detailExchange.getCad(),
+                                detailExchange.getAud(), detailExchange.getNzd()};
 
         for (int i = 0; i < 10; i++) {
-            if (checkList[i].charAt(0) == 'Y') {
-                String currencyName = checkList[i].substring(1);
+            String currencyName = checkList[i];
 
-                Exchange exchange = exchangeRepository.findByCurrencyNameOrderByUpdateAtDescCountryNameDesc(currencyName)
-                    .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
+            Exchange exchange = exchangeRepository.findByCurrencyNameOrderByUpdateAtDescCountryNameDesc(currencyName)
+                .orElseThrow(() -> new NotFoundExchangeException("선택한 환율 종목이 있는지 확인하세요."));
 
-                UserAllExchangeDto userAllExchangeDto = UserAllExchangeDto.builder()
+            UserAllExchangeDto userAllExchangeDto = UserAllExchangeDto.builder()
                                             .currencyName(exchange.getCurrencyName())
                                             .countryName(exchange.getCountryName())
                                             .tradingStandardRate(exchange.getTradingStandardRate())
@@ -121,16 +141,14 @@ public class UserExchangeService {
                                             .round(exchange.getRound())
                                             .build();
 
-                userAllExchangeDtoList.add(userAllExchangeDto);
-            }
+            userAllExchangeDtoList.add(userAllExchangeDto);
         }
         return userAllExchangeDtoList;
     }
 
-    public List<UserPartialExchangeDto> getUserPartialExchange(HttpServletRequest request) {
+    public List<UserPartialExchangeDto> getPartialExchange(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = memberService.searchMember(userId);
-
         List<UserPartialExchangeDto> userPartialExchangeDtoList = new ArrayList<>();
 
         UserExchange userExchange = userExchangeRepository.findByLazierUser(lazierUser)
@@ -142,11 +160,11 @@ public class UserExchangeService {
                             userExchange.getNzd()};
 
         for (int i = 0; i < 10; i++) {
-            if (checkList[i].charAt(0) == 'Y') {
-                String currencyName = checkList[i].substring(1);
+            if (checkList[i].length() > 1) {
+                String currencyName = checkList[i];
 
                 Exchange exchange = exchangeRepository.findByCurrencyNameOrderByUpdateAtDescCountryNameDesc(currencyName)
-                    .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
+                    .orElseThrow(() -> new NotFoundExchangeException("선택한 환율 종목이 있는지 확인하세요."));
 
                 UserPartialExchangeDto userPartialExchangeDto = UserPartialExchangeDto.builder()
                                             .currencyName(exchange.getCurrencyName())

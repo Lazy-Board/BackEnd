@@ -23,9 +23,8 @@ public class ExchangeController {
 
   @ApiOperation(value = "환율 정보 저장")
   @PostMapping("/add")
-  public ResponseEntity<?> addExchangeInfo(HttpServletRequest request,
-      @RequestBody UserExchangeInput parameter) {
-    userExchangeService.add(request, parameter);
+  public ResponseEntity<?> addExchangeInfo(HttpServletRequest request) {
+    userExchangeService.add(request);
     return ResponseEntity.status(HttpStatus.CREATED).body("저장되었습니다.");
   }
 
@@ -33,19 +32,17 @@ public class ExchangeController {
   // Main Page - 환율 정보 VIEW
   @ApiOperation(value = "환율 정보 일부만 조회(통화명, 국가명, 전일대비, 등락율, 매매기준율)")
   @GetMapping("/search")
-  public ResponseEntity<?> getUserPartialExchange(HttpServletRequest request,
-      UserExchangeInput parameter) {
+  public ResponseEntity<?> getUserPartialExchange(HttpServletRequest request) {
     return new ResponseEntity<>(
-        userExchangeService.getUserPartialExchange(request), HttpStatus.OK);
+        userExchangeService.getPartialExchange(request), HttpStatus.OK);
   }
 
   // 상세 페이지 - 환율 정보 VIEW
   @ApiOperation(value = "환율 정보 상세 조회")
   @GetMapping("/detail")
-  public ResponseEntity<?> getUserAllExchange(HttpServletRequest request,
-      UserExchangeInput parameter) {
+  public ResponseEntity<?> getUserAllExchange(HttpServletRequest request) {
     return new ResponseEntity<>(
-        userExchangeService.getUserWantedExchange(request), HttpStatus.OK);
+        userExchangeService.getExchange(request), HttpStatus.OK);
   }
 
   // 환율 선택 정보 업데이트

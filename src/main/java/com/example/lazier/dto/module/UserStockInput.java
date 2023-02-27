@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class UserStockInput {
 
-    private String userId;
     private String samsungElectronic;
     private String skHynix;
     private String naver;
