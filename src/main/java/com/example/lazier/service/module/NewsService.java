@@ -1,6 +1,7 @@
 package com.example.lazier.service.module;
 
 import com.example.lazier.dto.module.NewsDto;
+import com.example.lazier.dto.module.NewsPressDto;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.News;
 import com.example.lazier.persist.entity.module.NewsPress;
@@ -83,6 +84,15 @@ public class NewsService {
         .forEach(entity -> newsRepository.findTop10ByPressIdOrderByNewsIdDesc(
             entity.getPressId()).stream().map(NewsDto::from).forEach(newsByUser::add));
     return newsByUser;
+  }
+
+  public List<NewsPressDto> showEntireNewsPressList(HttpServletRequest request) {
+    //멤버인지 확인 -> 아닐경우 멤버서비스에서 Error Throw
+    List<NewsPressDto> newsPressDtoList = new ArrayList<>();
+
+    newsPressRepository.findAll().stream().map(NewsPressDto::from).forEach(newsPressDtoList::add);
+
+    return newsPressDtoList;
   }
 
 

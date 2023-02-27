@@ -35,6 +35,7 @@ public class SecurityConfig {
         .antMatchers(HttpMethod.POST, "/user/reissue")
         .antMatchers(HttpMethod.OPTIONS, "/**")
         .antMatchers("/v3/api-docs/**")
+        .antMatchers("/youtube/**")
         .antMatchers("/swagger-resources/**")
         .antMatchers("/swagger-ui/**")
         .antMatchers("/h2-console/**");

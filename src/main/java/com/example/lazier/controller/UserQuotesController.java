@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = {"사용자 설정 문구를 위한 api"})
 @RestController
 @AllArgsConstructor
-@RequestMapping("/userQuotes")
+@RequestMapping(value = "/userQuotes",produces = "application/json; charset=utf8")
 public class UserQuotesController {
 
     private final UserQuotesService userQuotesService;

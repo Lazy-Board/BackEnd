@@ -9,7 +9,6 @@ import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.type.MemberStatus;
 import com.example.lazier.exception.user.FailedSignUpException;
 import com.example.lazier.persist.repository.MemberRepository;
-import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

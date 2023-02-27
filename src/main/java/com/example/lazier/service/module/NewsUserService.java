@@ -43,11 +43,11 @@ public class NewsUserService {
 
     // 뉴스 레포에 정보가 없을 경우 초기화 정보 생성
     if (!newsUserRepository.existsByLazierUser(lazierUser)) {
-      List<NewsPress> userPress = newsPressRepository.findTop3ByOrderByPressIdAsc();
+      List<NewsPress> userPress = newsPressRepository.findFirstByOrderByPressIdAsc();
       newsUserRepository.save(
           NewsUser.builder().lazierUser(lazierUser).userPress(userPress).build());
     } else {
-      throw new UserAlreadyExistException("이미 사용중인 모듈입니다.");
+      throw new UserAlreadyExistException("사용이력이 있는 모듈입니다.기존 정보로 모듈을 사용합니다.");
     }
   }
 
@@ -76,14 +76,9 @@ public class NewsUserService {
 
     NewsPress newsPress1 = newsPressRepository.findByPressName(userInput.getPress1())
         .orElseThrow(() -> new PressNotFoundException("존재하지 않는 언론사명입니다."));
-    NewsPress newsPress2 = newsPressRepository.findByPressName(userInput.getPress2())
-        .orElseThrow(() -> new PressNotFoundException("존재하지 않는 언론사명입니다."));
-    NewsPress newsPress3 = newsPressRepository.findByPressName(userInput.getPress3())
-        .orElseThrow(() -> new PressNotFoundException("존재하지 않는 언론사명입니다."));
 
     newUserPressList.add(newsPress1);
-    newUserPressList.add(newsPress2);
-    newUserPressList.add(newsPress3);
+
     user.update(newUserPressList);
     newsUserRepository.save(user);
   }

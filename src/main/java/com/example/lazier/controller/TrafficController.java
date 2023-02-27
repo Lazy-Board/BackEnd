@@ -19,45 +19,46 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = {"출근정보 저장 및 조회하는 api"})
 @RestController
-@RequestMapping("/traffic")
+@RequestMapping(value = "/traffic", produces = "application/json; charset=utf8")
 @AllArgsConstructor
 public class TrafficController {
 
-    private final TrafficService trafficService;
+  private final TrafficService trafficService;
 
-    @ApiOperation(value = "출발지와 도착지를 저장하는 메소드")
-    @PostMapping
-    public ResponseEntity<?> addUserInfo(HttpServletRequest request,
-        @RequestBody @Valid TrafficInput parameter) {
-        trafficService.add(request, parameter);
-        return ResponseEntity.ok().body("저장되었습니다.");
-    }
+  @ApiOperation(value = "출발지와 도착지를 저장하는 메소드")
+  @PostMapping
+  public ResponseEntity<?> addUserInfo(HttpServletRequest request,
+      @RequestBody @Valid TrafficInput parameter) {
+    trafficService.add(request, parameter);
+    return ResponseEntity.ok().body("저장되었습니다.");
+  }
 
-    @ApiOperation(value = "출발지와 도착지 정보를 조회하는 메소드")
-    @GetMapping
-    public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
-        return new ResponseEntity<>(trafficService.getUserInfo(request), HttpStatus.OK);
-    }
+  @ApiOperation(value = "출발지와 도착지 정보를 조회하는 메소드")
+  @GetMapping
+  public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
+    return new ResponseEntity<>(trafficService.getUserInfo(request), HttpStatus.OK);
+  }
 
-    @ApiOperation(value = "출근지와 도착지 정보를 업데이트 하는 메소드")
-    @PutMapping
-    public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
-        @RequestBody @Valid TrafficInput parameter) {
-        trafficService.update(request, parameter);
+  @ApiOperation(value = "출근지와 도착지 정보를 업데이트 하는 메소드")
+  @PutMapping
+  public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
+      @RequestBody @Valid TrafficInput parameter) {
+    trafficService.update(request, parameter);
 
-        return ResponseEntity.ok().body("업데이트 되었습니다.");
-    }
-    @ApiOperation(value = "출근지와 도착지 정보를 삭제하는 메소드")
-    @DeleteMapping
-    public ResponseEntity<?> deleteUserInfo(HttpServletRequest request) {
-        trafficService.delete(request);
+    return ResponseEntity.ok().body("업데이트 되었습니다.");
+  }
 
-        return ResponseEntity.ok().body("삭제되었습니다.");
-    }
+  @ApiOperation(value = "출근지와 도착지 정보를 삭제하는 메소드")
+  @DeleteMapping
+  public ResponseEntity<?> deleteUserInfo(HttpServletRequest request) {
+    trafficService.delete(request);
 
-    @ApiOperation(value = "출근길 소요시간을 조회하는 메소드")
-    @GetMapping("/duration")
-    public ResponseEntity<?> getTrafficDuration(HttpServletRequest request) {
-        return new ResponseEntity<>(trafficService.getTrafficDuration(request), HttpStatus.OK);
-    }
+    return ResponseEntity.ok().body("삭제되었습니다.");
+  }
+
+  @ApiOperation(value = "출근길 소요시간을 조회하는 메소드")
+  @GetMapping("/duration")
+  public ResponseEntity<?> getTrafficDuration(HttpServletRequest request) {
+    return new ResponseEntity<>(trafficService.getTrafficDuration(request), HttpStatus.OK);
+  }
 }

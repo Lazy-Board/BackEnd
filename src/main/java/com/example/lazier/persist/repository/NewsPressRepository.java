@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface NewsPressRepository extends JpaRepository<NewsPress, String> {
 
-  List<NewsPress> findTop3ByOrderByPressIdAsc();
+  List<NewsPress> findFirstByOrderByPressIdAsc();
 
   Optional<NewsPress> findByPressName(String pressName);
 

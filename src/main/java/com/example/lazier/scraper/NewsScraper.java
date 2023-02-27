@@ -136,6 +136,7 @@ public class NewsScraper {
           int index = newsUrl.lastIndexOf('/');
           String newsId = newsUrl.substring(index + 1);
           String contents = newsElement.select("span.lede").text();
+          String pressName = newsElement.select("span.writing").text();
           String createdAt = newsElement.select("span.date").text();
           String imagePath = newsElement.select("img").attr("src");
 
@@ -143,6 +144,7 @@ public class NewsScraper {
               .newsId(newsId)
               .subject(subject)
               .pressId(pressId)
+              .pressName(pressName)
               .createdAt(createdAt)
               .contents(contents)
               .url(newsUrl)
