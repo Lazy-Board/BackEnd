@@ -3,6 +3,7 @@ package com.example.lazier.service.module;
 import com.example.lazier.dto.module.TodoDeleteRequestDto;
 import com.example.lazier.dto.module.TodoUpdateRequestDto;
 import com.example.lazier.dto.module.TodoWriteRequestDto;
+import com.example.lazier.dto.module.TodoWriteResponseDto;
 import com.example.lazier.exception.todo.AlreadyDeleteException;
 import com.example.lazier.exception.todo.FailedWriteException;
 import com.example.lazier.persist.entity.module.Todo;
@@ -24,14 +25,20 @@ public class TodoService {
 	private final MemberService memberService;
 	private final TodoRepository todoRepository;
 
-	public void write(HttpServletRequest request, TodoWriteRequestDto todoWriteRequestDto) {
+	public TodoWriteResponseDto write(HttpServletRequest request,
+		TodoWriteRequestDto todoWriteRequestDto) {
 		Long userId = memberService.parseUserId(request);
 		LazierUser lazierUser = memberService.searchMember(userId);
 
 		if (todoRepository.countByUserId(userId) >= 3) {
 			throw new FailedWriteException("할 일은 3개까지 작성할 수 있습니다.");
 		}
-		todoRepository.save(Todo.of(lazierUser, todoWriteRequestDto));
+		Todo todo = todoRepository.save(Todo.of(lazierUser, todoWriteRequestDto));
+
+		return TodoWriteResponseDto.builder()
+			.id(todo.getId().toString())
+			.content(todo.getContent())
+			.build();
 	}
 
 	@Transactional

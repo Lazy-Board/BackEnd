@@ -26,7 +26,7 @@ public class LazierUser implements UserDetails {
     @Column(nullable = false, length = 100, unique = true)
     private String userEmail; //oauth
 
-    private String userName; //oauth
+    private String name; //oauth
 
     private String oauthId; //oauth
 
@@ -52,7 +52,7 @@ public class LazierUser implements UserDetails {
         if (!memberInfoDto.getSocialType().toLowerCase().trim().equals("google")) {
             this.userEmail = memberInfoDto.getUserEmail();
         }
-        this.userName = memberInfoDto.getUserName();
+        this.name = memberInfoDto.getUserName();
         this.phoneNumber = memberInfoDto.getPhoneNumber();
     }
 
