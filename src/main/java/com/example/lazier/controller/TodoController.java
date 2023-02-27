@@ -47,7 +47,7 @@ public class TodoController {
 		@ApiResponse(code = 200, message = "삭제 완료"),
 		@ApiResponse(code = 400, message = "이미 삭제된 경우")
 	})
-	@DeleteMapping("/delete")
+	@PostMapping("/delete")
 	public ResponseEntity<?> delete(@RequestBody TodoDeleteRequestDto todoDeleteRequestDto) {
 
 		todoService.delete(todoDeleteRequestDto);
