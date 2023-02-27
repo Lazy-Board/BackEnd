@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/youtube")
+@RequestMapping(value = "/youtube",produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
 public class YoutubeController {
 
@@ -21,7 +21,6 @@ public class YoutubeController {
 //    private final CacheManager redisCacheManager;
 
   @ApiOperation(value = "최신 유튜브 정보를 3개 반환합니다.")
-
   @GetMapping
   public ResponseEntity<?> showYoutube() {
     List<YoutubeDto> result = this.youtubeService.getYoutube();

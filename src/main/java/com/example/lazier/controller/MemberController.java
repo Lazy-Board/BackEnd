@@ -26,7 +26,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/user")
+@RequestMapping(value = "/user",produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
 public class MemberController {
 

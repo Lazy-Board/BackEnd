@@ -26,6 +26,7 @@ public class News {
 
   private String subject;
   private String pressId;
+  private String pressName;
   private String contents;
   private String createdAt;
 
@@ -38,8 +39,10 @@ public class News {
     this.newsId = dto.getNewsId();
     this.subject = dto.getSubject();
     this.pressId = dto.getPressId();
+    this.pressName = dto.getPressName();
     this.contents = dto.getContents();
     this.createdAt = dto.getCreatedAt();
+
     this.url = dto.getUrl();
     this.imagePath = dto.getImagePath();
     this.updatedAt = LocalDateTime.now();
