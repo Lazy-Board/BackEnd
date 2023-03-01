@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/todolist")
+@RequestMapping(value = "/todolist", produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
 public class TodoController {
 
@@ -36,7 +36,6 @@ public class TodoController {
 	public ResponseEntity<?> write(HttpServletRequest request,
 		@RequestBody TodoWriteRequestDto todoWriteRequestDto) {
 
-		todoService.write(request, todoWriteRequestDto);
 		return new ResponseEntity<>(todoService.write(request, todoWriteRequestDto), HttpStatus.OK);
 	}
 

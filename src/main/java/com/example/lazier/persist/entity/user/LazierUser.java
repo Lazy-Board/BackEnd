@@ -40,6 +40,8 @@ public class LazierUser implements UserDetails {
 
     private String socialType;
 
+    private String profile;
+
     private String dataStatus; //수정
 
     private String emailAuthKey;
