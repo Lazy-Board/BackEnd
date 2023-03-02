@@ -56,32 +56,32 @@ public class UserExchangeService {
         }
 
         UserExchange userExchange = UserExchange.builder()
-            .lazierUser(lazierUser)
-            .usd(String.valueOf(USD))
-            .jpy(String.valueOf(JPY))
-            .eur(String.valueOf(EUR))
-            .cny(String.valueOf(CNY))
-            .aud("X")
-            .cad("X")
-            .chf("X")
-            .nzd("X")
-            .hkd("X")
-            .gbp("X")
-            .build();
+                                                .lazierUser(lazierUser)
+                                                .usd(String.valueOf(USD))
+                                                .jpy(String.valueOf(JPY))
+                                                .eur(String.valueOf(EUR))
+                                                .cny(String.valueOf(CNY))
+                                                .aud("X")
+                                                .cad("X")
+                                                .chf("X")
+                                                .nzd("X")
+                                                .hkd("X")
+                                                .gbp("X")
+                                                .build();
 
         DetailExchange detailexchange = DetailExchange.builder()
-            .lazierUser(lazierUser)
-            .usd(String.valueOf(USD))
-            .jpy(String.valueOf(JPY))
-            .eur(String.valueOf(EUR))
-            .cny(String.valueOf(CNY))
-            .aud(String.valueOf(AUD))
-            .cad(String.valueOf(CAD))
-            .chf(String.valueOf(CHF))
-            .nzd(String.valueOf(NZD))
-            .hkd(String.valueOf(HKD))
-            .gbp(String.valueOf(GBP))
-            .build();
+                                                    .lazierUser(lazierUser)
+                                                    .usd(String.valueOf(USD))
+                                                    .jpy(String.valueOf(JPY))
+                                                    .eur(String.valueOf(EUR))
+                                                    .cny(String.valueOf(CNY))
+                                                    .aud(String.valueOf(AUD))
+                                                    .cad(String.valueOf(CAD))
+                                                    .chf(String.valueOf(CHF))
+                                                    .nzd(String.valueOf(NZD))
+                                                    .hkd(String.valueOf(HKD))
+                                                    .gbp(String.valueOf(GBP))
+                                                    .build();
 
         userExchangeRepository.save(userExchange);
         detailExchangeRepository.save(detailexchange);
@@ -172,10 +172,10 @@ public class UserExchangeService {
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         String[] checkList = {detailExchange.getUsd(), detailExchange.getJpy(),
-            detailExchange.getEur(), detailExchange.getCny(),
-            detailExchange.getHkd(), detailExchange.getGbp(),
-            detailExchange.getChf(), detailExchange.getCad(),
-            detailExchange.getAud(), detailExchange.getNzd()};
+                                detailExchange.getEur(), detailExchange.getCny(),
+                                detailExchange.getHkd(), detailExchange.getGbp(),
+                                detailExchange.getChf(), detailExchange.getCad(),
+                                detailExchange.getAud(), detailExchange.getNzd()};
 
         for (int i = 0; i < 10; i++) {
             String currencyName = checkList[i];
@@ -184,18 +184,18 @@ public class UserExchangeService {
                 .orElseThrow(() -> new NotFoundExchangeException("선택한 환율 종목이 있는지 확인하세요."));
 
             UserAllExchangeDto userAllExchangeDto = UserAllExchangeDto.builder()
-                .currencyName(exchange.getCurrencyName())
-                .countryName(exchange.getCountryName())
-                .tradingStandardRate(exchange.getTradingStandardRate())
-                .comparedPreviousDay(exchange.getComparedPreviousDay())
-                .fluctuationRate(exchange.getFluctuationRate())
-                .buyCash(exchange.getBuyCash())
-                .sellCash(exchange.getSellCash())
-                .sendMoney(exchange.getSendMoney())
-                .receiveMoney(exchange.getReceiveMoney())
-                .updateAt(exchange.getUpdateAt())
-                .round(exchange.getRound())
-                .build();
+                                            .currencyName(exchange.getCurrencyName())
+                                            .countryName(exchange.getCountryName())
+                                            .tradingStandardRate(exchange.getTradingStandardRate())
+                                            .comparedPreviousDay(exchange.getComparedPreviousDay())
+                                            .fluctuationRate(exchange.getFluctuationRate())
+                                            .buyCash(exchange.getBuyCash())
+                                            .sellCash(exchange.getSellCash())
+                                            .sendMoney(exchange.getSendMoney())
+                                            .receiveMoney(exchange.getReceiveMoney())
+                                            .updateAt(exchange.getUpdateAt())
+                                            .round(exchange.getRound())
+                                            .build();
 
             userAllExchangeDtoList.add(userAllExchangeDto);
         }

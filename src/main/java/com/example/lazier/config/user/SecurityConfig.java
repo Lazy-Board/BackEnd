@@ -38,7 +38,7 @@ public class SecurityConfig {
         .antMatchers("/youtube/**")
         .antMatchers("/swagger-resources/**")
         .antMatchers("/swagger-ui/**")
-        //.antMatchers("/user/image/**")
+        .antMatchers("/user/image/**")
         .antMatchers("/h2-console/**");
   }
 

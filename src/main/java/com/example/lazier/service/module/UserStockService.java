@@ -62,32 +62,32 @@ public class UserStockService {
         }
 
         UserStock userStock = UserStock.builder()
-            .lazierUser(lazierUser)
-            .samsungElectronic(String.valueOf(삼성전자))
-            .skHynix(String.valueOf(SK하이닉스))
-            .naver(String.valueOf(NAVER))
-            .kakao("F")
-            .hyundaiCar("F")
-            .kia("F")
-            .lgElectronic("F")
-            .kakaoBank("F")
-            .samsungSdi("F")
-            .hive("F")
-            .build();
+                                    .lazierUser(lazierUser)
+                                    .samsungElectronic(String.valueOf(삼성전자))
+                                    .skHynix(String.valueOf(SK하이닉스))
+                                    .naver(String.valueOf(NAVER))
+                                    .kakao("F")
+                                    .hyundaiCar("F")
+                                    .kia("F")
+                                    .lgElectronic("F")
+                                    .kakaoBank("F")
+                                    .samsungSdi("F")
+                                    .hive("F")
+                                    .build();
 
         DetailStock detailStock = DetailStock.builder()
-            .lazierUser(lazierUser)
-            .samsungElectronic(String.valueOf(삼성전자))
-            .skHynix(String.valueOf(SK하이닉스))
-            .naver(String.valueOf(NAVER))
-            .kakao(String.valueOf(카카오))
-            .hyundaiCar(String.valueOf(현대차))
-            .kia(String.valueOf(기아))
-            .lgElectronic(String.valueOf(LG전자))
-            .kakaoBank(String.valueOf(카카오뱅크))
-            .samsungSdi(String.valueOf(삼성SDI))
-            .hive(String.valueOf(하이브))
-            .build();
+                                            .lazierUser(lazierUser)
+                                            .samsungElectronic(String.valueOf(삼성전자))
+                                            .skHynix(String.valueOf(SK하이닉스))
+                                            .naver(String.valueOf(NAVER))
+                                            .kakao(String.valueOf(카카오))
+                                            .hyundaiCar(String.valueOf(현대차))
+                                            .kia(String.valueOf(기아))
+                                            .lgElectronic(String.valueOf(LG전자))
+                                            .kakaoBank(String.valueOf(카카오뱅크))
+                                            .samsungSdi(String.valueOf(삼성SDI))
+                                            .hive(String.valueOf(하이브))
+                                            .build();
 
         userStockRepository.save(userStock);
         detailStockRepository.save(detailStock);
@@ -177,10 +177,10 @@ public class UserStockService {
             .orElseThrow(() -> new UserNotFoundException("선택한 주식 종목이 있는지 확인하세요."));
 
         String[] checkList = {detailStock.getSamsungElectronic(), detailStock.getSkHynix(),
-            detailStock.getNaver(), detailStock.getKakao(), detailStock.getHyundaiCar(),
-            detailStock.getKia(), detailStock.getLgElectronic(),
-            detailStock.getKakaoBank(), detailStock.getSamsungSdi(),
-            detailStock.getHive()};
+                detailStock.getNaver(), detailStock.getKakao(), detailStock.getHyundaiCar(),
+                detailStock.getKia(), detailStock.getLgElectronic(),
+                detailStock.getKakaoBank(), detailStock.getSamsungSdi(),
+                detailStock.getHive()};
 
         for (int i = 0; i < 10; i++) {
             String stockName = checkList[i];
@@ -188,16 +188,16 @@ public class UserStockService {
                 .orElseThrow(() -> new NotFoundStockException("선택한 주식 종목이 있는지 확인하세요."));
 
             UserAllStockDto userAllStockDto = UserAllStockDto.builder()
-                .stockName(stock.getStockName())
-                .price(stock.getPrice())
-                .diffAmount(stock.getDiffAmount())
-                .dayRange(stock.getDayRange())
-                .marketPrice(stock.getMarketPrice())
-                .highPrice(stock.getHighPrice())
-                .lowPrice(stock.getLowPrice())
-                .tradingVolume(stock.getTradingVolume())
-                .updateAt(stock.getUpdateAt())
-                .build();
+                                                        .stockName(stock.getStockName())
+                                                        .price(stock.getPrice())
+                                                        .diffAmount(stock.getDiffAmount())
+                                                        .dayRange(stock.getDayRange())
+                                                        .marketPrice(stock.getMarketPrice())
+                                                        .highPrice(stock.getHighPrice())
+                                                        .lowPrice(stock.getLowPrice())
+                                                        .tradingVolume(stock.getTradingVolume())
+                                                        .updateAt(stock.getUpdateAt())
+                                                        .build();
 
             userAllStockDtoList.add(userAllStockDto);
         }
@@ -213,10 +213,10 @@ public class UserStockService {
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         String[] checkList = {userStock.getSamsungElectronic(), userStock.getSkHynix(),
-            userStock.getNaver(), userStock.getKakao(), userStock.getHyundaiCar(),
-            userStock.getKia(), userStock.getLgElectronic(),
-            userStock.getKakaoBank(), userStock.getSamsungSdi(),
-            userStock.getHive()};
+                    userStock.getNaver(), userStock.getKakao(), userStock.getHyundaiCar(),
+                    userStock.getKia(), userStock.getLgElectronic(),
+                    userStock.getKakaoBank(), userStock.getSamsungSdi(),
+                    userStock.getHive()};
 
         for (int i = 0; i < 10; i++) {
             if (!checkList[i].contains("F")) {
@@ -226,16 +226,16 @@ public class UserStockService {
                     .orElseThrow(() -> new NotFoundStockException("선택한 주식 종목이 있는지 확인하세요."));
 
                 UserPartialStockDto userPartialStockDto = UserPartialStockDto.builder()
-                    .stockName(stock.getStockName())
-                    .price(stock.getPrice())
-                    .diffAmount(stock.getDiffAmount())
-                    .dayRange(stock.getDayRange())
-                    .marketPrice(stock.getMarketPrice())
-                    .highPrice(stock.getHighPrice())
-                    .lowPrice(stock.getLowPrice())
-                    .tradingVolume(stock.getTradingVolume())
-                    .updateAt(stock.getUpdateAt())
-                    .build();
+                                                        .stockName(stock.getStockName())
+                                                        .price(stock.getPrice())
+                                                        .diffAmount(stock.getDiffAmount())
+                                                        .dayRange(stock.getDayRange())
+                                                        .marketPrice(stock.getMarketPrice())
+                                                        .highPrice(stock.getHighPrice())
+                                                        .lowPrice(stock.getLowPrice())
+                                                        .tradingVolume(stock.getTradingVolume())
+                                                        .updateAt(stock.getUpdateAt())
+                                                        .build();
 
                 userPartialStockDtoList.add(userPartialStockDto);
             }
