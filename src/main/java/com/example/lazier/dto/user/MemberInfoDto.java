@@ -17,9 +17,11 @@ public class MemberInfoDto {
 	String userName;
 	String phoneNumber;
 	String socialType;
+	String profile;
 
 	public static MemberInfoDto of(LazierUser lazierUser) {
 		return MemberInfoDto.builder()
+			.profile(lazierUser.getProfile())
 			.userEmail(lazierUser.getUserEmail())
 			.userName(lazierUser.getName())
 			.phoneNumber(lazierUser.getPhoneNumber())

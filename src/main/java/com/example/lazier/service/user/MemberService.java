@@ -107,7 +107,4 @@ public class MemberService {
 		lazierUser.setUserModuleList(memberModuleUpdateRequestDto.getUserModuleList());
 	}
 
-	//사진 업데이트
-
-
 }
