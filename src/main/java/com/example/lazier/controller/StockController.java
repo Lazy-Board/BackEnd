@@ -1,10 +1,11 @@
 package com.example.lazier.controller;
 
-import com.example.lazier.dto.module.UserStockInput;
+import com.example.lazier.dto.module.UpdateStockDto;
 import com.example.lazier.service.module.UserStockService;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/stock", produces = "application/json; charset=utf8")
+@Slf4j
 public class StockController {
     private final UserStockService userStockService;
 
@@ -44,11 +46,11 @@ public class StockController {
     }
 
     // 주식 종목 선택 정보 업데이트
-    @ApiOperation(value = "주식 종목 선택값 업데이트")
-    @PutMapping("/update")
+    @ApiOperation(value = "주식 종목 조회 정보 업데이트")
+    @PostMapping("/update")
     public ResponseEntity<?> updateUserStock(HttpServletRequest request,
-        @RequestBody UserStockInput parameter) {
-        userStockService.update(request, parameter);
+        @RequestBody UpdateStockDto updateStockDto) {
+        userStockService.update(request, updateStockDto);
         return ResponseEntity.ok().body("업데이트 되었습니다.");
     }
 
