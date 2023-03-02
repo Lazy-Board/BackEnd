@@ -33,7 +33,7 @@ public class AwsS3Service {
 	}
 
 	@Transactional
-	public String uploadImage(HttpServletRequest request, MultipartFile multipartFile) //<-고치기
+	public AwsS3ResponseDto uploadImage(HttpServletRequest request, MultipartFile multipartFile)
 		throws IOException {
 
 		String fileName = multipartFile.getOriginalFilename();
@@ -66,16 +66,13 @@ public class AwsS3Service {
 
 		String url = amazonS3.getUrl(bucket, s3FileName).toString();
 
-      /*
-      LazierUser lazierUser = memberService.searchMember(memberService.parseUserId(request));
-      lazierUser.setProfile(url);
+		LazierUser lazierUser = memberService.searchMember(memberService.parseUserId(request));
+		lazierUser.setProfile(url);
 
-      return AwsS3ResponseDto.builder()
-         .fileName(s3FileName)
-         .url(url)
-         .build();
-       */
-		return url;
+		return AwsS3ResponseDto.builder()
+							.fileName(s3FileName)
+							.url(url)
+							.build();
 	}
 
 }
