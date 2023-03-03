@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberModuleSaveRequestDto {
+public class SaveModuleRequestDto {
 
 	@NotBlank
 	private String userId;

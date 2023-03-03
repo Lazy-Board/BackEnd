@@ -1,6 +1,6 @@
 package com.example.lazier.persist.entity.user;
 
-import com.example.lazier.dto.user.MemberModuleSaveRequestDto;
+import com.example.lazier.dto.user.SaveModuleRequestDto;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -38,18 +38,18 @@ public class ModuleYn {
 	private boolean workYn;
 
 	public static ModuleYn of(LazierUser lazierUser,
-		MemberModuleSaveRequestDto memberModuleSaveRequestDto) {
+		SaveModuleRequestDto saveModuleRequestDto) {
 
 		return ModuleYn.builder()
 			.lazierUser(lazierUser)
-			.weatherYn(memberModuleSaveRequestDto.isWeatherYn())
-			.exchangeYn(memberModuleSaveRequestDto.isExchangeYn())
-			.stockYn(memberModuleSaveRequestDto.isStockYn())
-			.newsYn(memberModuleSaveRequestDto.isNewsYn())
-			.youtubeYn(memberModuleSaveRequestDto.isYoutubeYn())
-			.quoteYn(memberModuleSaveRequestDto.isQuoteYn())
-			.todolistYn(memberModuleSaveRequestDto.isTodolistYn())
-			.workYn(memberModuleSaveRequestDto.isWorkYn())
+			.weatherYn(saveModuleRequestDto.isWeatherYn())
+			.exchangeYn(saveModuleRequestDto.isExchangeYn())
+			.stockYn(saveModuleRequestDto.isStockYn())
+			.newsYn(saveModuleRequestDto.isNewsYn())
+			.youtubeYn(saveModuleRequestDto.isYoutubeYn())
+			.quoteYn(saveModuleRequestDto.isQuoteYn())
+			.todolistYn(saveModuleRequestDto.isTodolistYn())
+			.workYn(saveModuleRequestDto.isWorkYn())
 			.build();
 	}
 }

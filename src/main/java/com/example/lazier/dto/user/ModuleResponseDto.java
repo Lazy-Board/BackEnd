@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberModuleResponseDto {
+public class ModuleResponseDto {
 
 	private boolean weatherYn;
 	private boolean exchangeYn;
@@ -21,8 +21,8 @@ public class MemberModuleResponseDto {
 	private boolean todolistYn;
 	private boolean workYn;
 
-	public static MemberModuleResponseDto of(ModuleYn moduleYn) {
-		return MemberModuleResponseDto
+	public static ModuleResponseDto of(ModuleYn moduleYn) {
+		return ModuleResponseDto
 			.builder()
 			.weatherYn(moduleYn.isWeatherYn())
 			.exchangeYn(moduleYn.isExchangeYn())

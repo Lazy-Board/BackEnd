@@ -2,8 +2,7 @@ package com.example.lazier.service.user;
 
 import com.example.lazier.component.MailComponents;
 import com.example.lazier.dto.user.FindPasswordRequestDto;
-import com.example.lazier.dto.user.MemberModuleResponseDto;
-import com.example.lazier.dto.user.MemberModuleUpdateRequestDto;
+import com.example.lazier.dto.user.UpdateModuleRequestDto;
 import com.example.lazier.dto.user.UpdatePasswordRequestDto;
 import com.example.lazier.dto.user.MemberInfoDto;
 import com.example.lazier.exception.user.FailedFindPasswordException;
@@ -94,9 +93,9 @@ public class MyPageService {
 
 	//모듈 업데이트
 	@Transactional
-	public void updateModule(HttpServletRequest request, MemberModuleUpdateRequestDto memberModuleUpdateRequestDto) {
+	public void updateModule(HttpServletRequest request, UpdateModuleRequestDto updateModuleRequestDto) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
-		lazierUser.setUserModuleList(memberModuleUpdateRequestDto.getUserModuleList());
+		lazierUser.setUserModuleList(updateModuleRequestDto.getUserModuleList());
 	}
 
 }

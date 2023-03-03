@@ -1,6 +1,6 @@
 package com.example.lazier.controller;
 
-import com.example.lazier.dto.user.MemberModuleSaveRequestDto;
+import com.example.lazier.dto.user.SaveModuleRequestDto;
 import com.example.lazier.dto.user.SignUpRequestDto;
 import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.service.user.JwtService;
@@ -52,8 +52,8 @@ public class MemberController {
 	@ApiResponse(code = 200, message = "모듈 저장 완료")
 	@PostMapping("/saveModule")
 	public ResponseEntity<?> saveModule(
-		@RequestBody @Valid MemberModuleSaveRequestDto memberModuleSaveRequestDto) {
-		return new ResponseEntity<>(memberService.saveModule(memberModuleSaveRequestDto),
+		@RequestBody @Valid SaveModuleRequestDto saveModuleRequestDto) {
+		return new ResponseEntity<>(memberService.saveModule(saveModuleRequestDto),
 			HttpStatus.OK);
 	}
 

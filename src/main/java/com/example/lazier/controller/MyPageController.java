@@ -2,7 +2,7 @@ package com.example.lazier.controller;
 
 import com.example.lazier.dto.user.FindPasswordRequestDto;
 import com.example.lazier.dto.user.MemberInfoDto;
-import com.example.lazier.dto.user.MemberModuleUpdateRequestDto;
+import com.example.lazier.dto.user.UpdateModuleRequestDto;
 import com.example.lazier.dto.user.UpdatePasswordRequestDto;
 import com.example.lazier.service.user.AwsS3Service;
 import com.example.lazier.service.user.MyPageService;
@@ -96,8 +96,8 @@ public class MyPageController {
 	@ApiResponse(code = 200, message = "모듈 업데이트 완료")
 	@PostMapping("/updateModule")
 	public ResponseEntity<?> updateModule(HttpServletRequest request,
-		@RequestBody @Valid MemberModuleUpdateRequestDto memberModuleUpdateRequestDto) {
-		myPageService.updateModule(request, memberModuleUpdateRequestDto);
+		@RequestBody @Valid UpdateModuleRequestDto updateModuleRequestDto) {
+		myPageService.updateModule(request, updateModuleRequestDto);
 		return ResponseEntity.ok("모듈 업데이트 완료");
 	}
 

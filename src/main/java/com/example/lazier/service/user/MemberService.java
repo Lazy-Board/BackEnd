@@ -1,7 +1,7 @@
 package com.example.lazier.service.user;
 
 import com.example.lazier.component.MailComponents;
-import com.example.lazier.dto.user.MemberModuleSaveRequestDto;
+import com.example.lazier.dto.user.SaveModuleRequestDto;
 import com.example.lazier.dto.user.SignUpRequestDto;
 import com.example.lazier.dto.user.SignUpResponseDto;
 import com.example.lazier.dto.user.UniqueCodeDto;
@@ -50,13 +50,13 @@ public class MemberService {
     }
 
     @Transactional
-    public UniqueCodeDto saveModule(MemberModuleSaveRequestDto memberModuleSaveRequestDto) {
+    public UniqueCodeDto saveModule(SaveModuleRequestDto saveModuleRequestDto) {
 
         LazierUser lazierUser = memberRepository.findByUserId(Long.parseLong(
-                memberModuleSaveRequestDto.getUserId()))
+                saveModuleRequestDto.getUserId()))
             .orElseThrow(() -> new FailedSignUpException("회원가입을 진행하세요."));
 
-        moduleYnRepository.save(ModuleYn.of(lazierUser, memberModuleSaveRequestDto)); //모듈 저장
+        moduleYnRepository.save(ModuleYn.of(lazierUser, saveModuleRequestDto)); //모듈 저장
 
         String uuid = UUID.randomUUID().toString();
         lazierUser.setEmailAuthKey(uuid);
