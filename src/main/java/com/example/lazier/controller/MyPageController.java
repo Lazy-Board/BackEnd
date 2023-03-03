@@ -5,7 +5,7 @@ import com.example.lazier.dto.user.MemberInfoDto;
 import com.example.lazier.dto.user.MemberModuleUpdateRequestDto;
 import com.example.lazier.dto.user.UpdatePasswordRequestDto;
 import com.example.lazier.service.user.AwsS3Service;
-import com.example.lazier.service.user.MemberService;
+import com.example.lazier.service.user.MyPageService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -33,14 +33,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class MyPageController {
 
-	private final MemberService memberService;
+	private final MyPageService myPageService;
 	private final AwsS3Service awsS3Service;
 
 	@ApiOperation(value = "마이 페이지 - 유저 정보 불러오기", notes = "socialType이 google인 경우 이메일 input 비활성화")
 	@ApiResponse(code = 200, message = "유저 정보 불러오기 완료")
 	@GetMapping("/search")
 	public ResponseEntity<?> search(HttpServletRequest request) {
-		return new ResponseEntity<>(memberService.showUserInfo(request), HttpStatus.OK);
+		return new ResponseEntity<>(myPageService.showUserInfo(request), HttpStatus.OK);
 	}
 
 
@@ -50,7 +50,7 @@ public class MyPageController {
 	public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
 		@RequestBody @Valid MemberInfoDto memberInfoDto) {
 
-		memberService.updateUserInfo(request, memberInfoDto);
+		myPageService.updateUserInfo(request, memberInfoDto);
 		return ResponseEntity.ok("유저 정보 업데이트 완료");
 	}
 
@@ -64,7 +64,7 @@ public class MyPageController {
 	public ResponseEntity<?> updatePassword(HttpServletRequest request,
 		@RequestBody @Valid UpdatePasswordRequestDto passwordDto) {
 
-		memberService.updatePassword(request, passwordDto);
+		myPageService.updatePassword(request, passwordDto);
 		return ResponseEntity.ok("비밀번호 수정 완료");
 	}
 
@@ -78,7 +78,7 @@ public class MyPageController {
 	public ResponseEntity<?> findPassword(HttpServletRequest request,
 		FindPasswordRequestDto passwordDto) {
 
-		memberService.findPassword(request, passwordDto);
+		myPageService.findPassword(request, passwordDto);
 		return ResponseEntity.ok("임시 비밀번호 발급 완료"); //임시 비밀번호가 000.000 로 발급되었습니다.
 	}
 
@@ -87,7 +87,7 @@ public class MyPageController {
 	@ApiResponse(code = 200, message = "탈퇴 완료")
 	@PostMapping("/withdrawal")
 	public ResponseEntity<?> withdrawal(HttpServletRequest request) {
-		memberService.withdrawal(request);
+		myPageService.withdrawal(request);
 		return ResponseEntity.ok("탈퇴 완료");
 	}
 
@@ -97,7 +97,7 @@ public class MyPageController {
 	@PostMapping("/updateModule")
 	public ResponseEntity<?> updateModule(HttpServletRequest request,
 		@RequestBody @Valid MemberModuleUpdateRequestDto memberModuleUpdateRequestDto) {
-		memberService.updateModule(request, memberModuleUpdateRequestDto);
+		myPageService.updateModule(request, memberModuleUpdateRequestDto);
 		return ResponseEntity.ok("모듈 업데이트 완료");
 	}
 

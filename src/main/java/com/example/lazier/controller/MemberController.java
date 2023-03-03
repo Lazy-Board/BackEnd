@@ -6,9 +6,8 @@ import com.example.lazier.persist.entity.user.LazierUser;
 import com.example.lazier.service.user.JwtService;
 import com.example.lazier.dto.user.TokenResponseDto;
 import com.example.lazier.dto.user.LoginRequestDto;
-import com.example.lazier.service.user.JoinService;
-import com.example.lazier.service.user.CreateTokenService;
 import com.example.lazier.service.user.MemberService;
+import com.example.lazier.service.user.CreateTokenService;
 import com.example.lazier.service.user.OAuthService;
 import com.example.lazier.service.user.RedisService;
 import io.swagger.annotations.ApiOperation;
@@ -32,11 +31,10 @@ public class MemberController {
 
 	public static final String AUTHORIZATION = "Authorization";
 	private final CreateTokenService createTokenService;
-	private final JoinService joinService;
+	private final MemberService memberService;
 	private final JwtService jwtService;
 	private final RedisService redisService;
 	private final OAuthService oAuthService;
-	private final MemberService memberService;
 
 
 	@ApiOperation(value = "회원가입", notes = "회원가입하기")
@@ -46,7 +44,7 @@ public class MemberController {
 	})
 	@PostMapping("/signup")
 	public ResponseEntity<?> join(@RequestBody @Valid SignUpRequestDto signUpRequestDto) {
-		return new ResponseEntity<>(joinService.signUp(signUpRequestDto), HttpStatus.OK);
+		return new ResponseEntity<>(memberService.signUp(signUpRequestDto), HttpStatus.OK);
 	}
 
 
@@ -55,18 +53,8 @@ public class MemberController {
 	@PostMapping("/saveModule")
 	public ResponseEntity<?> saveModule(
 		@RequestBody @Valid MemberModuleSaveRequestDto memberModuleSaveRequestDto) {
-		//joinService.saveModule(memberModuleInfo);
-		//return ResponseEntity.ok("모듈 저장 완료");
-		return new ResponseEntity<>(joinService.saveModule(memberModuleSaveRequestDto),
+		return new ResponseEntity<>(memberService.saveModule(memberModuleSaveRequestDto),
 			HttpStatus.OK);
-	}
-
-
-	@ApiOperation(value = "메인 : 모듈 정보 불러오기", notes= "사용자가 선택한 모듈 불러오기")
-	@ApiResponse(code = 200, message = "모듈 불러오기 완료")
-	@GetMapping("/main")
-	public ResponseEntity<?> main(HttpServletRequest request) {
-		return new ResponseEntity<>(memberService.main(request), HttpStatus.OK);
 	}
 
 
@@ -77,7 +65,7 @@ public class MemberController {
 	})
 	@GetMapping("/email-auth")
 	public ResponseEntity<?> emailAuth(@RequestParam(value = "uuid") String uuid) {
-		joinService.emailAuth(uuid);
+		memberService.emailAuth(uuid);
 		return ResponseEntity.ok("이메일 인증 완료");
 	}
 

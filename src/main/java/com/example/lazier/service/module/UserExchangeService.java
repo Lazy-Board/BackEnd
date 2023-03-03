@@ -26,7 +26,7 @@ import com.example.lazier.persist.repository.DetailExchangeRepository;
 import com.example.lazier.persist.repository.ExchangeRepository;
 import com.example.lazier.persist.repository.UpdateExchangeRepository;
 import com.example.lazier.persist.repository.UserExchangeRepository;
-import com.example.lazier.service.user.MemberService;
+import com.example.lazier.service.user.MyPageService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserExchangeService {
 
     private final ExchangeService exchangeService;
-    private final MemberService memberService;
+    private final MyPageService myPageService;
     private final UserExchangeRepository userExchangeRepository;
     private final DetailExchangeRepository detailExchangeRepository;
 
@@ -49,7 +49,7 @@ public class UserExchangeService {
     @Transactional
     public void add(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         if (userExchangeRepository.existsByLazierUser(lazierUser)) {
             throw new UserAlreadyExistException("사용자 정보가 이미 존재합니다.");
@@ -91,7 +91,7 @@ public class UserExchangeService {
     @Transactional
     public void update(HttpServletRequest request, UpdateExchangeDto updateExchangeDto) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         if (updateExchangeRepository.existsByLazierUser(lazierUser)) {
             UpdateExchange updateExchange = updateExchangeRepository.findByLazierUser(lazierUser)
@@ -164,7 +164,7 @@ public class UserExchangeService {
 
     public List<UserAllExchangeDto> getExchange(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         List<UserAllExchangeDto> userAllExchangeDtoList = new ArrayList<>();
 
@@ -204,7 +204,7 @@ public class UserExchangeService {
 
     public List<UserPartialExchangeDto> getPartialExchange(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
         List<UserPartialExchangeDto> userPartialExchangeDtoList = new ArrayList<>();
 
         UserExchange userExchange = userExchangeRepository.findByLazierUser(lazierUser)

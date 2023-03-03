@@ -22,11 +22,11 @@ public class AwsS3Service {
 	private String bucket;
 
 	private final AmazonS3 amazonS3;
-	private final MemberService memberService;
+	private final MyPageService myPageService;
 
 	@Transactional
 	public void deleteImage(HttpServletRequest request, String s3FileName) {
-		LazierUser lazierUser = memberService.searchMember(memberService.parseUserId(request));
+		LazierUser lazierUser = myPageService.searchMember(myPageService.parseUserId(request));
 		lazierUser.setProfile(null);
 
 		amazonS3.deleteObject(new DeleteObjectRequest(bucket, s3FileName));
@@ -66,7 +66,7 @@ public class AwsS3Service {
 
 		String url = amazonS3.getUrl(bucket, s3FileName).toString();
 
-		LazierUser lazierUser = memberService.searchMember(memberService.parseUserId(request));
+		LazierUser lazierUser = myPageService.searchMember(myPageService.parseUserId(request));
 		lazierUser.setProfile(url);
 
 		return AwsS3ResponseDto.builder()

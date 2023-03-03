@@ -1,6 +1,5 @@
 package com.example.lazier.persist.entity.module;
 
-import com.example.lazier.dto.module.TodoUpdateRequestDto;
 import com.example.lazier.dto.module.TodoWriteRequestDto;
 import com.example.lazier.persist.entity.user.LazierUser;
 import javax.persistence.Entity;
