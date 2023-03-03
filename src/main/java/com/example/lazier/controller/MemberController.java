@@ -91,9 +91,11 @@ public class MemberController {
 		@ApiResponse(code = 200, message = "토큰 발급"),
 		@ApiResponse(code = 400, message = "서버 측에서 잘못된 접근을 한 경우")
 	})
-	@PostMapping("/login/oauth2/code/{provider}")
-	public ResponseEntity<?> loginGoogle(@PathVariable String provider, @RequestParam String code) {
-		LazierUser lazierUser = oAuthService.getUser(provider, code); //테스트 후 수정
+	@PostMapping("/login/oauth2/code/google")
+	public ResponseEntity<?> loginGoogle(@RequestParam("code") String code) {
+		log.info("되나요오오오");
+		log.info("memberController-code:" + code);
+		LazierUser lazierUser = oAuthService.getUser(code); //테스트 후 수정
 		return ResponseEntity.ok(oAuthService.loginResult(lazierUser));
 	}
 

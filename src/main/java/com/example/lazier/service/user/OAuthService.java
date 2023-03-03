@@ -36,7 +36,8 @@ public class OAuthService {
 	private final InMemoryClientRegistrationRepository inMemoryClientRegistrationRepository;
 
 	@Transactional
-	public LazierUser getUser(String provider, String code) {
+	public LazierUser getUser(String code) {
+		String provider = "google";
 		ClientRegistration clientRegistration = inMemoryClientRegistrationRepository.findByRegistrationId(provider.toLowerCase());
 		OAuthTokenResponseDto oAuthTokenResponseDto = getToken(clientRegistration, code);
 
@@ -92,7 +93,7 @@ public class OAuthService {
 
 		Optional<LazierUser> lazierUser = memberRepository.findByOauthId(oauthProviderId);
 
-		if (lazierUser == null) {
+		if (!lazierUser.isPresent()) {
 			LazierUser member = LazierUser.builder()
 				.userEmail(oauthEmail)
 				.name(oauthName)

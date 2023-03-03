@@ -1,6 +1,7 @@
 package com.example.lazier.config.user;
 
 import com.example.lazier.exception.user.CustomAuthenticationEntryPoint;
+import com.example.lazier.service.user.OAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -21,6 +25,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
+  private final OAuthService oAuthService;
   private final JwtTokenProvider jwtTokenProvider;
   private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
@@ -32,6 +37,7 @@ public class SecurityConfig {
         .antMatchers(HttpMethod.POST, "/user/find-password")
         .antMatchers(HttpMethod.POST, "/user/signup")
         .antMatchers(HttpMethod.POST, "/user/login")
+        .antMatchers(HttpMethod.POST, "/user/login/oauth2/code/google")
         .antMatchers(HttpMethod.POST, "/user/reissue")
         .antMatchers(HttpMethod.OPTIONS, "/**")
         .antMatchers("/v3/api-docs/**")
