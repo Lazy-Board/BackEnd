@@ -93,7 +93,6 @@ public class MemberController {
 	})
 	@PostMapping("/login/oauth2/code/google")
 	public ResponseEntity<?> loginGoogle(@RequestParam("code") String code) {
-		log.info("되나요오오오");
 		log.info("memberController-code:" + code);
 		LazierUser lazierUser = oAuthService.getUser(code); //테스트 후 수정
 		return ResponseEntity.ok(oAuthService.loginResult(lazierUser));
