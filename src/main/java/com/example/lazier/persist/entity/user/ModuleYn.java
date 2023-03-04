@@ -1,6 +1,7 @@
 package com.example.lazier.persist.entity.user;
 
 import com.example.lazier.dto.user.SaveModuleRequestDto;
+import com.example.lazier.persist.entity.module.LazierUser;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;

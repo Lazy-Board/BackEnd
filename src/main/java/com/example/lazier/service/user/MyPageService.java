@@ -2,13 +2,13 @@ package com.example.lazier.service.user;
 
 import com.example.lazier.component.MailComponents;
 import com.example.lazier.dto.user.FindPasswordRequestDto;
+import com.example.lazier.dto.user.MemberInfoDto;
 import com.example.lazier.dto.user.UpdateModuleRequestDto;
 import com.example.lazier.dto.user.UpdatePasswordRequestDto;
-import com.example.lazier.dto.user.MemberInfoDto;
 import com.example.lazier.exception.user.FailedFindPasswordException;
 import com.example.lazier.exception.user.NotFoundMemberException;
 import com.example.lazier.exception.user.NotMatchMemberException;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.entity.user.ModuleYn;
 import com.example.lazier.persist.repository.MemberRepository;
 import com.example.lazier.persist.repository.ModuleYnRepository;
