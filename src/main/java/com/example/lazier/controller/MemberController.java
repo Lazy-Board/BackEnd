@@ -99,6 +99,7 @@ public class MemberController {
 	}
 
 
+
 	@ApiOperation(value = "로그아웃", notes = "로그아웃하기")
 	@ApiResponse(code = 200, message = "로그아웃 완료")
 	@PostMapping("/logout")

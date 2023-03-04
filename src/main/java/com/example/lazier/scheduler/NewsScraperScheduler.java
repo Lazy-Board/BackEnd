@@ -6,6 +6,7 @@ import com.example.lazier.persist.repository.NewsPressRepository;
 import com.example.lazier.persist.repository.NewsRepository;
 import com.example.lazier.scraper.NewsScraper;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,20 @@ public class NewsScraperScheduler {
     List<String> pressIdList = newsPressRepository.findAll().stream().map(NewsPress::getPressId)
         .collect(Collectors.toList());
 
+    List<News> existNewsList = newsRepository.findAll();
+    List<News> newNewsList = new ArrayList<>();
+    pressIdList.forEach(
+        id -> newsScraper.crawlNewsByPressAndDate(id, todayString).stream().map(News::new).forEach(
+            newNewsList::add));
+    for (News newNews : newNewsList) {
+      for(News oldNews : existNewsList) {
+        if (newNews.getNewsId() == oldNews.getNewsId())
+          break;
+      }
+      newsRepository.save(newNews);
+    }
+
+    /** the codes below are deprecated  and substituted by code above for performance issue
     pressIdList
         .forEach(id -> newsScraper.crawlNewsByPressAndDate(id, todayString).stream().map(
                 News::new).forEach(entity -> {
@@ -54,6 +69,7 @@ public class NewsScraperScheduler {
               }
             })
         );
+     */
   }
 
   @Scheduled(cron = "${scheduler.scrap.newspress}")

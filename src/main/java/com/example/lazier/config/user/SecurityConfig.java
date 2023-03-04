@@ -1,7 +1,6 @@
 package com.example.lazier.config.user;
 
 import com.example.lazier.exception.user.CustomAuthenticationEntryPoint;
-import com.example.lazier.service.user.OAuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,13 +31,15 @@ public class SecurityConfig {
         .antMatchers(HttpMethod.POST, "/user/saveModule")
         .antMatchers(HttpMethod.POST, "/user/find-password")
         .antMatchers(HttpMethod.POST, "/user/signup")
-        .antMatchers(HttpMethod.POST, "/user/login")
         .antMatchers(HttpMethod.POST, "/user/login/oauth2/code/google")
+        .antMatchers(HttpMethod.POST, "/user/login")
         .antMatchers(HttpMethod.POST, "/user/reissue")
         .antMatchers(HttpMethod.OPTIONS, "/**")
         .antMatchers("/v3/api-docs/**")
+//        .antMatchers("/youtube/**")
         .antMatchers("/swagger-resources/**")
         .antMatchers("/swagger-ui/**")
+//        .antMatchers("/user/image/**")
         .antMatchers("/h2-console/**");
   }
 
