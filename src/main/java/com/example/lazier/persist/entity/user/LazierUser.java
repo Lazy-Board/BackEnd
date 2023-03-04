@@ -42,13 +42,9 @@ public class LazierUser implements UserDetails {
 
     private String profile;
 
-    private String dataStatus; //수정
-
     private String emailAuthKey;
     private boolean emailAuthYn;
     private LocalDateTime emailAuthDt;
-
-    private String userModuleList;
 
     public void updateUserInfo(MemberInfoDto memberInfoDto) {
         if (!memberInfoDto.getSocialType().toLowerCase().trim().equals("google")) {
