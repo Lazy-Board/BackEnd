@@ -1,4 +1,4 @@
-package com.example.lazier.config;
+package com.example.lazier.config.user;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-//접근을 위한 IAM 계정에서 발급된 access key, secret key 등을 받아온다.
 @Configuration
 public class AwsS3Config {
 

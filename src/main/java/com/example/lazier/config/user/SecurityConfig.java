@@ -32,14 +32,12 @@ public class SecurityConfig {
         .antMatchers(HttpMethod.POST, "/user/find-password")
         .antMatchers(HttpMethod.POST, "/user/signup")
         .antMatchers(HttpMethod.POST, "/user/login/oauth2/code/google")
-        .antMatchers(HttpMethod.POST, "/user/login/**")
+        .antMatchers(HttpMethod.POST, "/user/login")
         .antMatchers(HttpMethod.POST, "/user/reissue")
         .antMatchers(HttpMethod.OPTIONS, "/**")
         .antMatchers("/v3/api-docs/**")
-//        .antMatchers("/youtube/**")
         .antMatchers("/swagger-resources/**")
         .antMatchers("/swagger-ui/**")
-//        .antMatchers("/user/image/**")
         .antMatchers("/h2-console/**");
   }
 
@@ -52,8 +50,7 @@ public class SecurityConfig {
   @Bean
   PasswordEncoder getPasswordEncoder() {
     return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-  } //비밀번호 암호화
-
+  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -80,11 +77,7 @@ public class SecurityConfig {
         .and()
         .addFilterBefore(new JwtFilter(jwtTokenProvider),
             UsernamePasswordAuthenticationFilter.class)
-        .authorizeRequests()
-        .and()
-        .oauth2Login()
-        .redirectionEndpoint()
-        .baseUri("/user/login/oauth2/code/**");
+        .authorizeRequests();
     return http.build();
   }
 

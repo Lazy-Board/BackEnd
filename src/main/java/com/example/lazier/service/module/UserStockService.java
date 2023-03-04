@@ -26,7 +26,7 @@ import com.example.lazier.persist.repository.DetailStockRepository;
 import com.example.lazier.persist.repository.StockRepository;
 import com.example.lazier.persist.repository.UpdateStockRepository;
 import com.example.lazier.persist.repository.UserStockRepository;
-import com.example.lazier.service.user.MemberService;
+import com.example.lazier.service.user.MyPageService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -50,12 +50,12 @@ public class UserStockService {
 
     private final UpdateStockRepository updateStockRepository;
 
-    private final MemberService memberService;
+    private final MyPageService myPageService;
 
     @Transactional
     public void add(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         if (userStockRepository.existsByLazierUser(lazierUser)) {
             throw new UserAlreadyExistException("사용자 정보가 이미 존재합니다.");
@@ -96,7 +96,7 @@ public class UserStockService {
 
     public void update(HttpServletRequest request, UpdateStockDto updateStockDto) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         if (updateStockRepository.existsByLazierUser(lazierUser)) {
             UpdateStock updateStock = updateStockRepository.findByLazierUser(lazierUser)
@@ -169,7 +169,7 @@ public class UserStockService {
 
     public List<UserAllStockDto> getStock(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         List<UserAllStockDto> userAllStockDtoList = new ArrayList<>();
 
@@ -206,7 +206,7 @@ public class UserStockService {
 
     public List<UserPartialStockDto> getPartialStock(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
         List<UserPartialStockDto> userPartialStockDtoList = new ArrayList<>();
 
         UserStock userStock = userStockRepository.findByLazierUser(lazierUser)
