@@ -76,7 +76,6 @@ public class OAuthService {
 
 		Map<String, Object> attributes = getUserAttribute(provider, oAuthTokenResponseDto); //user 담을 객체
 		GoogleUserInfo googleUserInfo;
-		String oauthNickName = null;
 		String oauthName = null;
 
 		if (providerName.equals("google")) {
