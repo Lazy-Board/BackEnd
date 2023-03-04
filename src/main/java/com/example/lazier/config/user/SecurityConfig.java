@@ -31,7 +31,8 @@ public class SecurityConfig {
         .antMatchers(HttpMethod.POST, "/user/saveModule")
         .antMatchers(HttpMethod.POST, "/user/find-password")
         .antMatchers(HttpMethod.POST, "/user/signup")
-        .antMatchers(HttpMethod.POST, "/user/login")
+        .antMatchers(HttpMethod.POST, "/user/login/oauth2/code/google")
+        .antMatchers(HttpMethod.POST, "/user/login/**")
         .antMatchers(HttpMethod.POST, "/user/reissue")
         .antMatchers(HttpMethod.OPTIONS, "/**")
         .antMatchers("/v3/api-docs/**")
@@ -79,7 +80,11 @@ public class SecurityConfig {
         .and()
         .addFilterBefore(new JwtFilter(jwtTokenProvider),
             UsernamePasswordAuthenticationFilter.class)
-        .authorizeRequests();
+        .authorizeRequests()
+        .and()
+        .oauth2Login()
+        .redirectionEndpoint()
+        .baseUri("/user/login/oauth2/code/**");
     return http.build();
   }
 
