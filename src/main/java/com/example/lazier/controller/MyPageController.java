@@ -97,7 +97,7 @@ public class MyPageController {
 	@ApiResponse(code = 200, message = "프로필 업데이트 완료")
 	@PostMapping("/image")
 	public ResponseEntity<?> uploadImage(HttpServletRequest request,
-		@RequestPart MultipartFile multipartFile)
+		@RequestPart(value = "multipartFile", required = false) MultipartFile multipartFile)
 		throws IOException {
 		return new ResponseEntity<>(awsS3Service.uploadImage(request, multipartFile), HttpStatus.CREATED);
 	}
