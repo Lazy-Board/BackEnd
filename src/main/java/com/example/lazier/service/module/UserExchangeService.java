@@ -20,7 +20,7 @@ import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.DetailExchange;
 import com.example.lazier.persist.entity.module.Exchange;
 import com.example.lazier.persist.entity.module.UserExchange;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.DetailExchangeRepository;
 import com.example.lazier.persist.repository.ExchangeRepository;
 import com.example.lazier.persist.repository.UserExchangeRepository;

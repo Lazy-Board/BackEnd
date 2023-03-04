@@ -7,7 +7,7 @@ import com.example.lazier.dto.module.TodoWriteResponseDto;
 import com.example.lazier.exception.todo.AlreadyDeleteException;
 import com.example.lazier.exception.todo.FailedWriteException;
 import com.example.lazier.persist.entity.module.Todo;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.TodoRepository;
 import com.example.lazier.service.user.MemberService;
 import java.util.List;

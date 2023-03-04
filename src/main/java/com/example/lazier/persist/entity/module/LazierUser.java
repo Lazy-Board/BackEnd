@@ -1,4 +1,4 @@
-package com.example.lazier.persist.entity.user;
+package com.example.lazier.persist.entity.module;
 
 import com.example.lazier.dto.user.MemberInfoDto;
 import lombok.AllArgsConstructor;
@@ -26,7 +26,7 @@ public class LazierUser implements UserDetails {
     @Column(nullable = false, length = 100, unique = true)
     private String userEmail; //oauth
 
-    private String name; //oauth
+    private String lazierName; //oauth userName
 
     private String oauthId; //oauth
 
@@ -52,7 +52,7 @@ public class LazierUser implements UserDetails {
         if (!memberInfoDto.getSocialType().toLowerCase().trim().equals("google")) {
             this.userEmail = memberInfoDto.getUserEmail();
         }
-        this.name = memberInfoDto.getUserName();
+        this.lazierName = memberInfoDto.getUserName();
         this.phoneNumber = memberInfoDto.getPhoneNumber();
     }
 

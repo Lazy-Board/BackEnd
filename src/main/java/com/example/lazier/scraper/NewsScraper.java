@@ -10,6 +10,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -17,6 +18,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class NewsScraper {
 
   String html = null;
@@ -46,16 +48,16 @@ public class NewsScraper {
       Document document = Jsoup.parse(html);
       Elements baseElements = document.getElementsByAttributeValue("class", "group_table")
           .select("tbody tr");
-      System.out.println(baseElements.size());
+//      System.out.println(baseElements.size());
 
       for (int i = 0; i < baseElements.size(); i++) {
         String sectorName = baseElements.get(i).select("th").text();
         Elements pressNameElements = baseElements.get(i).select("td ul li");
-        System.out.println(pressNameElements);
-        System.out.println(pressNameElements.size());
+//        System.out.println(pressNameElements);
+//        System.out.println(pressNameElements.size());
 
         for (int j = 0; j < pressNameElements.size(); j++) {
-          System.out.println("j = " + j);
+//          System.out.println("j = " + j);
           Element pressInfo = pressNameElements.select("a").get(j);
           String pressIdUrl = pressInfo.attr("href");
           int index = pressIdUrl.indexOf("oid=")+4;
@@ -134,7 +136,9 @@ public class NewsScraper {
           String subject = newsElement.select("dl dt a").text();
           String newsUrl = newsElement.select("dl dt a").attr("href");
           int index = newsUrl.lastIndexOf('/');
+//          log.info("NEWS INDEX!!!!!!!!!: -> " + index);
           String newsId = newsUrl.substring(index + 1);
+//          log.info("NEWS ID!!!!!!!!!: -> "+ newsId);
           String contents = newsElement.select("span.lede").text();
           String pressName = newsElement.select("span.writing").text();
           String createdAt = newsElement.select("span.date").text();
@@ -152,6 +156,7 @@ public class NewsScraper {
               .updatedAt(LocalDateTime.now())
               .build()
           );
+//          log.info("NEWS LIST!!!! : -> " + newsDtoList);
         }
       }
     } catch (IOException e) {

@@ -1,4 +1,4 @@
-package com.example.lazier.persist.entity.user;
+package com.example.lazier.persist.entity.module;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,7 +2,7 @@ package com.example.lazier.controller;
 
 import com.example.lazier.dto.user.MemberModuleSaveRequestDto;
 import com.example.lazier.dto.user.SignUpRequestDto;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.service.user.JwtService;
 import com.example.lazier.dto.user.TokenResponseDto;
 import com.example.lazier.dto.user.LoginRequestDto;

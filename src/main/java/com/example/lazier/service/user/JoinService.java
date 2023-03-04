@@ -5,7 +5,7 @@ import com.example.lazier.dto.user.MemberModuleSaveRequestDto;
 import com.example.lazier.dto.user.SignUpRequestDto;
 import com.example.lazier.dto.user.SignUpResponseDto;
 import com.example.lazier.dto.user.UniqueCodeDto;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.type.MemberStatus;
 import com.example.lazier.exception.user.FailedSignUpException;
 import com.example.lazier.persist.repository.MemberRepository;
@@ -32,7 +32,7 @@ public class JoinService {
         LazierUser lazierUser = memberRepository.save(LazierUser.builder()
             .userEmail(signUpRequestDto.getUserEmail())
             .password(passwordEncoder.encode(signUpRequestDto.getPassword()))
-            .name(signUpRequestDto.getUserName())
+            .lazierName(signUpRequestDto.getUserName())
             .phoneNumber(signUpRequestDto.getPhoneNumber())
             .socialType("no-social")
             .createdAt(LocalDateTime.now())

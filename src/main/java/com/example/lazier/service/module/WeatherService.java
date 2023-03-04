@@ -3,7 +3,7 @@ package com.example.lazier.service.module;
 import com.example.lazier.dto.module.WeatherDto;
 import com.example.lazier.persist.entity.module.UserWeather;
 import com.example.lazier.persist.entity.module.Weather;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.WeatherRepository;
 import com.example.lazier.scraper.NaverWeatherScraper;
 import com.example.lazier.service.user.MemberService;
