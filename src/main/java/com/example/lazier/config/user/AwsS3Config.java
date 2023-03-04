@@ -1,4 +1,4 @@
-package com.example.lazier.config;
+package com.example.lazier.config.user;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;

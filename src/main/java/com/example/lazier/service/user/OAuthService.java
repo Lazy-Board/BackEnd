@@ -76,7 +76,6 @@ public class OAuthService {
 
 		Map<String, Object> attributes = getUserAttribute(provider, oAuthTokenResponseDto); //user 담을 객체
 		GoogleUserInfo googleUserInfo;
-		String oauthNickName = null;
 		String oauthName = null;
 
 		if (providerName.equals("google")) {
@@ -102,9 +101,11 @@ public class OAuthService {
 				.userStatus(MemberStatus.STATUS_ACTIVE.getUserStatus())
 				.socialType(oauthProvider)
 				.build();
-			return memberRepository.save(member); //없으면 저장
+			log.info("유저 없을 경우 - 유저 이메일 : " + member.getUserEmail());
+			return memberRepository.save(member);
 		} else {
-			return lazierUser.get(); //있으면 리턴
+			log.info("유저 있을 경우 - 유저 이메일 : " + lazierUser.get().getUserEmail());
+			return lazierUser.get();
 		}
 	}
 
@@ -127,9 +128,11 @@ public class OAuthService {
 	private TokenResponseDto getMemberLoginResponseDto(LazierUser lazierUser) {
 		TokenResponseDto tokenDto = jwtTokenProvider.createAccessToken(
 			String.valueOf(lazierUser.getUserId()));
+		log.info("구글 토큰: " + tokenDto.getAccessToken());
+		log.info("구글 refresh 토큰: " + tokenDto.getRefreshToken());
 
-		redisService.setValues(tokenDto.getRefreshToken()); //tokenDto에서 refresh token은 redis에 저장
-		return tokenDto; //tokenDto 넘기기
+		redisService.setValues(tokenDto.getRefreshToken());
+		return tokenDto;
 	}
 
 

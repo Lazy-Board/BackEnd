@@ -37,7 +37,7 @@ public class ModuleYn {
 	private boolean todolistYn;
 	private boolean workYn;
 
-	public static ModuleYn of(LazierUser lazierUser,
+	public static ModuleYn save(LazierUser lazierUser,
 		SaveModuleRequestDto saveModuleRequestDto) {
 
 		return ModuleYn.builder()

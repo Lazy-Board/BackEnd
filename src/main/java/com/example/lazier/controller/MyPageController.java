@@ -92,16 +92,6 @@ public class MyPageController {
 	}
 
 
-	@ApiOperation(value = "마이 페이지 - 모듈 업데이트", notes = "보고 싶은 모듈 바꾸기")
-	@ApiResponse(code = 200, message = "모듈 업데이트 완료")
-	@PostMapping("/updateModule")
-	public ResponseEntity<?> updateModule(HttpServletRequest request,
-		@RequestBody @Valid UpdateModuleRequestDto updateModuleRequestDto) {
-		myPageService.updateModule(request, updateModuleRequestDto);
-		return ResponseEntity.ok("모듈 업데이트 완료");
-	}
-
-
 	//이미지 업로드
 	@ApiOperation(value = "마이 페이지 - 프로필 업데이트", notes = "multipart/form-data로 사진 보내면 업데이트 된다.")
 	@ApiResponse(code = 200, message = "프로필 업데이트 완료")
@@ -121,5 +111,15 @@ public class MyPageController {
 		@RequestParam("fileName") String s3FileName) {
 		awsS3Service.deleteImage(request, s3FileName);
 		return ResponseEntity.ok("이미지 삭제 완료");
+	}
+
+	//모듈 수정
+	@ApiOperation(value = "마이 페이지 - 모듈 업데이트", notes = "보고 싶은 모듈 바꾸기")
+	@ApiResponse(code = 200, message = "모듈 업데이트 완료")
+	@PostMapping("/updateModule")
+	public ResponseEntity<?> updateModule(HttpServletRequest request,
+		@RequestBody @Valid UpdateModuleRequestDto updateModuleRequestDto) {
+		myPageService.updateModule(request, updateModuleRequestDto);
+		return ResponseEntity.ok("모듈 업데이트 완료");
 	}
 }

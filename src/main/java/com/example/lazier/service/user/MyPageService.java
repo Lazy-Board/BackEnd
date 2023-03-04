@@ -9,7 +9,9 @@ import com.example.lazier.exception.user.FailedFindPasswordException;
 import com.example.lazier.exception.user.NotFoundMemberException;
 import com.example.lazier.exception.user.NotMatchMemberException;
 import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.user.ModuleYn;
 import com.example.lazier.persist.repository.MemberRepository;
+import com.example.lazier.persist.repository.ModuleYnRepository;
 import com.example.lazier.type.MemberStatus;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +30,7 @@ public class MyPageService {
 	private final PasswordEncoder passwordEncoder;
 	private final RedisService redisService;
 	private final MailComponents mailComponents;
+	private final ModuleYnRepository moduleYnRepository;
 
 	public MemberInfoDto showUserInfo(HttpServletRequest request) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
@@ -93,9 +96,18 @@ public class MyPageService {
 
 	//모듈 업데이트
 	@Transactional
-	public void updateModule(HttpServletRequest request, UpdateModuleRequestDto updateModuleRequestDto) {
-		LazierUser lazierUser = searchMember(parseUserId(request));
-		lazierUser.setUserModuleList(updateModuleRequestDto.getUserModuleList());
+	public void updateModule(HttpServletRequest request,
+		UpdateModuleRequestDto updateModuleRequestDto) {
+		ModuleYn moduleYn = moduleYnRepository.findAllByUserId(parseUserId(request));
+
+		moduleYn.setWeatherYn(updateModuleRequestDto.isWeatherYn());
+		moduleYn.setExchangeYn(updateModuleRequestDto.isExchangeYn());
+		moduleYn.setStockYn(updateModuleRequestDto.isStockYn());
+		moduleYn.setNewsYn(updateModuleRequestDto.isNewsYn());
+		moduleYn.setYoutubeYn(updateModuleRequestDto.isYoutubeYn());
+		moduleYn.setQuoteYn(updateModuleRequestDto.isQuoteYn());
+		moduleYn.setTodolistYn(updateModuleRequestDto.isTodolistYn());
+		moduleYn.setWorkYn(updateModuleRequestDto.isWorkYn());
 	}
 
 }

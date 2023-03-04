@@ -56,7 +56,7 @@ public class MemberService {
                 saveModuleRequestDto.getUserId()))
             .orElseThrow(() -> new FailedSignUpException("회원가입을 진행하세요."));
 
-        moduleYnRepository.save(ModuleYn.of(lazierUser, saveModuleRequestDto)); //모듈 저장
+        moduleYnRepository.save(ModuleYn.save(lazierUser, saveModuleRequestDto)); //모듈 저장
 
         String uuid = UUID.randomUUID().toString();
         lazierUser.setEmailAuthKey(uuid);
