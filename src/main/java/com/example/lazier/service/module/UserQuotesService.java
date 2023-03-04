@@ -5,7 +5,7 @@ import com.example.lazier.dto.module.UserQuotesInput;
 import com.example.lazier.exception.QuotesException.UserAlreadyExistException;
 import com.example.lazier.exception.QuotesException.UserNotFoundException;
 import com.example.lazier.persist.entity.module.UserQuotes;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.UserQuotesRepository;
 import com.example.lazier.service.user.MyPageService;
 import java.util.Optional;

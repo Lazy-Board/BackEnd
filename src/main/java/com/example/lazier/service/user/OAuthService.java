@@ -4,7 +4,7 @@ import com.example.lazier.config.user.JwtTokenProvider;
 import com.example.lazier.dto.user.GoogleUserInfo;
 import com.example.lazier.dto.user.OAuthTokenResponseDto;
 import com.example.lazier.dto.user.TokenResponseDto;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.type.MemberStatus;
 import com.example.lazier.exception.user.InvalidAccessException;
 import com.example.lazier.persist.repository.MemberRepository;
@@ -95,7 +95,7 @@ public class OAuthService {
 		if (!lazierUser.isPresent()) {
 			LazierUser member = LazierUser.builder()
 				.userEmail(oauthEmail)
-				.name(oauthName)
+				.lazierName(oauthName)
 				.oauthId(oauthProviderId)
 				.createdAt(LocalDateTime.now())
 				.userStatus(MemberStatus.STATUS_ACTIVE.getUserStatus())

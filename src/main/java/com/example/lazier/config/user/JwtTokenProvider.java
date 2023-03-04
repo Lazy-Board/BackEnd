@@ -1,7 +1,7 @@
 package com.example.lazier.config.user;
 
 import com.example.lazier.dto.user.TokenResponseDto;
-import com.example.lazier.persist.entity.user.RefreshToken;
+import com.example.lazier.persist.entity.module.RefreshToken;
 import com.example.lazier.service.user.LoginService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

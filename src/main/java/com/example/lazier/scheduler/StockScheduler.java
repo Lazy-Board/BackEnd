@@ -1,3 +1,4 @@
+/*
 package com.example.lazier.scheduler;
 
 import com.example.lazier.service.module.StockService;
@@ -20,3 +21,4 @@ public class StockScheduler {
         stockService.add();
     }
 }
+*/

@@ -1,7 +1,6 @@
 package com.example.lazier.persist.entity.module;
 
 
-import com.example.lazier.persist.entity.user.LazierUser;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

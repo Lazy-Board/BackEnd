@@ -21,7 +21,7 @@ import com.example.lazier.persist.entity.module.DetailStock;
 import com.example.lazier.persist.entity.module.Stock;
 import com.example.lazier.persist.entity.module.UpdateStock;
 import com.example.lazier.persist.entity.module.UserStock;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.DetailStockRepository;
 import com.example.lazier.persist.repository.StockRepository;
 import com.example.lazier.persist.repository.UpdateStockRepository;

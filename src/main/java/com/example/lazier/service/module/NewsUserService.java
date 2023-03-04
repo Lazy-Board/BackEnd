@@ -7,7 +7,7 @@ import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.NewsPress;
 import com.example.lazier.persist.entity.module.NewsUser;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.NewsPressRepository;
 import com.example.lazier.persist.repository.NewsUserRepository;
 import com.example.lazier.service.user.MyPageService;

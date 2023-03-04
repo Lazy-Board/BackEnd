@@ -5,7 +5,7 @@ import com.example.lazier.dto.module.UserWeatherInput;
 import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.UserWeather;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.UserWeatherRepository;
 import com.example.lazier.service.user.MyPageService;
 import java.util.Optional;
