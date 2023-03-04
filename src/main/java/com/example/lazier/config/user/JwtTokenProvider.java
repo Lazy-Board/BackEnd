@@ -67,7 +67,7 @@ public class JwtTokenProvider {
 	public Authentication getAuthentication(String token) {
 		UserDetails userDetails = loginService.loadUserByUsername(this.getUserPk(token));
 		return new UsernamePasswordAuthenticationToken(userDetails, "",
-			userDetails.getAuthorities()); //authentication
+			userDetails.getAuthorities());
 	}
 
 	public TokenResponseDto createAccessToken(String userId) {
@@ -75,7 +75,6 @@ public class JwtTokenProvider {
 		Claims claims = Jwts.claims().setSubject(userId);
 		Date now = new Date();
 
-		//Access Token
 		String accessToken = Jwts.builder()
 			.setClaims(claims)
 			.setIssuedAt(now)
@@ -128,7 +127,7 @@ public class JwtTokenProvider {
 		Claims claims = Jwts.claims().setSubject(userId);
 		Date now = new Date();
 
-		return Jwts.builder() //new access Token
+		return Jwts.builder()
 			.setClaims(claims)
 			.setIssuedAt(now)
 			.setExpiration(new Date(System.currentTimeMillis() + refreshTokenValidTime))

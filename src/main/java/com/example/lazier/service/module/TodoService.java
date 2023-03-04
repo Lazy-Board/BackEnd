@@ -9,7 +9,7 @@ import com.example.lazier.exception.todo.FailedWriteException;
 import com.example.lazier.persist.entity.module.Todo;
 import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.TodoRepository;
-import com.example.lazier.service.user.MemberService;
+import com.example.lazier.service.user.MyPageService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -22,13 +22,13 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TodoService {
 
-	private final MemberService memberService;
+	private final MyPageService myPageService;
 	private final TodoRepository todoRepository;
 
 	public TodoWriteResponseDto write(HttpServletRequest request,
 		TodoWriteRequestDto todoWriteRequestDto) {
-		Long userId = memberService.parseUserId(request);
-		LazierUser lazierUser = memberService.searchMember(userId);
+		Long userId = myPageService.parseUserId(request);
+		LazierUser lazierUser = myPageService.searchMember(userId);
 
 		if (todoRepository.countByUserId(userId) > 3) {
 			throw new FailedWriteException("할 일은 3개까지 작성할 수 있습니다.");
@@ -64,7 +64,7 @@ public class TodoService {
 	}
 
 	public List<TodoUpdateRequestDto> search(HttpServletRequest request) {
-		List<Todo> list = todoRepository.findAllByUserId(memberService.parseUserId(request));
+		List<Todo> list = todoRepository.findAllByUserId(myPageService.parseUserId(request));
 
 		if (list == null) {
 			return null;

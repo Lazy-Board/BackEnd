@@ -7,7 +7,7 @@ import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.UserWeather;
 import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.UserWeatherRepository;
-import com.example.lazier.service.user.MemberService;
+import com.example.lazier.service.user.MyPageService;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -20,11 +20,11 @@ public class UserWeatherService {
 
     private final UserWeatherRepository userWeatherRepository;
     private final WeatherService weatherService;
-    private final MemberService memberService;
+    private final MyPageService myPageService;
 
     public void add(HttpServletRequest request, UserWeatherInput parameter) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         // 중복 아이디 예외
         if (userWeatherRepository.existsByLazierUser(lazierUser)) {
@@ -45,7 +45,7 @@ public class UserWeatherService {
 
     public UserWeatherDto detail(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         Optional<UserWeather> optionalUserWeather = userWeatherRepository.findByLazierUser(
             lazierUser);
@@ -55,7 +55,7 @@ public class UserWeatherService {
     @Transactional
     public void update(HttpServletRequest request, UserWeatherInput parameter) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         UserWeather userWeather = userWeatherRepository.findByLazierUser(lazierUser)
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
@@ -67,7 +67,7 @@ public class UserWeatherService {
 
     public void delete(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         UserWeather userWeather = userWeatherRepository.findByLazierUser(lazierUser)
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
