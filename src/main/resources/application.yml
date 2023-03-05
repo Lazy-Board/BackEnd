@@ -1,0 +1,81 @@
+spring:
+  profiles:
+    include: oauth
+
+  datasource:
+    url: ${DB_HOST}
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: ${DB_NAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    show-sql: true
+
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+    properties:
+      hibernate:
+        format_sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+
+  messages:
+    basename: validation
+    encoding: UTF-8
+    properties:
+      hibernate:
+        auto_quote_keyword: true
+
+  redis:
+    port: ${REDIS_PORT}
+    host: ${REDIS_HOST}
+
+jwt:
+  secret: ${JWT_SECRET}
+  refreshToken-validity-in-seconds: 86400000
+  token-validity-in-seconds: 1800000
+
+naver:
+  geocoding:
+    url: https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=
+    id: ${NAVER_CLIENT_ID}
+    key: ${NAVER_CLIENT_KEY}
+
+kakao:
+  navigation:
+    url: https://apis-navi.kakaomobility.com/v1/directions?origin=%s&destination=%s&waypoints=&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false
+    key: ${KAKAO_CLIENT_KEY}
+
+cloud:
+  aws:
+    s3:
+      bucket: ${S3_BUCKET}
+    credentials:
+      accessKey: ${S3_ACCESS_KEY}
+      secretKey: ${S3_SECRET_KEY}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

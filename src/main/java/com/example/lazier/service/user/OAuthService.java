@@ -95,7 +95,7 @@ public class OAuthService {
 		if (!lazierUser.isPresent()) {
 			LazierUser member = LazierUser.builder()
 				.userEmail(oauthEmail)
-				.lazierName(oauthName)
+				.name(oauthName)
 				.oauthId(oauthProviderId)
 				.createdAt(LocalDateTime.now())
 				.userStatus(MemberStatus.STATUS_ACTIVE.getUserStatus())

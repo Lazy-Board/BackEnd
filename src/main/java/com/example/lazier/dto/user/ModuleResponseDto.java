@@ -1,6 +1,6 @@
 package com.example.lazier.dto.user;
 
-import com.example.lazier.persist.entity.user.ModuleYn;
+import com.example.lazier.persist.entity.module.ModuleYn;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

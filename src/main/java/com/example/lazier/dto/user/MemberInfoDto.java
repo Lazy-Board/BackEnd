@@ -23,7 +23,7 @@ public class MemberInfoDto {
 		return MemberInfoDto.builder()
 			.profile(lazierUser.getProfile())
 			.userEmail(lazierUser.getUserEmail())
-			.userName(lazierUser.getLazierName())
+			.userName(lazierUser.getName())
 			.phoneNumber(lazierUser.getPhoneNumber())
 			.socialType(lazierUser.getSocialType().toLowerCase().trim()) //google이라면 email 비활성
 			.build();

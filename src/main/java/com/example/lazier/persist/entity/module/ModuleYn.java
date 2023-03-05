@@ -1,4 +1,4 @@
-package com.example.lazier.persist.entity.user;
+package com.example.lazier.persist.entity.module;
 
 import com.example.lazier.dto.user.SaveModuleRequestDto;
 import javax.persistence.Entity;

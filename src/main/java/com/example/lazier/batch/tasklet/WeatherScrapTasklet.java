@@ -35,12 +35,12 @@ public class WeatherScrapTasklet implements Tasklet, StepExecutionListener {
 
         for (UserWeather userWeather : userWeathers) {
             weatherService.add(userWeather);
-            try {
-                Thread.sleep(2000); // 2초 동안 정지
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                Thread.currentThread().interrupt();
-            }
+//            try {
+//                Thread.sleep(2000); // 2초 동안 정지
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//                Thread.currentThread().interrupt();
+//            }
         }
         return RepeatStatus.FINISHED;
     }

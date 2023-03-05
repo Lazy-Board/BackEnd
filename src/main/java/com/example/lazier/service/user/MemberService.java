@@ -5,19 +5,18 @@ import com.example.lazier.dto.user.SaveModuleRequestDto;
 import com.example.lazier.dto.user.SignUpRequestDto;
 import com.example.lazier.dto.user.SignUpResponseDto;
 import com.example.lazier.dto.user.UniqueCodeDto;
-import com.example.lazier.persist.entity.user.LazierUser;
-import com.example.lazier.persist.entity.user.ModuleYn;
+import com.example.lazier.exception.user.FailedSignUpException;
+import com.example.lazier.persist.entity.module.LazierUser;
+import com.example.lazier.persist.entity.module.ModuleYn;
+import com.example.lazier.persist.repository.MemberRepository;
 import com.example.lazier.persist.repository.ModuleYnRepository;
 import com.example.lazier.type.MemberStatus;
-import com.example.lazier.exception.user.FailedSignUpException;
-import com.example.lazier.persist.repository.MemberRepository;
+import java.time.LocalDateTime;
+import java.util.UUID;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
