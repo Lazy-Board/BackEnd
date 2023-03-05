@@ -4,7 +4,7 @@ spring:
       client:
         registration:
           google:
-            client-id: ${GOOGLE_CLIENT_ID}
-            client-secret: ${GOOGLE_CLIENT_SECRET}
+            client-id: 669802569553-1fim32qcaedisb1l6trp8kj1q7bdq621.apps.googleusercontent.com
+            client-secret: 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
             scope: profile, email
-            redirect-uri: ${GOOGLE_REDIRECT_URI}
+            redirect-uri: http://ec2-35-77-78-168.ap-northeast-1.compute.amazonaws.com:5173/user/login/google
