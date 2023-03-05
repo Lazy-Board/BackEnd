@@ -58,6 +58,9 @@ public class MemberService {
 
         moduleYnRepository.save(ModuleYn.save(lazierUser, saveModuleRequestDto)); //모듈 저장
 
+        //환율, 주식, 뉴스 추가
+
+
         String uuid = UUID.randomUUID().toString();
         lazierUser.setEmailAuthKey(uuid);
 

@@ -100,6 +100,8 @@ public class MyPageService {
 		UpdateModuleRequestDto updateModuleRequestDto) {
 		ModuleYn moduleYn = moduleYnRepository.findAllByUserId(parseUserId(request));
 
+		//환율, 주식, 뉴스 추가
+
 		moduleYn.setWeatherYn(updateModuleRequestDto.isWeatherYn());
 		moduleYn.setExchangeYn(updateModuleRequestDto.isExchangeYn());
 		moduleYn.setStockYn(updateModuleRequestDto.isStockYn());
