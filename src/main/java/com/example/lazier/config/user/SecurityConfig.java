@@ -34,6 +34,8 @@ public class SecurityConfig {
         .antMatchers(HttpMethod.POST, "/user/login/oauth2/code/google")
         .antMatchers(HttpMethod.POST, "/user/login")
         .antMatchers(HttpMethod.POST, "/user/reissue")
+        .antMatchers(HttpMethod.POST, "/stock/add")
+        .antMatchers(HttpMethod.POST, "/exchange/add")
         .antMatchers(HttpMethod.OPTIONS, "/**")
         .antMatchers("/v3/api-docs/**")
         .antMatchers("/swagger-resources/**")
