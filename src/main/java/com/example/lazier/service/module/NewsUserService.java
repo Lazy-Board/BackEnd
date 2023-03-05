@@ -3,7 +3,6 @@ package com.example.lazier.service.module;
 import com.example.lazier.dto.module.NewsPressDto;
 import com.example.lazier.dto.module.NewsUserInput;
 import com.example.lazier.exception.PressNotFoundException;
-import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.NewsPress;
 import com.example.lazier.persist.entity.module.NewsUser;
@@ -37,6 +36,7 @@ public class NewsUserService {
   //
   @Transactional
   public void add(HttpServletRequest request) {
+
     long userId = Long.parseLong(request.getAttribute("userId").toString());
     //멤버인지 확인 -> 아닐경우 멤버서비스에서 Error Throw
     LazierUser lazierUser = myPageService.searchMember(userId);
@@ -46,8 +46,6 @@ public class NewsUserService {
       List<NewsPress> userPress = newsPressRepository.findFirstByOrderByPressIdAsc();
       newsUserRepository.save(
           NewsUser.builder().lazierUser(lazierUser).userPress(userPress).build());
-    } else {
-      throw new UserAlreadyExistException("사용이력이 있는 모듈입니다.기존 정보로 모듈을 사용합니다.");
     }
   }
 
