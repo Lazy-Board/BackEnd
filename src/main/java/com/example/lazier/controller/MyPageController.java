@@ -97,7 +97,7 @@ public class MyPageController {
 	@ApiResponse(code = 200, message = "프로필 업데이트 완료")
 	@PostMapping("/image")
 	public ResponseEntity<?> uploadImage(HttpServletRequest request,
-		@RequestPart MultipartFile multipartFile)
+		@RequestPart(value = "multipartFile", required = false) MultipartFile multipartFile)
 		throws IOException {
 		return new ResponseEntity<>(awsS3Service.uploadImage(request, multipartFile), HttpStatus.CREATED);
 	}
@@ -112,6 +112,7 @@ public class MyPageController {
 		awsS3Service.deleteImage(request, s3FileName);
 		return ResponseEntity.ok("이미지 삭제 완료");
 	}
+
 
 	//모듈 수정
 	@ApiOperation(value = "마이 페이지 - 모듈 업데이트", notes = "보고 싶은 모듈 바꾸기")
