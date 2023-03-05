@@ -22,12 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class StockController {
     private final UserStockService userStockService;
 
-    @ApiOperation(value = "주식 정보 저장")
-    @PostMapping("/add")
-    public ResponseEntity<?> addStockInfo(HttpServletRequest request) {
-        userStockService.add(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body("저장되었습니다.");
-    }
+//    @ApiOperation(value = "주식 정보 저장")
+//    @PostMapping("/add")
+//    public ResponseEntity<?> addStockInfo(HttpServletRequest request) {
+//        userStockService.add(request);
+//        return ResponseEntity.status(HttpStatus.CREATED).body("저장되었습니다.");
+//    }
 
     // Main 페이지 - 주식 정보 VIEW (4가지)
     @ApiOperation(value = "주식 정보 조회 - 주식 종목, 전일비, 현재가, 등락률")

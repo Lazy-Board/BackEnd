@@ -23,6 +23,7 @@ import com.example.lazier.persist.entity.module.UpdateStock;
 import com.example.lazier.persist.entity.module.UserStock;
 import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.DetailStockRepository;
+import com.example.lazier.persist.repository.MemberRepository;
 import com.example.lazier.persist.repository.StockRepository;
 import com.example.lazier.persist.repository.UpdateStockRepository;
 import com.example.lazier.persist.repository.UserStockRepository;
@@ -50,12 +51,14 @@ public class UserStockService {
 
     private final UpdateStockRepository updateStockRepository;
 
-    private final MyPageService myPageService;
+    private final MemberRepository memberRepository;
 
     @Transactional
     public void add(String paramId) {
         long userId = Long.parseLong(paramId);
-        LazierUser lazierUser = myPageService.searchMember(userId);
+        LazierUser lazierUser = memberRepository.findByUserId(userId)
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 없습니다."));
+
 
         if (!userStockRepository.existsByLazierUser(lazierUser)) {
 
@@ -96,7 +99,9 @@ public class UserStockService {
 
     public void update(HttpServletRequest request, UpdateStockDto updateStockDto) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = myPageService.searchMember(userId);
+
+        LazierUser lazierUser = memberRepository.findByUserId(userId)
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 없습니다."));
 
         if (updateStockRepository.existsByLazierUser(lazierUser)) {
             UpdateStock updateStock = updateStockRepository.findByLazierUser(lazierUser)
@@ -169,7 +174,9 @@ public class UserStockService {
 
     public List<UserAllStockDto> getStock(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = myPageService.searchMember(userId);
+
+        LazierUser lazierUser = memberRepository.findByUserId(userId)
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 없습니다."));
 
         List<UserAllStockDto> userAllStockDtoList = new ArrayList<>();
 
@@ -206,7 +213,10 @@ public class UserStockService {
 
     public List<UserPartialStockDto> getPartialStock(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = myPageService.searchMember(userId);
+
+        LazierUser lazierUser = memberRepository.findByUserId(userId)
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 없습니다."));
+
         List<UserPartialStockDto> userPartialStockDtoList = new ArrayList<>();
 
         UserStock userStock = userStockRepository.findByLazierUser(lazierUser)

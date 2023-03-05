@@ -38,12 +38,12 @@ public class NewsUserController {
   }
 
 
-  @ApiOperation(value = "유저를 모듈 사용자에 추가하고 기본 언론사(연합뉴스)로 초기화합니다. ")
-  @PostMapping
-  public ResponseEntity<?> addUserToNewsModule(HttpServletRequest request) {
-    newsUserService.add(request);
-    return ResponseEntity.ok("유저의 모듈사용이 정상적으로 추가 및 초기화되었습니다.");
-  }
+//  @ApiOperation(value = "유저를 모듈 사용자에 추가하고 기본 언론사(연합뉴스)로 초기화합니다. ")
+//  @PostMapping
+//  public ResponseEntity<?> addUserToNewsModule(HttpServletRequest request) {
+//    newsUserService.add(request);
+//    return ResponseEntity.ok("유저의 모듈사용이 정상적으로 추가 및 초기화되었습니다.");
+//  }
 
   @ApiOperation(value = "유저가 보고싶은 언론사를 1개 선택후 요청하게 합니다. * 리퀘스트 바디에 '언론사명(press1)'을 담아주세요")
   @PutMapping

@@ -39,7 +39,6 @@ public class MyPageService {
 	private final UserStockService userstockService;
 	private final NewsUserService newsUserService;
 
-
 	public MemberInfoDto showUserInfo(HttpServletRequest request) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
 		return MemberInfoDto.of(lazierUser);
@@ -91,8 +90,6 @@ public class MyPageService {
 		LazierUser lazierUser = searchMember(parseUserId(request));
 		redisService.delValues(request);
 
-		//lazierUser.delete();
-		//memberRepository.delete(lazierUser);
 		lazierUser.setUserStatus(MemberStatus.STATUS_WITHDRAW.getUserStatus());
 	}
 
@@ -111,7 +108,6 @@ public class MyPageService {
 		UpdateModuleRequestDto updateModuleRequestDto) {
 		ModuleYn moduleYn = moduleYnRepository.findAllByUserId(parseUserId(request));
 
-		//환율, 주식, 뉴스 추가
 		if (updateModuleRequestDto.isNewsYn()) {
 			newsUserService.add(request.getAttribute("userId").toString());
 		}

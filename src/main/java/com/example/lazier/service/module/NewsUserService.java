@@ -7,6 +7,7 @@ import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.NewsPress;
 import com.example.lazier.persist.entity.module.NewsUser;
 import com.example.lazier.persist.entity.module.LazierUser;
+import com.example.lazier.persist.repository.MemberRepository;
 import com.example.lazier.persist.repository.NewsPressRepository;
 import com.example.lazier.persist.repository.NewsUserRepository;
 import com.example.lazier.service.user.MyPageService;
@@ -26,8 +27,8 @@ public class NewsUserService {
 
 
   private final NewsUserRepository newsUserRepository;
-  private final MyPageService myPageService;
   private final NewsPressRepository newsPressRepository;
+  private final MemberRepository memberRepository;
 
   /**
    * 추가: 멤버조회(전체) 되면 -> 모듈멤버확인 ->없으면 -> 유저레포초기화 ; 수정: userInput//3개의 스트링(언론사명) ; 삭제: 하지 않음 (* 회원탈퇴의
@@ -39,7 +40,8 @@ public class NewsUserService {
 
     long userId = Long.parseLong(paramId);
     //멤버인지 확인 -> 아닐경우 멤버서비스에서 Error Throw
-    LazierUser lazierUser = myPageService.searchMember(userId);
+    LazierUser lazierUser = memberRepository.findByUserId(userId)
+        .orElseThrow(() -> new UserNotFoundException("사용자 정보가 없습니다."));
 
     // 뉴스 레포에 정보가 없을 경우 초기화 정보 생성
     if (!newsUserRepository.existsByLazierUser(lazierUser)) {
@@ -53,7 +55,9 @@ public class NewsUserService {
   public List<NewsPressDto> showUserPressList(HttpServletRequest request) {
     long userId = Long.parseLong(request.getAttribute("userId").toString());
     //멤버인지 확인 -> 아닐경우 멤버서비스에서 Error Throw
-    LazierUser lazierUser = myPageService.searchMember(userId);
+    LazierUser lazierUser = memberRepository.findByUserId(userId)
+        .orElseThrow(() -> new UserNotFoundException("사용자 정보가 없습니다."));
+
     NewsUser user = newsUserRepository.findByLazierUser(lazierUser)
         .orElseThrow(() -> new UserNotFoundException("해당모듈 사용자가 아닙니다."));
 
@@ -65,7 +69,8 @@ public class NewsUserService {
   public void update(HttpServletRequest request, NewsUserInput userInput) {
     long userId = Long.parseLong(request.getAttribute("userId").toString());
     //멤버인지 확인 -> 아닐경우 멤버서비스에서 Error Throw
-    LazierUser lazierUser = myPageService.searchMember(userId);
+    LazierUser lazierUser = memberRepository.findByUserId(userId)
+        .orElseThrow(() -> new UserNotFoundException("사용자 정보가 없습니다."));
 
     NewsUser user = newsUserRepository.findByLazierUser(lazierUser)
         .orElseThrow(() -> new UserNotFoundException("해당모듈 사용자가 아닙니다."));
