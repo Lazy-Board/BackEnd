@@ -35,9 +35,9 @@ public class NewsUserService {
    */
   //
   @Transactional
-  public void add(HttpServletRequest request) {
+  public void add(String paramId) {
 
-    long userId = Long.parseLong(request.getAttribute("userId").toString());
+    long userId = Long.parseLong(paramId);
     //멤버인지 확인 -> 아닐경우 멤버서비스에서 Error Throw
     LazierUser lazierUser = myPageService.searchMember(userId);
 

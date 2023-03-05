@@ -10,6 +10,11 @@ import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.entity.module.ModuleYn;
 import com.example.lazier.persist.repository.MemberRepository;
 import com.example.lazier.persist.repository.ModuleYnRepository;
+import com.example.lazier.service.module.ExchangeService;
+import com.example.lazier.service.module.NewsUserService;
+import com.example.lazier.service.module.StockService;
+import com.example.lazier.service.module.UserExchangeService;
+import com.example.lazier.service.module.UserStockService;
 import com.example.lazier.type.MemberStatus;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -26,6 +31,9 @@ public class MemberService {
     private final ModuleYnRepository moduleYnRepository;
     private final MailComponents mailComponents;
     private final PasswordEncoder passwordEncoder;
+    private final UserExchangeService userExchangeService;
+    private final UserStockService userstockService;
+    private final NewsUserService newsUserService;
 
     public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
 
@@ -58,7 +66,17 @@ public class MemberService {
         moduleYnRepository.save(ModuleYn.save(lazierUser, saveModuleRequestDto)); //모듈 저장
 
         //환율, 주식, 뉴스 추가
+        if (saveModuleRequestDto.isNewsYn()) {
+            newsUserService.add(saveModuleRequestDto.getUserId());
+        }
 
+        if (saveModuleRequestDto.isStockYn()) {
+            userstockService.add(saveModuleRequestDto.getUserId());
+        }
+
+        if (saveModuleRequestDto.isExchangeYn()) {
+            userExchangeService.add(saveModuleRequestDto.getUserId());
+        }
 
         String uuid = UUID.randomUUID().toString();
         lazierUser.setEmailAuthKey(uuid);

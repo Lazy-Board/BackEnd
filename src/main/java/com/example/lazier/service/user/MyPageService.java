@@ -12,6 +12,9 @@ import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.entity.module.ModuleYn;
 import com.example.lazier.persist.repository.MemberRepository;
 import com.example.lazier.persist.repository.ModuleYnRepository;
+import com.example.lazier.service.module.NewsUserService;
+import com.example.lazier.service.module.UserExchangeService;
+import com.example.lazier.service.module.UserStockService;
 import com.example.lazier.type.MemberStatus;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
@@ -32,10 +35,16 @@ public class MyPageService {
 	private final MailComponents mailComponents;
 	private final ModuleYnRepository moduleYnRepository;
 
+	private final UserExchangeService userExchangeService;
+	private final UserStockService userstockService;
+	private final NewsUserService newsUserService;
+
+
 	public MemberInfoDto showUserInfo(HttpServletRequest request) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
 		return MemberInfoDto.of(lazierUser);
 	}
+
 
 	@Transactional
 	public void updateUserInfo(HttpServletRequest request, MemberInfoDto memberInfoDto) {
@@ -52,6 +61,7 @@ public class MyPageService {
 		}
 		lazierUser.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
 	}
+
 
 	//사용자 정보(이메일, 전화번호)가 일치하면 -> 이메일로 임시 비밀번호 전송
 	@Transactional
@@ -80,6 +90,7 @@ public class MyPageService {
 	public void withdrawal(HttpServletRequest request) {
 		LazierUser lazierUser = searchMember(parseUserId(request));
 		redisService.delValues(request);
+
 		//lazierUser.delete();
 		//memberRepository.delete(lazierUser);
 		lazierUser.setUserStatus(MemberStatus.STATUS_WITHDRAW.getUserStatus());
@@ -101,6 +112,17 @@ public class MyPageService {
 		ModuleYn moduleYn = moduleYnRepository.findAllByUserId(parseUserId(request));
 
 		//환율, 주식, 뉴스 추가
+		if (updateModuleRequestDto.isNewsYn()) {
+			newsUserService.add(request.getAttribute("userId").toString());
+		}
+
+		if (updateModuleRequestDto.isStockYn()) {
+			userstockService.add(request.getAttribute("userId").toString());
+		}
+
+		if (updateModuleRequestDto.isExchangeYn()) {
+			userExchangeService.add(request.getAttribute("userId").toString());
+		}
 
 		moduleYn.setWeatherYn(updateModuleRequestDto.isWeatherYn());
 		moduleYn.setExchangeYn(updateModuleRequestDto.isExchangeYn());

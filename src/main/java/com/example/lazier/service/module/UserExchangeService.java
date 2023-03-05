@@ -47,45 +47,44 @@ public class UserExchangeService {
     private final ExchangeRepository exchangeRepository;
 
     @Transactional
-    public void add(HttpServletRequest request) {
-        long userId = Long.parseLong(request.getAttribute("userId").toString());
+    public void add(String paramId) {
+        long userId = Long.parseLong(paramId);
         LazierUser lazierUser = myPageService.searchMember(userId);
 
-        if (userExchangeRepository.existsByLazierUser(lazierUser)) {
-            throw new UserAlreadyExistException("사용자 정보가 이미 존재합니다.");
+        if (!userExchangeRepository.existsByLazierUser(lazierUser)) {
+
+            UserExchange userExchange = UserExchange.builder()
+                .lazierUser(lazierUser)
+                .usd(String.valueOf(USD))
+                .jpy(String.valueOf(JPY))
+                .eur(String.valueOf(EUR))
+                .cny(String.valueOf(CNY))
+                .aud("X")
+                .cad("X")
+                .chf("X")
+                .nzd("X")
+                .hkd("X")
+                .gbp("X")
+                .build();
+
+            DetailExchange detailexchange = DetailExchange.builder()
+                .lazierUser(lazierUser)
+                .usd(String.valueOf(USD))
+                .jpy(String.valueOf(JPY))
+                .eur(String.valueOf(EUR))
+                .cny(String.valueOf(CNY))
+                .aud(String.valueOf(AUD))
+                .cad(String.valueOf(CAD))
+                .chf(String.valueOf(CHF))
+                .nzd(String.valueOf(NZD))
+                .hkd(String.valueOf(HKD))
+                .gbp(String.valueOf(GBP))
+                .build();
+
+            userExchangeRepository.save(userExchange);
+            detailExchangeRepository.save(detailexchange);
+            exchangeService.add();
         }
-
-        UserExchange userExchange = UserExchange.builder()
-                                                .lazierUser(lazierUser)
-                                                .usd(String.valueOf(USD))
-                                                .jpy(String.valueOf(JPY))
-                                                .eur(String.valueOf(EUR))
-                                                .cny(String.valueOf(CNY))
-                                                .aud("X")
-                                                .cad("X")
-                                                .chf("X")
-                                                .nzd("X")
-                                                .hkd("X")
-                                                .gbp("X")
-                                                .build();
-
-        DetailExchange detailexchange = DetailExchange.builder()
-                                                    .lazierUser(lazierUser)
-                                                    .usd(String.valueOf(USD))
-                                                    .jpy(String.valueOf(JPY))
-                                                    .eur(String.valueOf(EUR))
-                                                    .cny(String.valueOf(CNY))
-                                                    .aud(String.valueOf(AUD))
-                                                    .cad(String.valueOf(CAD))
-                                                    .chf(String.valueOf(CHF))
-                                                    .nzd(String.valueOf(NZD))
-                                                    .hkd(String.valueOf(HKD))
-                                                    .gbp(String.valueOf(GBP))
-                                                    .build();
-
-        userExchangeRepository.save(userExchange);
-        detailExchangeRepository.save(detailexchange);
-        exchangeService.add();
     }
 
     @Transactional

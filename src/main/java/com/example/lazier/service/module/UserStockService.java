@@ -53,8 +53,8 @@ public class UserStockService {
     private final MyPageService myPageService;
 
     @Transactional
-    public void add(HttpServletRequest request) {
-        long userId = Long.parseLong(request.getAttribute("userId").toString());
+    public void add(String paramId) {
+        long userId = Long.parseLong(paramId);
         LazierUser lazierUser = myPageService.searchMember(userId);
 
         if (!userStockRepository.existsByLazierUser(lazierUser)) {
