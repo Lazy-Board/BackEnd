@@ -21,12 +21,12 @@ public class ExchangeController {
 
     private final UserExchangeService userExchangeService;
 
-    @ApiOperation(value = "환율 정보 저장")
-    @PostMapping("/add")
-    public ResponseEntity<?> addExchangeInfo(HttpServletRequest request) {
-          userExchangeService.add(request);
-          return ResponseEntity.status(HttpStatus.CREATED).body("저장되었습니다.");
-    }
+//    @ApiOperation(value = "환율 정보 저장")
+//    @PostMapping("/add")
+//    public ResponseEntity<?> addExchangeInfo(HttpServletRequest request) {
+//          userExchangeService.add(request);
+//          return ResponseEntity.status(HttpStatus.CREATED).body("저장되었습니다.");
+//    }
 
     // Main Page - 환율 정보 VIEW
     @ApiOperation(value = "환율 정보 일부만 조회(통화명, 국가명, 전일대비, 등락율, 매매기준율)")
