@@ -21,7 +21,7 @@ import com.example.lazier.persist.entity.module.DetailStock;
 import com.example.lazier.persist.entity.module.Stock;
 import com.example.lazier.persist.entity.module.UpdateStock;
 import com.example.lazier.persist.entity.module.UserStock;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.DetailStockRepository;
 import com.example.lazier.persist.repository.StockRepository;
 import com.example.lazier.persist.repository.UpdateStockRepository;
@@ -57,9 +57,7 @@ public class UserStockService {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = myPageService.searchMember(userId);
 
-        if (userStockRepository.existsByLazierUser(lazierUser)) {
-            throw new UserAlreadyExistException("사용자 정보가 이미 존재합니다.");
-        }
+        if (!userStockRepository.existsByLazierUser(lazierUser)) {
 
         UserStock userStock = UserStock.builder()
                                     .lazierUser(lazierUser)
@@ -75,24 +73,26 @@ public class UserStockService {
                                     .hive("F")
                                     .build();
 
-        DetailStock detailStock = DetailStock.builder()
-                                            .lazierUser(lazierUser)
-                                            .samsungElectronic(String.valueOf(삼성전자))
-                                            .skHynix(String.valueOf(SK하이닉스))
-                                            .naver(String.valueOf(NAVER))
-                                            .kakao(String.valueOf(카카오))
-                                            .hyundaiCar(String.valueOf(현대차))
-                                            .kia(String.valueOf(기아))
-                                            .lgElectronic(String.valueOf(LG전자))
-                                            .kakaoBank(String.valueOf(카카오뱅크))
-                                            .samsungSdi(String.valueOf(삼성SDI))
-                                            .hive(String.valueOf(하이브))
-                                            .build();
+            DetailStock detailStock = DetailStock.builder()
+                .lazierUser(lazierUser)
+                .samsungElectronic(String.valueOf(삼성전자))
+                .skHynix(String.valueOf(SK하이닉스))
+                .naver(String.valueOf(NAVER))
+                .kakao(String.valueOf(카카오))
+                .hyundaiCar(String.valueOf(현대차))
+                .kia(String.valueOf(기아))
+                .lgElectronic(String.valueOf(LG전자))
+                .kakaoBank(String.valueOf(카카오뱅크))
+                .samsungSdi(String.valueOf(삼성SDI))
+                .hive(String.valueOf(하이브))
+                .build();
 
-        userStockRepository.save(userStock);
-        detailStockRepository.save(detailStock);
-        stockService.add();
+            userStockRepository.save(userStock);
+            detailStockRepository.save(detailStock);
+            stockService.add();
+        }
     }
+
 
     public void update(HttpServletRequest request, UpdateStockDto updateStockDto) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
@@ -213,29 +213,25 @@ public class UserStockService {
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         String[] checkList = {userStock.getSamsungElectronic(), userStock.getSkHynix(),
-                    userStock.getNaver(), userStock.getKakao(), userStock.getHyundaiCar(),
-                    userStock.getKia(), userStock.getLgElectronic(),
-                    userStock.getKakaoBank(), userStock.getSamsungSdi(),
-                    userStock.getHive()};
+                            userStock.getNaver(), userStock.getKakao(), userStock.getHyundaiCar(),
+                            userStock.getKia(), userStock.getLgElectronic(),
+                            userStock.getKakaoBank(), userStock.getSamsungSdi(),
+                            userStock.getHive()};
 
         for (int i = 0; i < 10; i++) {
-            if (!checkList[i].contains("F")) {
+            if (checkList[i].length() > 1) {
                 String stockName = checkList[i];
 
                 Stock stock = stockRepository.findByStockNameOrderByUpdateAtDesc(stockName)
                     .orElseThrow(() -> new NotFoundStockException("선택한 주식 종목이 있는지 확인하세요."));
 
                 UserPartialStockDto userPartialStockDto = UserPartialStockDto.builder()
-                                                        .stockName(stock.getStockName())
-                                                        .price(stock.getPrice())
-                                                        .diffAmount(stock.getDiffAmount())
-                                                        .dayRange(stock.getDayRange())
-                                                        .marketPrice(stock.getMarketPrice())
-                                                        .highPrice(stock.getHighPrice())
-                                                        .lowPrice(stock.getLowPrice())
-                                                        .tradingVolume(stock.getTradingVolume())
-                                                        .updateAt(stock.getUpdateAt())
-                                                        .build();
+                                                                .stockName(stock.getStockName())
+                                                                .price(stock.getPrice())
+                                                                .diffAmount(stock.getDiffAmount())
+                                                                .dayRange(stock.getDayRange())
+                                                                .updateAt(stock.getUpdateAt())
+                                                                .build();
 
                 userPartialStockDtoList.add(userPartialStockDto);
             }

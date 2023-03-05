@@ -1,6 +1,6 @@
 package com.example.lazier.persist.repository;
 
-import com.example.lazier.persist.entity.user.ModuleYn;
+import com.example.lazier.persist.entity.module.ModuleYn;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

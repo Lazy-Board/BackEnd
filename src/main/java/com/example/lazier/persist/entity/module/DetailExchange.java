@@ -1,6 +1,5 @@
 package com.example.lazier.persist.entity.module;
 
-import com.example.lazier.persist.entity.user.LazierUser;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,7 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "DETAIL_EXCHANGE")
+@Entity(name = "detail_exchange")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

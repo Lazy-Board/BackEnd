@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "NEWS_PRESS")
+@Entity
 @Builder
 public class NewsPress {
 

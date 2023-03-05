@@ -1,7 +1,7 @@
 package com.example.lazier.dto.user;
 
 
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

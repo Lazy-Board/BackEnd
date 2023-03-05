@@ -1,7 +1,7 @@
 package com.example.lazier.service.user;
 
 import com.example.lazier.dto.user.ModuleResponseDto;
-import com.example.lazier.persist.entity.user.ModuleYn;
+import com.example.lazier.persist.entity.module.ModuleYn;
 import com.example.lazier.persist.repository.ModuleYnRepository;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

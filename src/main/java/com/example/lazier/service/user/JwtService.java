@@ -2,7 +2,7 @@ package com.example.lazier.service.user;
 
 import com.example.lazier.config.user.JwtTokenProvider;
 import com.example.lazier.dto.user.AccessTokenResponseDto;
-import com.example.lazier.persist.entity.user.RefreshToken;
+import com.example.lazier.persist.entity.module.RefreshToken;
 import com.example.lazier.exception.user.InvalidTokenException;
 import com.example.lazier.exception.user.UnauthorizedRefreshTokenException;
 import io.jsonwebtoken.JwtException;

@@ -1,7 +1,7 @@
 package com.example.lazier.persist.repository;
 
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.entity.module.UpdateStock;
-import com.example.lazier.persist.entity.user.LazierUser;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
