@@ -6,7 +6,7 @@ buildscript {
 
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.4.5'
+    id 'org.springframework.boot' version '2.5.4'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 
     //querydsl 추가
@@ -28,6 +28,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -37,6 +38,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation "com.amazonaws:aws-java-sdk-s3:1.12.281"
+
     compileOnly 'com.github.ulisesbocchio:jasypt-spring-boot:3.0.4'
 
 
@@ -62,8 +65,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.0'
-    runtimeOnly 'com.h2database:h2'
+//    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.7.0'
+//    runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
     implementation 'org.jsoup:jsoup:1.15.3'

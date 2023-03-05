@@ -15,6 +15,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
             .allowedOrigins(
                 "http://35.77.78.168:5173/",
                 "http://54.248.28.248:5173/",
+                "http://ec2-35-77-78-168.ap-northeast-1.compute.amazonaws.com:5173/",
+                "http://localhost:8080/",
                 "http://localhost:3000/")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
             .allowedHeaders("*")

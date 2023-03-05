@@ -1,7 +1,7 @@
 package com.example.lazier.dto.user;
 
 
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,9 +17,11 @@ public class MemberInfoDto {
 	String userName;
 	String phoneNumber;
 	String socialType;
+	String profile;
 
 	public static MemberInfoDto of(LazierUser lazierUser) {
 		return MemberInfoDto.builder()
+			.profile(lazierUser.getProfile())
 			.userEmail(lazierUser.getUserEmail())
 			.userName(lazierUser.getName())
 			.phoneNumber(lazierUser.getPhoneNumber())

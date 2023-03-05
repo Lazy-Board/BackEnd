@@ -11,19 +11,22 @@ import static com.example.lazier.type.StockName.카카오뱅크;
 import static com.example.lazier.type.StockName.하이브;
 import static com.example.lazier.type.StockName.현대차;
 
+import com.example.lazier.dto.module.UpdateStockDto;
 import com.example.lazier.dto.module.UserAllStockDto;
 import com.example.lazier.dto.module.UserPartialStockDto;
-import com.example.lazier.dto.module.UserStockInput;
 import com.example.lazier.exception.NotFoundStockException;
+import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.DetailStock;
 import com.example.lazier.persist.entity.module.Stock;
+import com.example.lazier.persist.entity.module.UpdateStock;
 import com.example.lazier.persist.entity.module.UserStock;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.DetailStockRepository;
 import com.example.lazier.persist.repository.StockRepository;
+import com.example.lazier.persist.repository.UpdateStockRepository;
 import com.example.lazier.persist.repository.UserStockRepository;
-import com.example.lazier.service.user.MemberService;
+import com.example.lazier.service.user.MyPageService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -45,28 +48,30 @@ public class UserStockService {
 
     private final DetailStockRepository detailStockRepository;
 
-    private final MemberService memberService;
+    private final UpdateStockRepository updateStockRepository;
+
+    private final MyPageService myPageService;
 
     @Transactional
     public void add(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         if (!userStockRepository.existsByLazierUser(lazierUser)) {
 
-            UserStock userStock = UserStock.builder()
-                .lazierUser(lazierUser)
-                .samsungElectronic(String.valueOf(삼성전자))
-                .skHynix(String.valueOf(SK하이닉스))
-                .naver(String.valueOf(NAVER))
-                .kakao(String.valueOf(카카오))
-                .hyundaiCar("N")
-                .kia("N")
-                .lgElectronic("N")
-                .kakaoBank("N")
-                .samsungSdi("N")
-                .hive("N")
-                .build();
+        UserStock userStock = UserStock.builder()
+                                    .lazierUser(lazierUser)
+                                    .samsungElectronic(String.valueOf(삼성전자))
+                                    .skHynix(String.valueOf(SK하이닉스))
+                                    .naver(String.valueOf(NAVER))
+                                    .kakao("F")
+                                    .hyundaiCar("F")
+                                    .kia("F")
+                                    .lgElectronic("F")
+                                    .kakaoBank("F")
+                                    .samsungSdi("F")
+                                    .hive("F")
+                                    .build();
 
             DetailStock detailStock = DetailStock.builder()
                 .lazierUser(lazierUser)
@@ -87,72 +92,84 @@ public class UserStockService {
             stockService.add();
         }
     }
-//    @Transactional
-//    public void add(HttpServletRequest request) {
-//        long userId = Long.parseLong(request.getAttribute("userId").toString());
-//        LazierUser lazierUser = memberService.searchMember(userId);
-//
-//        if (userStockRepository.existsByLazierUser(lazierUser)) {
-//            throw new UserAlreadyExistException("사용자 정보가 이미 존재합니다.");
-//        }
-//
-//        UserStock userStock = UserStock.builder()
-//                                        .lazierUser(lazierUser)
-//                                        .samsungElectronic(String.valueOf(삼성전자))
-//                                        .skHynix(String.valueOf(SK하이닉스))
-//                                        .naver(String.valueOf(NAVER))
-//                                        .kakao(String.valueOf(카카오))
-//                                        .hyundaiCar("N")
-//                                        .kia("N")
-//                                        .lgElectronic("N")
-//                                        .kakaoBank("N")
-//                                        .samsungSdi("N")
-//                                        .hive("N")
-//                                        .build();
-//
-//        DetailStock detailStock = DetailStock.builder()
-//                                            .lazierUser(lazierUser)
-//                                            .samsungElectronic(String.valueOf(삼성전자))
-//                                            .skHynix(String.valueOf(SK하이닉스))
-//                                            .naver(String.valueOf(NAVER))
-//                                            .kakao(String.valueOf(카카오))
-//                                            .hyundaiCar(String.valueOf(현대차))
-//                                            .kia(String.valueOf(기아))
-//                                            .lgElectronic(String.valueOf(LG전자))
-//                                            .kakaoBank(String.valueOf(카카오뱅크))
-//                                            .samsungSdi(String.valueOf(삼성SDI))
-//                                            .hive(String.valueOf(하이브))
-//                                            .build();
-//
-//        userStockRepository.save(userStock);
-//        detailStockRepository.save(detailStock);
-//        stockService.add();
-//    }
 
-    public void update(HttpServletRequest request, UserStockInput parameter) {
+
+    public void update(HttpServletRequest request, UpdateStockDto updateStockDto) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
-        UserStock userStock = userStockRepository.findByLazierUser(lazierUser)
+        if (updateStockRepository.existsByLazierUser(lazierUser)) {
+            UpdateStock updateStock = updateStockRepository.findByLazierUser(lazierUser)
                 .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
-        userStock.setSamsungElectronic(parameter.getSamsungElectronic());
-        userStock.setSkHynix(parameter.getSkHynix());
-        userStock.setNaver(parameter.getNaver());
-        userStock.setKakao(parameter.getKakao());
-        userStock.setHyundaiCar(parameter.getHyundaiCar());
-        userStock.setKia(parameter.getKia());
-        userStock.setLgElectronic(parameter.getLgElectronic());
-        userStock.setKakaoBank(parameter.getKakaoBank());
-        userStock.setSamsungSdi(parameter.getSamsungSdi());
-        userStock.setHive(parameter.getHive());
+            updateStock.setLazierUser(lazierUser);
+            updateStock.setStockName(updateStockDto.getStockName());
+
+            if (updateStock.getStockName().contains("삼성전자")) {
+                updateStock.setSamsungElectronic(updateStock.getStockName());
+            } else if (updateStock.getStockName().contains("SK하이닉스")) {
+                updateStock.setSkHynix(updateStock.getStockName());
+            } else if (updateStock.getStockName().contains("NAVER")) {
+                updateStock.setNaver(updateStock.getStockName());
+            } else if (updateStock.getStockName().contains("삼성SDI")) {
+                updateStock.setSamsungSdi(updateStock.getStockName());
+            } else if (updateStock.getStockName().contains("LG전자")) {
+                updateStock.setLgElectronic(updateStock.getStockName());
+            } else if (updateStock.getStockName().contains("카카오")) {
+                updateStock.setKakao(updateStock.getStockName());
+            } else if (updateStock.getStockName().contains("카카오뱅크")) {
+                updateStock.setKakaoBank(updateStock.getStockName());
+            } else if (updateStock.getStockName().contains("하이브")) {
+                updateStock.setHive(updateStock.getStockName());
+            } else if (updateStock.getStockName().contains("현대차")) {
+                updateStock.setHyundaiCar(updateStock.getStockName());
+            } else if (updateStock.getStockName().contains("기아")) {
+                updateStock.setKia(updateStock.getStockName());
+            }
+
+            updateStockRepository.save(updateStock);
+        } else {
+            UpdateStock updateStock = UpdateStock.builder()
+                .lazierUser(lazierUser)
+                .stockName(updateStockDto.getStockName())
+                .build();
+            updateStockRepository.save(updateStock);
+        }
+
+        UpdateStock updateStock = updateStockRepository.findByLazierUser(lazierUser)
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
+
+        UserStock userStock = userStockRepository.findByLazierUser(lazierUser)
+            .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
+
+        if (updateStock.getStockName().contains("삼성전자")) {
+            userStock.setSamsungElectronic(updateStock.getStockName());
+        } else if (updateStock.getStockName().contains("SK하이닉스")) {
+            userStock.setSkHynix(updateStock.getStockName());
+        } else if (updateStock.getStockName().contains("NAVER")) {
+            userStock.setNaver(updateStock.getStockName());
+        } else if (updateStock.getStockName().contains("삼성SDI")) {
+            userStock.setSamsungSdi(updateStock.getStockName());
+        } else if (updateStock.getStockName().contains("LG전자")) {
+            userStock.setLgElectronic(updateStock.getStockName());
+        } else if (updateStock.getStockName().contains("카카오")) {
+            userStock.setKakao(updateStock.getStockName());
+        } else if (updateStock.getStockName().contains("카카오뱅크")) {
+            userStock.setKakaoBank(updateStock.getStockName());
+        } else if (updateStock.getStockName().contains("하이브")) {
+            userStock.setHive(updateStock.getStockName());
+        } else if (updateStock.getStockName().contains("현대차")) {
+            userStock.setHyundaiCar(updateStock.getStockName());
+        } else if (updateStock.getStockName().contains("기아")) {
+            userStock.setKia(updateStock.getStockName());
+        }
 
         userStockRepository.save(userStock);
     }
 
     public List<UserAllStockDto> getStock(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         List<UserAllStockDto> userAllStockDtoList = new ArrayList<>();
 
@@ -160,10 +177,10 @@ public class UserStockService {
             .orElseThrow(() -> new UserNotFoundException("선택한 주식 종목이 있는지 확인하세요."));
 
         String[] checkList = {detailStock.getSamsungElectronic(), detailStock.getSkHynix(),
-                        detailStock.getNaver(), detailStock.getKakao(), detailStock.getHyundaiCar(),
-                        detailStock.getKia(), detailStock.getLgElectronic(),
-                        detailStock.getKakaoBank(), detailStock.getSamsungSdi(),
-                        detailStock.getHive()};
+                detailStock.getNaver(), detailStock.getKakao(), detailStock.getHyundaiCar(),
+                detailStock.getKia(), detailStock.getLgElectronic(),
+                detailStock.getKakaoBank(), detailStock.getSamsungSdi(),
+                detailStock.getHive()};
 
         for (int i = 0; i < 10; i++) {
             String stockName = checkList[i];
@@ -189,7 +206,7 @@ public class UserStockService {
 
     public List<UserPartialStockDto> getPartialStock(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
         List<UserPartialStockDto> userPartialStockDtoList = new ArrayList<>();
 
         UserStock userStock = userStockRepository.findByLazierUser(lazierUser)

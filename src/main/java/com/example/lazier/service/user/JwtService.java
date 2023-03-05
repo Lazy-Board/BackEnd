@@ -2,7 +2,7 @@ package com.example.lazier.service.user;
 
 import com.example.lazier.config.user.JwtTokenProvider;
 import com.example.lazier.dto.user.AccessTokenResponseDto;
-import com.example.lazier.persist.entity.user.RefreshToken;
+import com.example.lazier.persist.entity.module.RefreshToken;
 import com.example.lazier.exception.user.InvalidTokenException;
 import com.example.lazier.exception.user.UnauthorizedRefreshTokenException;
 import io.jsonwebtoken.JwtException;
@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,9 @@ public class JwtService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisService redisService;
     private final RedisTemplate<String, String> redisTemplate;
-    private long refreshTokenValidTime = 5 * 60 * 1000L;
+
+    @Value("${jwt.refreshToken-validity-in-seconds}")
+    private long refreshTokenValidTime;
 
     public String getRefreshToken(String userId) {
         return redisService.getValues(userId);
@@ -36,7 +39,7 @@ public class JwtService {
         try {
             userId = jwtTokenProvider.getUserPk(refreshToken);
         } catch (Exception e) {
-            log.info("getUserPk 에러: " + e.getMessage());
+            log.info("getUserPk error: " + e.getMessage());
             throw new UnauthorizedRefreshTokenException(e.getMessage());
         }
 

@@ -6,12 +6,12 @@ import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.News;
 import com.example.lazier.persist.entity.module.NewsPress;
 import com.example.lazier.persist.entity.module.NewsUser;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.NewsPressRepository;
 import com.example.lazier.persist.repository.NewsRepository;
 import com.example.lazier.persist.repository.NewsUserRepository;
 import com.example.lazier.scraper.NewsScraper;
-import com.example.lazier.service.user.MemberService;
+import com.example.lazier.service.user.MyPageService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class NewsService {
   private final NewsRepository newsRepository;
   private final NewsPressRepository newsPressRepository;
   private final NewsUserRepository newsUserRepository;
-  private final MemberService memberService;
+  private final MyPageService myPageService;
 
 
   /**
@@ -75,7 +75,7 @@ public class NewsService {
   public List<NewsDto> showNewsByUser(HttpServletRequest request) {
     long userId = Long.parseLong(request.getAttribute("userId").toString());
     //멤버인지 확인 -> 아닐경우 멤버서비스에서 Error Throw
-    LazierUser lazierUser = memberService.searchMember(userId);
+    LazierUser lazierUser = myPageService.searchMember(userId);
     NewsUser user = newsUserRepository.findByLazierUser(lazierUser)
         .orElseThrow(() -> new UserNotFoundException("해당모듈 사용자가 아닙니다."));
 

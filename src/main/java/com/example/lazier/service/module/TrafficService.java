@@ -8,9 +8,9 @@ import com.example.lazier.dto.module.TrafficInput;
 import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.Traffic;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.TrafficRepository;
-import com.example.lazier.service.user.MemberService;
+import com.example.lazier.service.user.MyPageService;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -24,11 +24,11 @@ public class TrafficService {
     private final TrafficRepository trafficRepository;
     private final NaverGeocodingApi naverGeocodingApi;
     private final KakaoNavigationApi kakaoNavigationApi;
-    private final MemberService memberService;
+    private final MyPageService myPageService;
 
     public void add(HttpServletRequest request, TrafficInput parameter) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         if (trafficRepository.existsByLazierUser(lazierUser)) {
             throw new UserAlreadyExistException("사용자 정보가 존재합니다.");
@@ -50,7 +50,7 @@ public class TrafficService {
 
     public TrafficDto getUserInfo(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         Optional<Traffic> optionalTraffic = trafficRepository.findByLazierUser(lazierUser);
 
@@ -60,7 +60,7 @@ public class TrafficService {
     @Transactional
     public void update(HttpServletRequest request, TrafficInput parameter) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         Traffic traffic = trafficRepository.findByLazierUser(lazierUser)
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
@@ -74,7 +74,7 @@ public class TrafficService {
 
     public void delete(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         Traffic traffic = trafficRepository.findByLazierUser(lazierUser)
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
@@ -84,7 +84,7 @@ public class TrafficService {
 
     public DurationDto getTrafficDuration(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
-        LazierUser lazierUser = memberService.searchMember(userId);
+        LazierUser lazierUser = myPageService.searchMember(userId);
 
         Optional<Traffic> optionalTraffic = trafficRepository.findByLazierUser(lazierUser);
         if (!optionalTraffic.isPresent()) {

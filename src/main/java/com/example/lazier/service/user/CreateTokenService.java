@@ -2,7 +2,7 @@ package com.example.lazier.service.user;
 
 import com.example.lazier.config.user.JwtTokenProvider;
 import com.example.lazier.dto.user.TokenResponseDto;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.exception.user.NotFoundMemberException;
 import com.example.lazier.exception.user.NotMatchMemberException;
 import com.example.lazier.dto.user.LoginRequestDto;

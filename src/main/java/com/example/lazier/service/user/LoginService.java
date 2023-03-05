@@ -1,7 +1,7 @@
 package com.example.lazier.service.user;
 
 import com.example.lazier.exception.user.NotFoundMemberException;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.MemberRepository;
 import com.example.lazier.type.MemberStatus;
 import com.example.lazier.exception.user.FailedLoginException;

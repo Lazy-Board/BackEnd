@@ -2,7 +2,6 @@ package com.example.lazier.persist.entity.module;
 
 
 import com.example.lazier.dto.module.WeatherDto;
-import com.example.lazier.persist.entity.user.LazierUser;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;

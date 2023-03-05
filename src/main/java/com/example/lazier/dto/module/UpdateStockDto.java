@@ -1,4 +1,4 @@
-package com.example.lazier.dto.user;
+package com.example.lazier.dto.module;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MemberModuleResponseDto {
-	private String userModuleList;
+public class UpdateStockDto {
+    private String stockName;
 }

@@ -1,3 +1,4 @@
+/*
 package com.example.lazier.scheduler;
 
 import com.example.lazier.persist.entity.module.UserWeather;
@@ -50,3 +51,4 @@ public class WeatherScraperScheduler {
         return now != null ? now.format(formatter) : "";
     }
 }
+*/

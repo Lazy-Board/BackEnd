@@ -4,7 +4,7 @@ import com.example.lazier.config.user.JwtTokenProvider;
 import com.example.lazier.dto.user.GoogleUserInfo;
 import com.example.lazier.dto.user.OAuthTokenResponseDto;
 import com.example.lazier.dto.user.TokenResponseDto;
-import com.example.lazier.persist.entity.user.LazierUser;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.type.MemberStatus;
 import com.example.lazier.exception.user.InvalidAccessException;
 import com.example.lazier.persist.repository.MemberRepository;
@@ -36,7 +36,8 @@ public class OAuthService {
 	private final InMemoryClientRegistrationRepository inMemoryClientRegistrationRepository;
 
 	@Transactional
-	public LazierUser getUser(String provider, String code) {
+	public LazierUser getUser(String code) {
+		String provider = "google";
 		ClientRegistration clientRegistration = inMemoryClientRegistrationRepository.findByRegistrationId(provider.toLowerCase());
 		OAuthTokenResponseDto oAuthTokenResponseDto = getToken(clientRegistration, code);
 
@@ -75,7 +76,6 @@ public class OAuthService {
 
 		Map<String, Object> attributes = getUserAttribute(provider, oAuthTokenResponseDto); //user 담을 객체
 		GoogleUserInfo googleUserInfo;
-		String oauthNickName = null;
 		String oauthName = null;
 
 		if (providerName.equals("google")) {
@@ -92,7 +92,7 @@ public class OAuthService {
 
 		Optional<LazierUser> lazierUser = memberRepository.findByOauthId(oauthProviderId);
 
-		if (lazierUser == null) {
+		if (!lazierUser.isPresent()) {
 			LazierUser member = LazierUser.builder()
 				.userEmail(oauthEmail)
 				.name(oauthName)
@@ -101,9 +101,11 @@ public class OAuthService {
 				.userStatus(MemberStatus.STATUS_ACTIVE.getUserStatus())
 				.socialType(oauthProvider)
 				.build();
-			return memberRepository.save(member); //없으면 저장
+			log.info("member doesn't exist : " + member.getUserEmail());
+			return memberRepository.save(member);
 		} else {
-			return lazierUser.get(); //있으면 리턴
+			log.info("member exists : " + lazierUser.get().getUserEmail());
+			return lazierUser.get();
 		}
 	}
 
@@ -126,9 +128,11 @@ public class OAuthService {
 	private TokenResponseDto getMemberLoginResponseDto(LazierUser lazierUser) {
 		TokenResponseDto tokenDto = jwtTokenProvider.createAccessToken(
 			String.valueOf(lazierUser.getUserId()));
+		log.info("google token : " + tokenDto.getAccessToken());
+		log.info("google refreshToken : " + tokenDto.getRefreshToken());
 
-		redisService.setValues(tokenDto.getRefreshToken()); //tokenDto에서 refresh token은 redis에 저장
-		return tokenDto; //tokenDto 넘기기
+		redisService.setValues(tokenDto.getRefreshToken());
+		return tokenDto;
 	}
 
 
