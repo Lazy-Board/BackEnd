@@ -15,7 +15,6 @@ import com.example.lazier.dto.module.UserAllStockDto;
 import com.example.lazier.dto.module.UserPartialStockDto;
 import com.example.lazier.dto.module.UserStockInput;
 import com.example.lazier.exception.NotFoundStockException;
-import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.DetailStock;
 import com.example.lazier.persist.entity.module.Stock;
@@ -27,7 +26,6 @@ import com.example.lazier.persist.repository.UserStockRepository;
 import com.example.lazier.service.user.MemberService;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,42 +52,82 @@ public class UserStockService {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = memberService.searchMember(userId);
 
-        if (userStockRepository.existsByLazierUser(lazierUser)) {
-            throw new UserAlreadyExistException("사용자 정보가 이미 존재합니다.");
+        if (!userStockRepository.existsByLazierUser(lazierUser)) {
+
+            UserStock userStock = UserStock.builder()
+                .lazierUser(lazierUser)
+                .samsungElectronic(String.valueOf(삼성전자))
+                .skHynix(String.valueOf(SK하이닉스))
+                .naver(String.valueOf(NAVER))
+                .kakao(String.valueOf(카카오))
+                .hyundaiCar("N")
+                .kia("N")
+                .lgElectronic("N")
+                .kakaoBank("N")
+                .samsungSdi("N")
+                .hive("N")
+                .build();
+
+            DetailStock detailStock = DetailStock.builder()
+                .lazierUser(lazierUser)
+                .samsungElectronic(String.valueOf(삼성전자))
+                .skHynix(String.valueOf(SK하이닉스))
+                .naver(String.valueOf(NAVER))
+                .kakao(String.valueOf(카카오))
+                .hyundaiCar(String.valueOf(현대차))
+                .kia(String.valueOf(기아))
+                .lgElectronic(String.valueOf(LG전자))
+                .kakaoBank(String.valueOf(카카오뱅크))
+                .samsungSdi(String.valueOf(삼성SDI))
+                .hive(String.valueOf(하이브))
+                .build();
+
+            userStockRepository.save(userStock);
+            detailStockRepository.save(detailStock);
+            stockService.add();
         }
-
-        UserStock userStock = UserStock.builder()
-                                        .lazierUser(lazierUser)
-                                        .samsungElectronic(String.valueOf(삼성전자))
-                                        .skHynix(String.valueOf(SK하이닉스))
-                                        .naver(String.valueOf(NAVER))
-                                        .kakao(String.valueOf(카카오))
-                                        .hyundaiCar("N")
-                                        .kia("N")
-                                        .lgElectronic("N")
-                                        .kakaoBank("N")
-                                        .samsungSdi("N")
-                                        .hive("N")
-                                        .build();
-
-        DetailStock detailStock = DetailStock.builder()
-                                            .lazierUser(lazierUser)
-                                            .samsungElectronic(String.valueOf(삼성전자))
-                                            .skHynix(String.valueOf(SK하이닉스))
-                                            .naver(String.valueOf(NAVER))
-                                            .kakao(String.valueOf(카카오))
-                                            .hyundaiCar(String.valueOf(현대차))
-                                            .kia(String.valueOf(기아))
-                                            .lgElectronic(String.valueOf(LG전자))
-                                            .kakaoBank(String.valueOf(카카오뱅크))
-                                            .samsungSdi(String.valueOf(삼성SDI))
-                                            .hive(String.valueOf(하이브))
-                                            .build();
-
-        userStockRepository.save(userStock);
-        detailStockRepository.save(detailStock);
-        stockService.add();
     }
+//    @Transactional
+//    public void add(HttpServletRequest request) {
+//        long userId = Long.parseLong(request.getAttribute("userId").toString());
+//        LazierUser lazierUser = memberService.searchMember(userId);
+//
+//        if (userStockRepository.existsByLazierUser(lazierUser)) {
+//            throw new UserAlreadyExistException("사용자 정보가 이미 존재합니다.");
+//        }
+//
+//        UserStock userStock = UserStock.builder()
+//                                        .lazierUser(lazierUser)
+//                                        .samsungElectronic(String.valueOf(삼성전자))
+//                                        .skHynix(String.valueOf(SK하이닉스))
+//                                        .naver(String.valueOf(NAVER))
+//                                        .kakao(String.valueOf(카카오))
+//                                        .hyundaiCar("N")
+//                                        .kia("N")
+//                                        .lgElectronic("N")
+//                                        .kakaoBank("N")
+//                                        .samsungSdi("N")
+//                                        .hive("N")
+//                                        .build();
+//
+//        DetailStock detailStock = DetailStock.builder()
+//                                            .lazierUser(lazierUser)
+//                                            .samsungElectronic(String.valueOf(삼성전자))
+//                                            .skHynix(String.valueOf(SK하이닉스))
+//                                            .naver(String.valueOf(NAVER))
+//                                            .kakao(String.valueOf(카카오))
+//                                            .hyundaiCar(String.valueOf(현대차))
+//                                            .kia(String.valueOf(기아))
+//                                            .lgElectronic(String.valueOf(LG전자))
+//                                            .kakaoBank(String.valueOf(카카오뱅크))
+//                                            .samsungSdi(String.valueOf(삼성SDI))
+//                                            .hive(String.valueOf(하이브))
+//                                            .build();
+//
+//        userStockRepository.save(userStock);
+//        detailStockRepository.save(detailStock);
+//        stockService.add();
+//    }
 
     public void update(HttpServletRequest request, UserStockInput parameter) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
