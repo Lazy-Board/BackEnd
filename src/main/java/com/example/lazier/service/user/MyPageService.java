@@ -64,12 +64,15 @@ public class MyPageService {
 
 	//사용자 정보(이메일, 전화번호)가 일치하면 -> 이메일로 임시 비밀번호 전송
 	@Transactional
-	public void findPassword(HttpServletRequest request, FindPasswordRequestDto passwordDto) {
-		LazierUser lazierUser = searchMember(parseUserId(request));
+	public void findPassword(FindPasswordRequestDto passwordDto) {
+		log.info("비밀번호 찾기 - 이메일: " + passwordDto.getUserEmail());
+
+		LazierUser lazierUser = memberRepository.findByUserEmail(passwordDto.getUserEmail())
+			.orElseThrow(() -> new NotFoundMemberException("사용자 정보가 없습니다"));
 
 		if (!lazierUser.getUserEmail().equals(passwordDto.getUserEmail())
 			|| !lazierUser.getPhoneNumber().equals(passwordDto.getPhoneNumber())) {
-			throw new NotFoundMemberException("사용자 정보가 없습니다");
+			throw new NotFoundMemberException("이메일 또는 전화번호가 일치하지 않습니다.");
 		}
 
 		String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 6);

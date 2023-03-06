@@ -75,10 +75,9 @@ public class MyPageController {
 		@ApiResponse(code = 400, message = "기존 비밀번호가 일치하지 않는 경우")
 	})
 	@PostMapping("/find-password")
-	public ResponseEntity<?> findPassword(HttpServletRequest request,
-		FindPasswordRequestDto passwordDto) {
+	public ResponseEntity<?> findPassword(@RequestBody @Valid FindPasswordRequestDto passwordDto) {
 
-		myPageService.findPassword(request, passwordDto);
+		myPageService.findPassword(passwordDto);
 		return ResponseEntity.ok("임시 비밀번호 발급 완료"); //임시 비밀번호가 000.000 로 발급되었습니다.
 	}
 
