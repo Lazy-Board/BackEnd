@@ -1,4 +1,4 @@
-package com.example.lazier.config;
+package com.example.lazier.config.common;
 
 
 import com.example.lazier.dto.user.AccessTokenResponseDto;
