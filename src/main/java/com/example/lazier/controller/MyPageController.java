@@ -69,12 +69,12 @@ public class MyPageController {
 	}
 
 
-	@ApiOperation(value = "마이 페이지 - 비밀번호 변경", notes = "사용자의 이메일과 전화번호 입력값이 일치한 경우 해당 이메일로 새 비밀번호 발급")
+	@ApiOperation(value = "마이 페이지 - 비밀번호 찾기", notes = "사용자의 이메일과 전화번호 입력값이 일치한 경우 해당 이메일로 새 비밀번호 발급")
 	@ApiResponses({
 		@ApiResponse(code = 200, message = "이메일로 임시 비밀번호 발급 완료"),
 		@ApiResponse(code = 400, message = "기존 비밀번호가 일치하지 않는 경우")
 	})
-	@PostMapping("/find/password")
+	@PostMapping("/find-password")
 	public ResponseEntity<?> findPassword(HttpServletRequest request,
 		FindPasswordRequestDto passwordDto) {
 
