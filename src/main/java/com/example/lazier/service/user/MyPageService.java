@@ -59,7 +59,7 @@ public class MyPageService {
 		if (!lazierUser.getUserEmail().equals(memberInfoDto.getUserEmail())) {
 			//이메일 중복
 			if (memberRepository.existsByUserEmail(memberInfoDto.getUserEmail())) {
-				throw new FailedSignUpException("이미 가입된 이메일입니다.");
+				throw new FailedUpdateException("이미 가입된 이메일입니다.");
 			}
 			//이메일 중복이 아니라면 인증
 			lazierUser.setUserEmail(memberInfoDto.getUserEmail());
@@ -75,7 +75,7 @@ public class MyPageService {
 				"</p>";
 
 			boolean sendEmail = mailComponents.sendEmail(email, title, contents);
-			if (!sendEmail) { throw new FailedSignUpException("메일 전송에 실패하였습니다."); }
+			if (!sendEmail) { throw new FailedUpdateException("메일 전송에 실패하였습니다."); }
 
 			return UpdateResponseDto.builder() //for test
 				.uuid(uuid)
