@@ -23,7 +23,16 @@ public class NaverWeatherScraper {
             String url = String.format(STATISTICS_URL, userWeather.getCityName(),
                 userWeather.getLocationName(), "날씨");
 
-            Document document = Jsoup.connect(url).get();
+            Document document = Jsoup.connect(url)
+                .userAgent("Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36")
+                .header("scheme", "https")
+                .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+                .header("accept-encoding", "gzip, deflate, br")
+                .header("accept-language", "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7,es;q=0.6")
+                .header("cache-control", "no-cache")
+                .header("pragma", "no-cache")
+                .header("upgrade-insecure-requests", "1")
+                .get();
 
             String currentStatus = document.getElementsByClass("temperature_text").get(0)
                 .text(); // 현재 온도8.6°
