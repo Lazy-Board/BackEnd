@@ -53,7 +53,7 @@ spring:
     host: localhost
 
 jwt:
-  secret: ENC(u5X5vXlo3pTDrak8Z7aqtfZVkiBXIb7JFqldni20CiVtl1twhqsjMZy+Q4kX5eHiW/UmcycU0EyPNR4FRXWT6bl7MLXwIELkYRH4ywe9HcT62w5YU+3RrCDzb0el9mUrElAKWMZFtIZN7nLyZTtcPrHhkhBVTpkA5dNDNe8JyjeDhZXH0yMkibgTM7zco+YC)
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
   refreshToken-validity-in-seconds: 86400000
   token-validity-in-seconds: 1800000
 
