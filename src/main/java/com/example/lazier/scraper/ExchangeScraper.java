@@ -51,10 +51,12 @@ public class ExchangeScraper {
                                                 .updateAt(updatedDateText(LocalDateTime.now()))
                                                 .round(exInfo2[1])
                                                 .build();
+
+                Thread.sleep(1000);
                 exchangeDtoList.add(exchangeDto);
             }
 
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
@@ -65,6 +66,7 @@ public class NaverWeatherScraper {
             String low = temperatures[0].substring(4); // -1°
             String high = temperatures[1].substring(4); // 9°
 
+            Thread.sleep(1000L);
             return WeatherDto.builder()
                 .userId(userWeather.getLazierUser().getUserId())
                 .cityName(userWeather.getCityName())
@@ -83,8 +85,7 @@ public class NaverWeatherScraper {
                 .lowestTemperature(low)
                 .updatedAt(updatedDateText(LocalDateTime.now()))
                 .build();
-
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         } catch (IndexOutOfBoundsException e) {
             throw new AddressNotFoundException("잘못된 주소 형태 입니다.");
