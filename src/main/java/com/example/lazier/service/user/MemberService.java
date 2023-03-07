@@ -63,7 +63,7 @@ public class MemberService {
         String title = "Lazier 가입을 축하드립니다.";
         String contents = "아래 링크를 클릭하여 가입을 완료하세요." +
             "<p>" +
-            "<a target='_blank' href='/user/email-auth?uuid=" + uuid + "'>가입완료</a>" +
+            "<a target='_blank' href='http://3.34.73.141:8080/user/email-auth?uuid=" + uuid + "'>가입완료</a>" +
             "</p>";
 
         boolean sendEmail = mailComponents.sendEmail(email, title, contents);
