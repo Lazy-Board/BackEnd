@@ -5,6 +5,8 @@ import com.example.lazier.dto.user.GoogleUserInfo;
 import com.example.lazier.dto.user.OAuthTokenResponseDto;
 import com.example.lazier.dto.user.TokenResponseDto;
 import com.example.lazier.persist.entity.module.LazierUser;
+import com.example.lazier.persist.entity.module.ModuleYn;
+import com.example.lazier.persist.repository.ModuleYnRepository;
 import com.example.lazier.type.MemberStatus;
 import com.example.lazier.exception.user.InvalidAccessException;
 import com.example.lazier.persist.repository.MemberRepository;
@@ -31,6 +33,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class OAuthService {
 
 	private final MemberRepository memberRepository;
+	private final ModuleYnRepository moduleYnRepository;
 	private final JwtTokenProvider jwtTokenProvider;
 	private final RedisService redisService;
 	private final InMemoryClientRegistrationRepository inMemoryClientRegistrationRepository;
@@ -101,8 +104,16 @@ public class OAuthService {
 				.userStatus(MemberStatus.STATUS_ACTIVE.getUserStatus())
 				.socialType(oauthProvider)
 				.build();
+			LazierUser lazier =  memberRepository.save(member);
 			log.info("member doesn't exist : " + member.getUserEmail());
-			return memberRepository.save(member);
+
+			ModuleYn moduleYn = ModuleYn.builder()
+				.lazierUser(lazier)
+				.moduleCode(false)
+				.build();
+			moduleYnRepository.save(moduleYn);
+
+			return lazier;
 		} else {
 			log.info("member exists : " + lazierUser.get().getUserEmail());
 			return lazierUser.get();
