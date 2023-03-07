@@ -18,6 +18,7 @@ import com.example.lazier.service.module.UserStockService;
 import com.example.lazier.type.MemberStatus;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +36,8 @@ public class MemberService {
     private final UserStockService userstockService;
     private final NewsUserService newsUserService;
 
-    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
+    @Transactional
+    public UniqueCodeDto signUp(SignUpRequestDto signUpRequestDto) {
 
         boolean existsEmail = memberRepository.existsByUserEmail(signUpRequestDto.getUserEmail());
         if (existsEmail) { throw new FailedSignUpException("이미 가입된 이메일입니다."); }
@@ -51,32 +53,11 @@ public class MemberService {
             .emailAuthYn(false)
             .build());
 
-        return SignUpResponseDto.builder()
-            .userId(lazierUser.getUserId().toString())
+        ModuleYn moduleYn = ModuleYn.builder()
+            .lazierUser(lazierUser)
+            .moduleCode(false)
             .build();
-    }
-
-    @Transactional
-    public UniqueCodeDto saveModule(SaveModuleRequestDto saveModuleRequestDto) {
-
-        LazierUser lazierUser = memberRepository.findByUserId(Long.parseLong(
-                saveModuleRequestDto.getUserId()))
-            .orElseThrow(() -> new FailedSignUpException("회원가입을 진행하세요."));
-
-        moduleYnRepository.save(ModuleYn.save(lazierUser, saveModuleRequestDto)); //모듈 저장
-
-        //환율, 주식, 뉴스 추가
-        if (saveModuleRequestDto.isNewsYn()) {
-            newsUserService.add(saveModuleRequestDto.getUserId());
-        }
-
-        if (saveModuleRequestDto.isStockYn()) {
-            userstockService.add(saveModuleRequestDto.getUserId());
-        }
-
-        if (saveModuleRequestDto.isExchangeYn()) {
-            userExchangeService.add(saveModuleRequestDto.getUserId());
-        }
+        moduleYnRepository.save(moduleYn);
 
         String uuid = UUID.randomUUID().toString();
         lazierUser.setEmailAuthKey(uuid);
@@ -94,6 +75,31 @@ public class MemberService {
         return UniqueCodeDto.builder() //for test
             .uuid(uuid)
             .build();
+    }
+
+    @Transactional
+    public void saveModule(HttpServletRequest request, SaveModuleRequestDto saveModuleRequestDto) {
+
+        String userId = request.getAttribute("userId").toString();
+
+        LazierUser lazierUser = memberRepository.findByUserId(Long.valueOf(userId))
+            .orElseThrow(() -> new FailedSignUpException("회원가입을 진행하세요."));
+
+        ModuleYn moduleYn = moduleYnRepository.findAllByUserId(lazierUser.getUserId());
+        ModuleYn.save(moduleYn, saveModuleRequestDto); //모듈 저장
+
+        //환율, 주식, 뉴스 추가
+        if (saveModuleRequestDto.isNewsYn()) {
+            newsUserService.add(userId);
+        }
+
+        if (saveModuleRequestDto.isStockYn()) {
+            userstockService.add(userId);
+        }
+
+        if (saveModuleRequestDto.isExchangeYn()) {
+            userExchangeService.add(userId);
+        }
     }
 
     public void emailAuth(String uuid) {

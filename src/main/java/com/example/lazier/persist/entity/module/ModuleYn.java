@@ -36,20 +36,18 @@ public class ModuleYn {
 	private boolean quoteYn;
 	private boolean todolistYn;
 	private boolean workYn;
+	private boolean moduleCode;
 
-	public static ModuleYn save(LazierUser lazierUser,
-		SaveModuleRequestDto saveModuleRequestDto) {
+	public static void save(ModuleYn moduleYn, SaveModuleRequestDto saveModuleRequestDto) {
 
-		return ModuleYn.builder()
-			.lazierUser(lazierUser)
-			.weatherYn(saveModuleRequestDto.isWeatherYn())
-			.exchangeYn(saveModuleRequestDto.isExchangeYn())
-			.stockYn(saveModuleRequestDto.isStockYn())
-			.newsYn(saveModuleRequestDto.isNewsYn())
-			.youtubeYn(saveModuleRequestDto.isYoutubeYn())
-			.quoteYn(saveModuleRequestDto.isQuoteYn())
-			.todolistYn(saveModuleRequestDto.isTodolistYn())
-			.workYn(saveModuleRequestDto.isWorkYn())
-			.build();
+		moduleYn.setWeatherYn(saveModuleRequestDto.isWeatherYn());
+		moduleYn.setExchangeYn(saveModuleRequestDto.isExchangeYn());
+		moduleYn.setStockYn(saveModuleRequestDto.isStockYn());
+		moduleYn.setNewsYn(saveModuleRequestDto.isNewsYn());
+		moduleYn.setYoutubeYn(saveModuleRequestDto.isYoutubeYn());
+		moduleYn.setQuoteYn(saveModuleRequestDto.isQuoteYn());
+		moduleYn.setTodolistYn(saveModuleRequestDto.isTodolistYn());
+		moduleYn.setWeatherYn(saveModuleRequestDto.isWeatherYn());
+		moduleYn.setModuleCode(true);
 	}
 }

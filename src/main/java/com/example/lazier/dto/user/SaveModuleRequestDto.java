@@ -1,6 +1,5 @@
 package com.example.lazier.dto.user;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,8 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SaveModuleRequestDto {
 
-	@NotBlank
-	private String userId;
 	@NotNull
 	private boolean weatherYn;
 	@NotNull

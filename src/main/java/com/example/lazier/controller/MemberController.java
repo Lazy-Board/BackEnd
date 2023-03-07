@@ -48,13 +48,13 @@ public class MemberController {
 	}
 
 
-	@ApiOperation(value = "모듈 저장" , notes = "보고 싶은 모듈 저장하기")
+	@ApiOperation(value = "모듈 저장", notes = "보고 싶은 모듈 저장하기")
 	@ApiResponse(code = 200, message = "모듈 저장 완료")
 	@PostMapping("/saveModule")
-	public ResponseEntity<?> saveModule(
+	public ResponseEntity<?> saveModule(HttpServletRequest request,
 		@RequestBody @Valid SaveModuleRequestDto saveModuleRequestDto) {
-		return new ResponseEntity<>(memberService.saveModule(saveModuleRequestDto),
-			HttpStatus.OK);
+		memberService.saveModule(request, saveModuleRequestDto);
+		return ResponseEntity.ok("모듈 저장 완료");
 	}
 
 
@@ -80,9 +80,7 @@ public class MemberController {
 		TokenResponseDto tokenDto = createTokenService.createAccessToken(userLogin);
 		redisService.setValues(tokenDto.getRefreshToken());
 
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add(AUTHORIZATION, "Bearer " + tokenDto.getAccessToken());
-		return new ResponseEntity<>(tokenDto, httpHeaders, HttpStatus.OK);
+		return new ResponseEntity<>(tokenDto, HttpStatus.OK);
 	}
 
 
@@ -97,7 +95,6 @@ public class MemberController {
 		LazierUser lazierUser = oAuthService.getUser(code);
 		return ResponseEntity.ok(oAuthService.loginResult(lazierUser));
 	}
-
 
 
 	@ApiOperation(value = "로그아웃", notes = "로그아웃하기")

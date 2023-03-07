@@ -1,7 +1,10 @@
 package com.example.lazier.config.user;
 
 import com.example.lazier.dto.user.TokenResponseDto;
+import com.example.lazier.persist.entity.module.LazierUser;
+import com.example.lazier.persist.entity.module.ModuleYn;
 import com.example.lazier.persist.entity.module.RefreshToken;
+import com.example.lazier.persist.repository.ModuleYnRepository;
 import com.example.lazier.service.user.LoginService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -47,6 +50,8 @@ public class JwtTokenProvider {
 	private long refreshTokenValidTime = 5 * 60 * 1000L; 			//(test)
 
 	private final LoginService loginService;
+	private final ModuleYnRepository moduleYnRepository;
+
 
 	@PostConstruct
 	protected void init() {
@@ -72,6 +77,8 @@ public class JwtTokenProvider {
 
 	public TokenResponseDto createAccessToken(String userId) {
 
+		ModuleYn moduleYn = moduleYnRepository.findAllByUserId(Long.valueOf(userId));
+
 		Claims claims = Jwts.claims().setSubject(userId);
 		Date now = new Date();
 
@@ -96,6 +103,7 @@ public class JwtTokenProvider {
 			.grantType(BEARER_TYPE)
 			.refreshToken(refreshToken)
 			.expiredTime(expiredTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+			.moduleCode(moduleYn.isModuleCode())
 			.build();
 	}
 

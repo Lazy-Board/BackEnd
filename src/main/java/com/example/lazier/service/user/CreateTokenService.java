@@ -6,7 +6,9 @@ import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.exception.user.NotFoundMemberException;
 import com.example.lazier.exception.user.NotMatchMemberException;
 import com.example.lazier.dto.user.LoginRequestDto;
+import com.example.lazier.persist.entity.module.ModuleYn;
 import com.example.lazier.persist.repository.MemberRepository;
+import com.example.lazier.persist.repository.ModuleYnRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -41,8 +43,6 @@ public class CreateTokenService {
 		Authentication authentication =
 			authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-		TokenResponseDto tokenDTO = jwtTokenProvider.createAccessToken(authentication.getName());
-
-		return tokenDTO;
+		return jwtTokenProvider.createAccessToken(authentication.getName());
 	}
 }
