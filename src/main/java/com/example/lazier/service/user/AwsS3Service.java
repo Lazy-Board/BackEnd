@@ -10,11 +10,13 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AwsS3Service {
 
@@ -36,9 +38,9 @@ public class AwsS3Service {
 	public AwsS3ResponseDto uploadImage(HttpServletRequest request, MultipartFile multipartFile)
 		throws IOException {
 
-		if (multipartFile.getOriginalFilename().equals("")
-			|| multipartFile.getOriginalFilename() == null) {
-
+		log.info("====== out ======");
+		if (multipartFile == null) {
+			log.info("====== in ======");
 			return AwsS3ResponseDto.builder()
 				.fileName(null)
 				.url(null)
