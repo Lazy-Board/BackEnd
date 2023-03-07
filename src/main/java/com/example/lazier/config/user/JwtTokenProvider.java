@@ -77,7 +77,7 @@ public class JwtTokenProvider {
 
 	public TokenResponseDto createAccessToken(String userId) {
 
-		ModuleYn moduleYn = moduleYnRepository.findAllByUserId(Long.valueOf(userId));
+		ModuleYn moduleYn = moduleYnRepository.findByUserId(Long.valueOf(userId));
 
 		Claims claims = Jwts.claims().setSubject(userId);
 		Date now = new Date();

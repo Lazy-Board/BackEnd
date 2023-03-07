@@ -36,6 +36,15 @@ public class AwsS3Service {
 	public AwsS3ResponseDto uploadImage(HttpServletRequest request, MultipartFile multipartFile)
 		throws IOException {
 
+		if (multipartFile.getOriginalFilename().equals("")
+			|| multipartFile.getOriginalFilename() == null) {
+
+			return AwsS3ResponseDto.builder()
+				.fileName(null)
+				.url(null)
+				.build();
+		}
+
 		String fileName = multipartFile.getOriginalFilename();
 		String s3FileName = UUID.randomUUID() + "-" + fileName;
 
@@ -70,9 +79,9 @@ public class AwsS3Service {
 		lazierUser.setProfile(url);
 
 		return AwsS3ResponseDto.builder()
-							.fileName(s3FileName)
-							.url(url)
-							.build();
+			.fileName(s3FileName)
+			.url(url)
+			.build();
 	}
 
 }

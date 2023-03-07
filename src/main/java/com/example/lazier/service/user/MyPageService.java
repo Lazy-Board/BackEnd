@@ -3,9 +3,13 @@ package com.example.lazier.service.user;
 import com.example.lazier.component.MailComponents;
 import com.example.lazier.dto.user.FindPasswordRequestDto;
 import com.example.lazier.dto.user.MemberInfoDto;
+import com.example.lazier.dto.user.SignUpResponseDto;
 import com.example.lazier.dto.user.UpdateModuleRequestDto;
 import com.example.lazier.dto.user.UpdatePasswordRequestDto;
+import com.example.lazier.dto.user.UpdateResponseDto;
 import com.example.lazier.exception.user.FailedFindPasswordException;
+import com.example.lazier.exception.user.FailedSignUpException;
+import com.example.lazier.exception.user.FailedUpdateException;
 import com.example.lazier.exception.user.NotFoundMemberException;
 import com.example.lazier.exception.user.NotMatchMemberException;
 import com.example.lazier.persist.entity.module.LazierUser;
@@ -46,9 +50,46 @@ public class MyPageService {
 
 
 	@Transactional
-	public void updateUserInfo(HttpServletRequest request, MemberInfoDto memberInfoDto) {
+	public UpdateResponseDto updateUserInfo(HttpServletRequest request, MemberInfoDto memberInfoDto) {
+
 		LazierUser lazierUser = searchMember(parseUserId(request));
-		lazierUser.updateUserInfo(memberInfoDto);
+		String uuid = UUID.randomUUID().toString();
+
+		//본인 이메일이 아니라면
+		if (!lazierUser.getUserEmail().equals(memberInfoDto.getUserEmail())) {
+			//이메일 중복
+			if (memberRepository.existsByUserEmail(memberInfoDto.getUserEmail())) {
+				throw new FailedSignUpException("이미 가입된 이메일입니다.");
+			}
+			//이메일 중복이 아니라면 인증
+			lazierUser.setUserEmail(memberInfoDto.getUserEmail());
+			lazierUser.setEmailAuthKey(uuid);
+			lazierUser.setEmailAuthYn(false);
+			lazierUser.setUserStatus(MemberStatus.STATUS_READY.getUserStatus());
+
+			String email = memberInfoDto.getUserEmail();
+			String title = "Lazier 가입을 축하드립니다.";
+			String contents = "아래 링크를 클릭하여 가입을 완료하세요." +
+				"<p>" +
+				"<a target='_blank' href='http://3.34.73.141:8080/user/email-auth?uuid=" + uuid + "'>가입완료</a>" +
+				"</p>";
+
+			boolean sendEmail = mailComponents.sendEmail(email, title, contents);
+			if (!sendEmail) { throw new FailedSignUpException("메일 전송에 실패하였습니다."); }
+
+			return UpdateResponseDto.builder() //for test
+				.uuid(uuid)
+				.message("이메일 인증을 완료하세요")
+				.build();
+		}
+
+		//본인 이메일이라면
+		lazierUser.setName(memberInfoDto.getUserName());
+		lazierUser.setPhoneNumber(memberInfoDto.getPhoneNumber());
+
+		return UpdateResponseDto.builder() //for test
+			.message("수정 완료")
+			.build();
 	}
 
 	@Transactional
@@ -109,7 +150,7 @@ public class MyPageService {
 	@Transactional
 	public void updateModule(HttpServletRequest request,
 		UpdateModuleRequestDto updateModuleRequestDto) {
-		ModuleYn moduleYn = moduleYnRepository.findAllByUserId(parseUserId(request));
+		ModuleYn moduleYn = moduleYnRepository.findByUserId(parseUserId(request));
 
 		if (updateModuleRequestDto.isNewsYn()) {
 			newsUserService.add(request.getAttribute("userId").toString());

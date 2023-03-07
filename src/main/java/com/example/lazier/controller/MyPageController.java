@@ -4,6 +4,7 @@ import com.example.lazier.dto.user.FindPasswordRequestDto;
 import com.example.lazier.dto.user.MemberInfoDto;
 import com.example.lazier.dto.user.UpdateModuleRequestDto;
 import com.example.lazier.dto.user.UpdatePasswordRequestDto;
+import com.example.lazier.dto.user.UpdateResponseDto;
 import com.example.lazier.service.user.AwsS3Service;
 import com.example.lazier.service.user.MyPageService;
 import io.swagger.annotations.ApiOperation;
@@ -50,8 +51,7 @@ public class MyPageController {
 	public ResponseEntity<?> updateUserInfo(HttpServletRequest request,
 		@RequestBody @Valid MemberInfoDto memberInfoDto) {
 
-		myPageService.updateUserInfo(request, memberInfoDto);
-		return ResponseEntity.ok("유저 정보 업데이트 완료");
+		return new ResponseEntity<>(myPageService.updateUserInfo(request, memberInfoDto), HttpStatus.OK);
 	}
 
 

@@ -83,7 +83,7 @@ public class MemberService {
         LazierUser lazierUser = memberRepository.findByUserId(Long.valueOf(userId))
             .orElseThrow(() -> new FailedSignUpException("회원가입을 진행하세요."));
 
-        ModuleYn moduleYn = moduleYnRepository.findAllByUserId(lazierUser.getUserId());
+        ModuleYn moduleYn = moduleYnRepository.findByUserId(lazierUser.getUserId());
         ModuleYn.save(moduleYn, saveModuleRequestDto); //모듈 저장
 
         //환율, 주식, 뉴스 추가

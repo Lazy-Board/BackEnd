@@ -18,7 +18,7 @@ public class MainService {
 
 	//모듈 불러오기
 	public ModuleResponseDto searchModule(HttpServletRequest request) {
-		ModuleYn moduleYn = moduleYnRepository.findAllByUserId(myPageService.parseUserId(request));
+		ModuleYn moduleYn = moduleYnRepository.findByUserId(myPageService.parseUserId(request));
 		return ModuleResponseDto.of(moduleYn);
 	}
 }

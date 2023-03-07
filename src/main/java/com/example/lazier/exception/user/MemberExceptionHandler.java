@@ -1,6 +1,7 @@
 package com.example.lazier.exception.user;
 
 import com.example.lazier.controller.MemberController;
+import com.example.lazier.controller.MyPageController;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RestControllerAdvice(basePackageClasses = MemberController.class)
+@RestControllerAdvice(basePackageClasses = {MemberController.class, MyPageController.class})
 public class MemberExceptionHandler {
 
     @ExceptionHandler(FailedSignUpException.class)
@@ -55,6 +56,12 @@ public class MemberExceptionHandler {
 
     @ExceptionHandler(InvalidAccessException.class)
     public ResponseEntity<ErrorMessage> invalidAccessException(InvalidAccessException exception) {
+
+        return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
+    }
+
+    @ExceptionHandler(FailedUpdateException.class)
+    public ResponseEntity<ErrorMessage> failedUpdateException(FailedUpdateException exception) {
 
         return ResponseEntity.badRequest().body(ErrorMessage.of(exception, HttpStatus.BAD_REQUEST));
     }

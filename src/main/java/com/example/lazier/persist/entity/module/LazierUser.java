@@ -46,14 +46,6 @@ public class LazierUser implements UserDetails {
     private boolean emailAuthYn;
     private LocalDateTime emailAuthDt;
 
-    public void updateUserInfo(MemberInfoDto memberInfoDto) {
-        if (!memberInfoDto.getSocialType().toLowerCase().trim().equals("google")) {
-            this.userEmail = memberInfoDto.getUserEmail();
-        }
-        this.name = memberInfoDto.getUserName();
-        this.phoneNumber = memberInfoDto.getPhoneNumber();
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
