@@ -4,15 +4,12 @@ import com.example.lazier.component.MailComponents;
 import com.example.lazier.dto.user.SaveModuleRequestDto;
 import com.example.lazier.dto.user.SignUpRequestDto;
 import com.example.lazier.dto.user.SignUpResponseDto;
-import com.example.lazier.dto.user.UniqueCodeDto;
 import com.example.lazier.exception.user.FailedSignUpException;
 import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.entity.module.ModuleYn;
 import com.example.lazier.persist.repository.MemberRepository;
 import com.example.lazier.persist.repository.ModuleYnRepository;
-import com.example.lazier.service.module.ExchangeService;
 import com.example.lazier.service.module.NewsUserService;
-import com.example.lazier.service.module.StockService;
 import com.example.lazier.service.module.UserExchangeService;
 import com.example.lazier.service.module.UserStockService;
 import com.example.lazier.type.MemberStatus;
@@ -37,10 +34,12 @@ public class MemberService {
     private final NewsUserService newsUserService;
 
     @Transactional
-    public UniqueCodeDto signUp(SignUpRequestDto signUpRequestDto) {
+    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
 
         boolean existsEmail = memberRepository.existsByUserEmail(signUpRequestDto.getUserEmail());
         if (existsEmail) { throw new FailedSignUpException("이미 가입된 이메일입니다."); }
+
+        String uuid = UUID.randomUUID().toString();
 
         LazierUser lazierUser = memberRepository.save(LazierUser.builder()
             .userEmail(signUpRequestDto.getUserEmail())
@@ -50,6 +49,7 @@ public class MemberService {
             .socialType("no-social")
             .createdAt(LocalDateTime.now())
             .userStatus(MemberStatus.STATUS_READY.getUserStatus())
+            .emailAuthKey(uuid)
             .emailAuthYn(false)
             .build());
 
@@ -59,21 +59,19 @@ public class MemberService {
             .build();
         moduleYnRepository.save(moduleYn);
 
-        String uuid = UUID.randomUUID().toString();
-        lazierUser.setEmailAuthKey(uuid);
-
         String email = lazierUser.getUserEmail();
         String title = "Lazier 가입을 축하드립니다.";
         String contents = "아래 링크를 클릭하여 가입을 완료하세요." +
             "<p>" +
-            "<a target='_blank' href='http://3.35.129.231:8080/user/email-auth?uuid=" + uuid + "'>가입완료</a>" +
+            "<a target='_blank' href='/user/email-auth?uuid=" + uuid + "'>가입완료</a>" +
             "</p>";
 
         boolean sendEmail = mailComponents.sendEmail(email, title, contents);
         if (!sendEmail) { throw new FailedSignUpException("메일 전송에 실패하였습니다."); }
 
-        return UniqueCodeDto.builder() //for test
+        return SignUpResponseDto.builder() //for test
             .uuid(uuid)
+            .message("이메일 인증을 완료하세요")
             .build();
     }
 
