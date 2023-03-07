@@ -15,19 +15,17 @@ import com.example.lazier.dto.module.UpdateStockDto;
 import com.example.lazier.dto.module.UserAllStockDto;
 import com.example.lazier.dto.module.UserPartialStockDto;
 import com.example.lazier.exception.NotFoundStockException;
-import com.example.lazier.exception.UserAlreadyExistException;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.DetailStock;
+import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.entity.module.Stock;
 import com.example.lazier.persist.entity.module.UpdateStock;
 import com.example.lazier.persist.entity.module.UserStock;
-import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.DetailStockRepository;
 import com.example.lazier.persist.repository.MemberRepository;
 import com.example.lazier.persist.repository.StockRepository;
 import com.example.lazier.persist.repository.UpdateStockRepository;
 import com.example.lazier.persist.repository.UserStockRepository;
-import com.example.lazier.service.user.MyPageService;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -120,10 +118,10 @@ public class UserStockService {
                 updateStock.setSamsungSdi(updateStock.getStockName());
             } else if (updateStock.getStockName().contains("LG전자")) {
                 updateStock.setLgElectronic(updateStock.getStockName());
-            } else if (updateStock.getStockName().contains("카카오")) {
-                updateStock.setKakao(updateStock.getStockName());
             } else if (updateStock.getStockName().contains("카카오뱅크")) {
                 updateStock.setKakaoBank(updateStock.getStockName());
+            } else if (updateStock.getStockName().contains("카카오")) {
+                updateStock.setKakao(updateStock.getStockName());
             } else if (updateStock.getStockName().contains("하이브")) {
                 updateStock.setHive(updateStock.getStockName());
             } else if (updateStock.getStockName().contains("현대차")) {
@@ -157,10 +155,10 @@ public class UserStockService {
             userStock.setSamsungSdi(updateStock.getStockName());
         } else if (updateStock.getStockName().contains("LG전자")) {
             userStock.setLgElectronic(updateStock.getStockName());
-        } else if (updateStock.getStockName().contains("카카오")) {
-            userStock.setKakao(updateStock.getStockName());
         } else if (updateStock.getStockName().contains("카카오뱅크")) {
             userStock.setKakaoBank(updateStock.getStockName());
+        } else if (updateStock.getStockName().contains("카카오")) {
+            userStock.setKakao(updateStock.getStockName());
         } else if (updateStock.getStockName().contains("하이브")) {
             userStock.setHive(updateStock.getStockName());
         } else if (updateStock.getStockName().contains("현대차")) {
@@ -191,6 +189,7 @@ public class UserStockService {
 
         for (int i = 0; i < 10; i++) {
             String stockName = checkList[i];
+
             Stock stock = stockRepository.findByStockNameOrderByUpdateAtDesc(stockName)
                 .orElseThrow(() -> new NotFoundStockException("선택한 주식 종목이 있는지 확인하세요."));
 
@@ -229,9 +228,8 @@ public class UserStockService {
                             userStock.getHive()};
 
         for (int i = 0; i < 10; i++) {
-            if (checkList[i].length() > 1) {
+            if (!checkList[i].contains("F")) {
                 String stockName = checkList[i];
-
                 Stock stock = stockRepository.findByStockNameOrderByUpdateAtDesc(stockName)
                     .orElseThrow(() -> new NotFoundStockException("선택한 주식 종목이 있는지 확인하세요."));
 
@@ -240,6 +238,11 @@ public class UserStockService {
                                                                 .price(stock.getPrice())
                                                                 .diffAmount(stock.getDiffAmount())
                                                                 .dayRange(stock.getDayRange())
+                                                                .updateAt(stock.getUpdateAt())
+                                                                .marketPrice(stock.getMarketPrice())
+                                                                .highPrice(stock.getHighPrice())
+                                                                .lowPrice(stock.getLowPrice())
+                                                                .tradingVolume(stock.getTradingVolume())
                                                                 .updateAt(stock.getUpdateAt())
                                                                 .build();
 
