@@ -7,6 +7,7 @@ import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.UserWeather;
 import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.repository.UserWeatherRepository;
+import com.example.lazier.persist.repository.WeatherRepository;
 import com.example.lazier.service.user.MyPageService;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class UserWeatherService {
 
+    private final WeatherRepository weatherRepository;
     private final UserWeatherRepository userWeatherRepository;
     private final WeatherService weatherService;
     private final MyPageService myPageService;
@@ -65,6 +67,7 @@ public class UserWeatherService {
         weatherService.add(userWeather);
     }
 
+    @Transactional
     public void delete(HttpServletRequest request) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
         LazierUser lazierUser = myPageService.searchMember(userId);
@@ -73,5 +76,6 @@ public class UserWeatherService {
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         userWeatherRepository.delete(userWeather);
+        weatherRepository.deleteAllByLazierUser(lazierUser);
     }
 }
