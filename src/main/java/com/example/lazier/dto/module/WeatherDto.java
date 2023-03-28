@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class WeatherDto {
 
-    long userId;
+    long locationId;
     String cityName; // 시/군/구 이름
     String locationName; // 동 이름
     String temperature;
@@ -31,7 +31,7 @@ public class WeatherDto {
 
     public static WeatherDto of(Weather weather) {
         return WeatherDto.builder()
-            .userId(weather.getLazierUser().getUserId())
+            .locationId(weather.getWeatherLocation().getLocationId())
             .cityName(weather.getCityName())
             .locationName(weather.getLocationName())
             .temperature(weather.getTemperature())

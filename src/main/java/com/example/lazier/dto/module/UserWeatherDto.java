@@ -14,14 +14,12 @@ import lombok.NoArgsConstructor;
 public class UserWeatherDto {
 
     long userId;
-    String cityName;
-    String locationName;
+    long locationId;
 
     public static UserWeatherDto of(UserWeather userWeather) {
         return UserWeatherDto.builder()
             .userId(userWeather.getLazierUser().getUserId())
-            .cityName(userWeather.getCityName())
-            .locationName(userWeather.getLocationName())
+            .locationId(userWeather.getWeatherLocation().getLocationId())
             .build();
     }
 }

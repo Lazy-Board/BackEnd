@@ -29,11 +29,11 @@ public class UserWeather {
     @ManyToOne(fetch = FetchType.LAZY)
     private LazierUser lazierUser;
 
-    String cityName;
-    String locationName;
+    @JoinColumn(name = "location_id")
+    @ManyToOne(fetch =  FetchType.LAZY)
+    private WeatherLocation weatherLocation;
 
-    public void updateUser(String cityName, String locationName) {
-        this.cityName = cityName;
-        this.locationName = locationName;
+    public void updateUser(WeatherLocation weatherLocation) {
+        this.weatherLocation = weatherLocation;
     }
 }

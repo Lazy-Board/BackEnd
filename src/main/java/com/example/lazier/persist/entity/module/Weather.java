@@ -24,8 +24,8 @@ public class Weather {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private LazierUser lazierUser;
+    @JoinColumn(name = "location_id")
+    private WeatherLocation weatherLocation;
     private String cityName; // 시/군/구 이름
     private String locationName; // 동 이름
     private String temperature;
@@ -42,8 +42,8 @@ public class Weather {
     private String windDirection;
     private String updatedAt;
 
-    public Weather(LazierUser lazierUser, WeatherDto weatherDto) {
-        this.lazierUser = lazierUser;
+    public Weather(WeatherLocation weatherLocation, WeatherDto weatherDto) {
+        this.weatherLocation = weatherLocation;
         this.cityName = weatherDto.getCityName();
         this.locationName = weatherDto.getLocationName();
         this.temperature = weatherDto.getTemperature();

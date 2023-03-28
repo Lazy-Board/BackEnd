@@ -7,7 +7,7 @@ import com.example.lazier.batch.tasklet.WeatherScrapTasklet;
 import com.example.lazier.batch.tasklet.YoutubeScrapTasklet;
 import com.example.lazier.persist.repository.NewsPressRepository;
 import com.example.lazier.persist.repository.NewsRepository;
-import com.example.lazier.persist.repository.UserWeatherRepository;
+import com.example.lazier.persist.repository.WeatherLocationRepository;
 import com.example.lazier.persist.repository.YoutubeRepository;
 import com.example.lazier.scraper.NewsScraper;
 import com.example.lazier.scraper.YoutubeScraper;
@@ -38,7 +38,7 @@ public class HourlyJobConfig {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final JobLauncher jobLauncher;
-    private final UserWeatherRepository userWeatherRepository;
+    private final WeatherLocationRepository weatherLocationRepository;
     private final WeatherService weatherService;
     private final StockService stockService;
     private final ExchangeService exchangeService;
@@ -81,7 +81,7 @@ public class HourlyJobConfig {
     @JobScope
     public Step weatherScrap() {
         return this.stepBuilderFactory.get("weatherScrap")
-            .tasklet(new WeatherScrapTasklet(userWeatherRepository, weatherService))
+            .tasklet(new WeatherScrapTasklet(weatherLocationRepository, weatherService))
             .build();
     }
 
