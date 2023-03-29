@@ -2,12 +2,11 @@ package com.example.lazier.scraper;
 
 import com.example.lazier.dto.module.WeatherDto;
 import com.example.lazier.exception.AddressNotFoundException;
-import com.example.lazier.persist.entity.module.UserWeather;
+import com.example.lazier.persist.entity.module.WeatherLocation;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.AllArgsConstructor;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
@@ -18,11 +17,11 @@ public class NaverWeatherScraper {
 
     private static final String STATISTICS_URL = "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=1&ie=utf8&query=%s%s%s";
 
-    public WeatherDto scrap(UserWeather userWeather) {
+    public WeatherDto scrap(WeatherLocation weatherLocation) {
 
         try {
-            String url = String.format(STATISTICS_URL, userWeather.getCityName(),
-                userWeather.getLocationName(), "날씨");
+            String url = String.format(STATISTICS_URL, weatherLocation.getCityName(),
+                weatherLocation.getLocationName(), "날씨");
 
             Document document = Jsoup.connect(url)
                 .userAgent("Mozilla/5.0 (Windows NT 6.2; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1667.0 Safari/537.36")
@@ -68,9 +67,8 @@ public class NaverWeatherScraper {
 
             Thread.sleep(1000L);
             return WeatherDto.builder()
-                .userId(userWeather.getLazierUser().getUserId())
-                .cityName(userWeather.getCityName())
-                .locationName(userWeather.getLocationName())
+                .cityName(weatherLocation.getCityName())
+                .locationName(weatherLocation.getLocationName())
                 .temperature(todayTemperature)
                 .weatherComparison(comparison)
                 .effectiveTemperature(effective)

@@ -1,7 +1,7 @@
 package com.example.lazier.batch.tasklet;
 
-import com.example.lazier.persist.entity.module.UserWeather;
-import com.example.lazier.persist.repository.UserWeatherRepository;
+import com.example.lazier.persist.entity.module.WeatherLocation;
+import com.example.lazier.persist.repository.WeatherLocationRepository;
 import com.example.lazier.service.module.WeatherService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,8 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 @Slf4j
 public class WeatherScrapTasklet implements Tasklet, StepExecutionListener {
-    private final UserWeatherRepository userWeatherRepository;
+
+    private final WeatherLocationRepository weatherLocationRepository;
     private final WeatherService weatherService;
 
     @Override
@@ -31,10 +32,10 @@ public class WeatherScrapTasklet implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
-        List<UserWeather> userWeathers = userWeatherRepository.findAll();
+        List<WeatherLocation> locationList = weatherLocationRepository.findAll();
 
-        for (UserWeather userWeather : userWeathers) {
-            weatherService.add(userWeather);
+        for (WeatherLocation location : locationList) {
+            weatherService.add(location);
 //            try {
 //                Thread.sleep(2000); // 2초 동안 정지
 //            } catch (InterruptedException e) {
