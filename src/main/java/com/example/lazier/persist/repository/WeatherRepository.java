@@ -11,4 +11,6 @@ public interface WeatherRepository extends JpaRepository<Weather, Long> {
 
     Optional<Weather> findTopByWeatherLocationOrderByUpdatedAtDesc (WeatherLocation weatherLocation);
     List<Weather> findAllByUpdatedAtBefore(String date);
+    void deleteAllByLazierUser(LazierUser lazierUser);
+
 }

@@ -38,9 +38,7 @@ public class AwsS3Service {
 	public AwsS3ResponseDto uploadImage(HttpServletRequest request, MultipartFile multipartFile)
 		throws IOException {
 
-		log.info("====== out ======");
 		if (multipartFile == null) {
-			log.info("====== in ======");
 			return AwsS3ResponseDto.builder()
 				.fileName(null)
 				.url(null)

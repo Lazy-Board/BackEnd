@@ -10,6 +10,7 @@ import com.example.lazier.persist.entity.module.UserWeather;
 import com.example.lazier.persist.entity.module.WeatherLocation;
 import com.example.lazier.persist.repository.UserWeatherRepository;
 import com.example.lazier.persist.repository.WeatherLocationRepository;
+import com.example.lazier.persist.repository.WeatherRepository;
 import com.example.lazier.service.user.MyPageService;
 import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class UserWeatherService {
 
+    private final WeatherRepository weatherRepository;
     private final UserWeatherRepository userWeatherRepository;
     private final WeatherLocationRepository weatherLocationRepository;
     private final WeatherService weatherService;
@@ -85,6 +87,7 @@ public class UserWeatherService {
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         userWeatherRepository.delete(userWeather);
+        weatherRepository.deleteAllByLazierUser(lazierUser);
     }
 
     // 동일한 날씨 위치정보 존재여부 확인후 해당 위치정보 반환

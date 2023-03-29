@@ -4,6 +4,7 @@ import com.example.lazier.config.user.JwtTokenProvider;
 import com.example.lazier.dto.user.GoogleUserInfo;
 import com.example.lazier.dto.user.OAuthTokenResponseDto;
 import com.example.lazier.dto.user.TokenResponseDto;
+import com.example.lazier.exception.user.FailedLoginException;
 import com.example.lazier.persist.entity.module.LazierUser;
 import com.example.lazier.persist.entity.module.ModuleYn;
 import com.example.lazier.persist.repository.ModuleYnRepository;
@@ -116,6 +117,11 @@ public class OAuthService {
 			return lazier;
 		} else {
 			log.info("member exists : " + lazierUser.get().getUserEmail());
+
+			if (lazierUser.get().getUserStatus().equals(MemberStatus.STATUS_WITHDRAW.getUserStatus())) {
+				throw new FailedLoginException("탈퇴한 회원입니다.");
+			}
+
 			return lazierUser.get();
 		}
 	}
