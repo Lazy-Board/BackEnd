@@ -34,6 +34,10 @@ public class WeatherScrapTasklet implements Tasklet, StepExecutionListener {
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
         List<WeatherLocation> locationList = weatherLocationRepository.findAll();
 
+        if (locationList.isEmpty()) {
+            return RepeatStatus.FINISHED;
+        }
+
         for (WeatherLocation location : locationList) {
             weatherService.add(location);
 //            try {
