@@ -1,0 +1,81 @@
+spring:
+  profiles:
+    include: oauth
+
+  datasource:
+    url: jdbc:mariadb://mydb.csmgmvg567r6.ap-northeast-2.rds.amazonaws.com:3306/lazierdb
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: lazier
+    password: lazier1234
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    show-sql: true
+
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+    properties:
+      hibernate:
+        format_sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: hyelneu29@gmail.com
+    password: hgdkhptmzwjlewxa
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+
+  messages:
+    basename: validation
+    encoding: UTF-8
+    properties:
+      hibernate:
+        auto_quote_keyword: true
+
+  redis:
+    port: 6379
+    host: localhost
+
+jwt:
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  refreshToken-validity-in-seconds: 86400000
+  token-validity-in-seconds: 1800000
+
+naver:
+  geocoding:
+    url: https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=
+    id: m75e217mog
+    key: yDT8hc2lco1EFeLrNuX7HdiyrWIU8w215RxnJUTb
+
+kakao:
+  navigation:
+    url: https://apis-navi.kakaomobility.com/v1/directions?origin=%s&destination=%s&waypoints=&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false
+    key: 098ab0ecf2fd2706becc4cbb534ea108
+
+cloud:
+  aws:
+    s3:
+      bucket: lazier-bucket
+    credentials:
+      accessKey: AKIARYBHZERP6W4XY7ZH
+      secretKey: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
