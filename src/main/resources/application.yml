@@ -3,10 +3,10 @@ spring:
     include: oauth
 
   datasource:
-    url: jdbc:mariadb://mydb.csmgmvg567r6.ap-northeast-2.rds.amazonaws.com:3306/lazierdb
+    url: ${DB_HOST}
     driver-class-name: org.mariadb.jdbc.Driver
-    username: lazier
-    password: lazier1234
+    username: ${DB_NAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     generate-ddl: true
@@ -33,8 +33,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: hyelneu29@gmail.com
-    password: hgdkhptmzwjlewxa
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -49,32 +49,32 @@ spring:
         auto_quote_keyword: true
 
   redis:
-    port: 6379
-    host: localhost
+    port: ${REDIS_PORT}
+    host: ${REDIS_HOST}
 
 jwt:
-  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  secret: ${JWT_SECRET}
   refreshToken-validity-in-seconds: 86400000
   token-validity-in-seconds: 1800000
 
 naver:
   geocoding:
     url: https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=
-    id: m75e217mog
-    key: yDT8hc2lco1EFeLrNuX7HdiyrWIU8w215RxnJUTb
+    id: ${NAVER_CLIENT_ID}
+    key: ${NAVER_CLIENT_KEY}
 
 kakao:
   navigation:
     url: https://apis-navi.kakaomobility.com/v1/directions?origin=%s&destination=%s&waypoints=&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false
-    key: 098ab0ecf2fd2706becc4cbb534ea108
+    key: ${KAKAO_CLIENT_KEY}
 
 cloud:
   aws:
     s3:
-      bucket: lazier-bucket
+      bucket: ${S3_BUCKET}
     credentials:
-      accessKey: AKIARYBHZERP6W4XY7ZH
-      secretKey: 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
+      accessKey: ${S3_ACCESS_KEY}
+      secretKey: ${S3_SECRET_KEY}
     region:
       static: ap-northeast-2
     stack:
