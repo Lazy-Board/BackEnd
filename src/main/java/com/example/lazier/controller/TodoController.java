@@ -34,7 +34,7 @@ public class TodoController {
 	})
 	@PostMapping("/write")
 	public ResponseEntity<?> write(HttpServletRequest request,
-		@RequestBody @Valid TodoWriteRequestDto todoWriteRequestDto) {
+		@RequestBody TodoWriteRequestDto todoWriteRequestDto) {
 		return new ResponseEntity<>(todoService.write(request, todoWriteRequestDto), HttpStatus.OK);
 	}
 
