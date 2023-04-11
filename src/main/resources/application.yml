@@ -61,12 +61,17 @@ naver:
   geocoding:
     url: https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=
     id: m75e217mog
-    key: yDT8hc2lco1EFeLrNuX7HdiyrWIU8w215RxnJUTb
+    key: D9lr2DmPMBwMewyPyfQTOj4eZFsw8MM9xI2qJmt4
 
 kakao:
   navigation:
     url: https://apis-navi.kakaomobility.com/v1/directions?origin=%s&destination=%s&waypoints=&priority=RECOMMEND&car_fuel=GASOLINE&car_hipass=false&alternatives=false&road_details=false
     key: 098ab0ecf2fd2706becc4cbb534ea108
+
+open:
+  weather:
+    url: https://api.openweathermap.org/data/2.5/weather?lat=%s&lon=%s&appid=%s&units=metric
+    key: 5f98b77b2420aeb1aa69441d72dac901
 
 cloud:
   aws:

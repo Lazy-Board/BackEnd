@@ -100,7 +100,7 @@ public class UserWeatherService {
 
         if (!exists) {
 
-            String[] geocode = naverGeocodingApi.getGeoCode(cityName + " " + locationName).split(", ");
+            String[] geocode = naverGeocodingApi.getGeoCode(cityName + " " + locationName).split(",");
             String lat = geocode[1];
             String lon = geocode[0];
 
