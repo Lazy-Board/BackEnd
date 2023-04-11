@@ -61,7 +61,7 @@ naver:
   geocoding:
     url: https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=
     id: m75e217mog
-    key: D9lr2DmPMBwMewyPyfQTOj4eZFsw8MM9xI2qJmt4
+    key: yDT8hc2lco1EFeLrNuX7HdiyrWIU8w215RxnJUTb
 
 kakao:
   navigation:
