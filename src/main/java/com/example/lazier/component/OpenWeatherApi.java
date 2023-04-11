@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -60,6 +62,7 @@ public class OpenWeatherApi {
                 .humidity(humidity)
                 .windSpeed(windSpeed)
                 .windDirection(windDirection)
+                .updatedAt(updatedDateText(LocalDateTime.now()))
                 .build();
 
         } catch (ParseException e) {
@@ -100,4 +103,8 @@ public class OpenWeatherApi {
         }
     }
 
+    public String updatedDateText(LocalDateTime now) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        return now != null ? now.format(formatter) : "";
+    }
 }
