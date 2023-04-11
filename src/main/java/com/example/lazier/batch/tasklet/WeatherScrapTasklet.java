@@ -36,6 +36,10 @@ public class WeatherScrapTasklet implements Tasklet, StepExecutionListener {
         List<WeatherLocation> locationList = weatherLocationRepository.findAll();
         int count = 0;
 
+        if (locationList.isEmpty()) {
+            return RepeatStatus.FINISHED;
+        }
+
         for (WeatherLocation location : locationList) {
             if (count == 60) {
                 try {
