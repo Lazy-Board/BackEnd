@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import javax.validation.constraints.Size;
 
 @Data
 @Builder
@@ -14,7 +15,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TodoUpdateRequestDto {
 
+	@Size(min = 20)
 	private String content;
+	
 	private String id;
 
 	public static List<TodoUpdateRequestDto> of(List<Todo> list) {
