@@ -1,5 +1,6 @@
 package com.example.lazier.dto.module;
 
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
