@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class TodoUpdateRequestDto {
 
-	@Size(min = 20)
+	@Size(max = 20)
 	private String content;
 	
 	private String id;
