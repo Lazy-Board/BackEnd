@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -34,7 +35,7 @@ public class TodoController {
 	})
 	@PostMapping("/write")
 	public ResponseEntity<?> write(HttpServletRequest request,
-		@RequestBody TodoWriteRequestDto todoWriteRequestDto) {
+		@RequestBody @Valid TodoWriteRequestDto todoWriteRequestDto) {
 		return new ResponseEntity<>(todoService.write(request, todoWriteRequestDto), HttpStatus.OK);
 	}
 
@@ -58,7 +59,7 @@ public class TodoController {
 		@ApiResponse(code = 400, message = "이미 삭제된 경우")
 	})
 	@PutMapping("/update")
-	public ResponseEntity<?> update(@RequestBody TodoUpdateRequestDto todoUpdateRequestDto) {
+	public ResponseEntity<?> update(@RequestBody @Valid TodoUpdateRequestDto todoUpdateRequestDto) {
 
 		todoService.update(todoUpdateRequestDto);
 		return ResponseEntity.ok("투두리스트 수정 완료");
