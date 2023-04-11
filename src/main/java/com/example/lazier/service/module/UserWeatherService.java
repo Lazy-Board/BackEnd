@@ -87,7 +87,7 @@ public class UserWeatherService {
             .orElseThrow(() -> new UserNotFoundException("사용자 정보가 존재하지 않습니다."));
 
         userWeatherRepository.delete(userWeather);
-        weatherRepository.deleteAllByLazierUser(lazierUser);
+//        weatherRepository.deleteAllByLazierUser(lazierUser);
     }
 
     // 동일한 날씨 위치정보 존재여부 확인후 해당 위치정보 반환

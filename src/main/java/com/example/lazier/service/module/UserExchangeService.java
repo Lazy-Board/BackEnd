@@ -83,7 +83,7 @@ public class UserExchangeService {
 
 			userExchangeRepository.save(userExchange);
 			detailExchangeRepository.save(detailexchange);
-			exchangeService.add();
+//			exchangeService.add();
 		}
 	}
 

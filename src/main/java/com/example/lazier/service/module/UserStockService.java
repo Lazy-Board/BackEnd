@@ -59,20 +59,19 @@ public class UserStockService {
 
 
         if (!userStockRepository.existsByLazierUser(lazierUser)) {
-
-        UserStock userStock = UserStock.builder()
-                                    .lazierUser(lazierUser)
-                                    .samsungElectronic(String.valueOf(삼성전자))
-                                    .skHynix(String.valueOf(SK하이닉스))
-                                    .naver(String.valueOf(NAVER))
-                                    .kakao("F")
-                                    .hyundaiCar("F")
-                                    .kia("F")
-                                    .lgElectronic("F")
-                                    .kakaoBank("F")
-                                    .samsungSdi("F")
-                                    .hive("F")
-                                    .build();
+            UserStock userStock = UserStock.builder()
+                                        .lazierUser(lazierUser)
+                                        .samsungElectronic(String.valueOf(삼성전자))
+                                        .skHynix(String.valueOf(SK하이닉스))
+                                        .naver(String.valueOf(NAVER))
+                                        .kakao("F")
+                                        .hyundaiCar("F")
+                                        .kia("F")
+                                        .lgElectronic("F")
+                                        .kakaoBank("F")
+                                        .samsungSdi("F")
+                                        .hive("F")
+                                        .build();
 
             DetailStock detailStock = DetailStock.builder()
                 .lazierUser(lazierUser)
@@ -90,7 +89,7 @@ public class UserStockService {
 
             userStockRepository.save(userStock);
             detailStockRepository.save(detailStock);
-            stockService.add();
+//            stockService.add();
         }
     }
 
