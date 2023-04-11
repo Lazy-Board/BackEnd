@@ -26,4 +26,6 @@ public class WeatherLocation {
 
     private String cityName;
     private String locationName;
+    private String lat;
+    private String lon;
 }

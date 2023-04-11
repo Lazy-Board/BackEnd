@@ -31,6 +31,8 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+
+
 @Configuration
 @RequiredArgsConstructor
 public class HourlyJobConfig {
@@ -69,11 +71,11 @@ public class HourlyJobConfig {
     public Job hourlyJob() {
         return jobBuilderFactory.get("hourlyJob")
             .incrementer(new RunIdIncrementer())
-            .start(weatherScrap())
-            .next(stockScrap())
-            .next(exchangeScrap())
-            .next(newsScrap())
-            .next(youtubeScrap())
+            .start(weatherScrap()).on("*").to(stockScrap())
+            .from(stockScrap()).on("*").to(exchangeScrap())
+            .from(exchangeScrap()).on("*").to(newsScrap())
+            .from(newsScrap()).on("*").to(youtubeScrap())
+            .end()
             .build();
     }
 
