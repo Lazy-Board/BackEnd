@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TodoWriteRequestDto {
 	
-	@Size(min = 20)
+	@Size(max = 20)
 	private String content;
 }
