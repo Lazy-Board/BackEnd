@@ -1,5 +1,6 @@
 package com.example.lazier.service.module;
 
+import com.example.lazier.component.NaverGeocodingApi;
 import com.example.lazier.dto.module.UserWeatherInput;
 import com.example.lazier.dto.module.WeatherLocationDto;
 import com.example.lazier.exception.LocationNotFoundException;
@@ -24,6 +25,8 @@ public class UserWeatherService {
     private final WeatherLocationRepository weatherLocationRepository;
     private final WeatherService weatherService;
     private final MyPageService myPageService;
+
+    private final NaverGeocodingApi naverGeocodingApi;
 
     public void add(HttpServletRequest request, UserWeatherInput parameter) {
         long userId = Long.parseLong(request.getAttribute("userId").toString());
@@ -93,9 +96,16 @@ public class UserWeatherService {
             locationName);
 
         if (!exists) {
+
+            String[] geocode = naverGeocodingApi.getGeoCode(cityName + " " + locationName).split(", ");
+            String lat = geocode[1];
+            String lon = geocode[0];
+
             weatherLocationRepository.save(WeatherLocation.builder()
                 .cityName(cityName)
                 .locationName(locationName)
+                .lat(lat)
+                .lon(lon)
                 .build());
             // 새로 저장한 위치정보에 대한 날씨 정보 저장
             WeatherLocation weatherLocation = weatherLocationRepository.findByCityNameAndLocationName(

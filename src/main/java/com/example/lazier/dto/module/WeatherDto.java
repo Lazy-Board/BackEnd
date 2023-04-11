@@ -15,16 +15,18 @@ public class WeatherDto {
     long locationId;
     String cityName; // 시/군/구 이름
     String locationName; // 동 이름
+    String icon; // 날씨 아이콘
+
+    String description; // 날씨 상세정보
+    String engWeather; // 영어 날씨
+    String weatherId; // 날씨 아이디
+
     String temperature;
     String effectiveTemperature; // 체감 온도
     String highestTemperature;
     String lowestTemperature;
-    String weatherInformation;
-    String weatherComparison; // 어제 날씨 비교 온도
+    String pressure;
     String humidity;
-    String ultraviolet; // 자외선
-    String fineParticle; // 미세먼지
-    String ultrafineParticle; // 초미세먼지
     String windSpeed;
     String windDirection;
     String updatedAt;
@@ -34,16 +36,16 @@ public class WeatherDto {
             .locationId(weather.getWeatherLocation().getLocationId())
             .cityName(weather.getCityName())
             .locationName(weather.getLocationName())
+            .icon(weather.getIcon())
+            .description(weather.getDescription())
+            .engWeather(weather.getEngWeather())
+            .weatherId(weather.getWeatherId())
             .temperature(weather.getTemperature())
             .effectiveTemperature(weather.getEffectiveTemperature())
             .highestTemperature(weather.getHighestTemperature())
             .lowestTemperature(weather.getLowestTemperature())
-            .weatherInformation(weather.getWeatherInformation())
-            .weatherComparison(weather.getWeatherComparison())
+            .pressure(weather.getPressure())
             .humidity(weather.getHumidity())
-            .ultraviolet(weather.getUltraviolet())
-            .fineParticle(weather.getFineParticle())
-            .ultrafineParticle(weather.getUltrafineParticle())
             .windSpeed(weather.getWindSpeed())
             .windDirection(weather.getWindDirection())
             .updatedAt(weather.getUpdatedAt())

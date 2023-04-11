@@ -32,16 +32,23 @@ public class WeatherScrapTasklet implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
+
         List<WeatherLocation> locationList = weatherLocationRepository.findAll();
+        int count = 0;
 
         for (WeatherLocation location : locationList) {
+            if (count == 60) {
+                try {
+                    Thread.sleep(60000);
+                    count = 0;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();;
+                    Thread.currentThread().interrupt();
+                }
+            }
             weatherService.add(location);
-//            try {
-//                Thread.sleep(2000); // 2초 동안 정지
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//                Thread.currentThread().interrupt();
-//            }
+            count++;
+
         }
         return RepeatStatus.FINISHED;
     }
@@ -53,4 +60,19 @@ public class WeatherScrapTasklet implements Tasklet, StepExecutionListener {
     }
 
 
+    public static void main(String[] args) {
+        int count = 59;
+        for (int i = 0; i < 10; i++) {
+            if (count == 60) {
+                try {
+                    Thread.sleep(60000);
+                    count = 0;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();;
+                    Thread.currentThread().interrupt();
+                }
+            }
+            count++;
+        }
+    }
 }

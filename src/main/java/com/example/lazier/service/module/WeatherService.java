@@ -1,5 +1,6 @@
 package com.example.lazier.service.module;
 
+import com.example.lazier.component.OpenWeatherApi;
 import com.example.lazier.dto.module.WeatherDto;
 import com.example.lazier.exception.UserNotFoundException;
 import com.example.lazier.persist.entity.module.LazierUser;
@@ -8,7 +9,6 @@ import com.example.lazier.persist.entity.module.Weather;
 import com.example.lazier.persist.entity.module.WeatherLocation;
 import com.example.lazier.persist.repository.UserWeatherRepository;
 import com.example.lazier.persist.repository.WeatherRepository;
-import com.example.lazier.scraper.NaverWeatherScraper;
 import com.example.lazier.service.user.MyPageService;
 import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
@@ -19,13 +19,17 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class WeatherService {
 
-    private final NaverWeatherScraper naverWeatherScraper;
+    private final OpenWeatherApi openWeatherApi;
     private final WeatherRepository weatherRepository;
     private final UserWeatherRepository userWeatherRepository;
     private final MyPageService myPageService;
 
     public void add(WeatherLocation weatherLocation) {
-        WeatherDto weatherDto = naverWeatherScraper.scrap(weatherLocation);
+        WeatherDto weatherDto = openWeatherApi.getWeather(weatherLocation.getLat(), weatherLocation.getLon());
+
+        weatherDto.setCityName(weatherLocation.getCityName());
+        weatherDto.setLocationName(weatherLocation.getLocationName());
+
         weatherRepository.save(new Weather(weatherLocation, weatherDto));
     }
 
